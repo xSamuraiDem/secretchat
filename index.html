@@ -1,0 +1,3262 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nexly Roulette — Анонимный чат вдвоём</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* =========================================================
+       THEME VARIABLES: LIGHT (NEKTO.ME / МЫВДВОЕМ) & DARK
+       ========================================================= */
+    :root,
+    [data-theme="light"] {
+      --bg-page: #f0f3f8;
+      --bg-surface: #ffffff;
+      --bg-subtle: #f7f9fc;
+      --bg-pill: #eef2f7;
+      --bg-pill-hover: #e2e8f0;
+      --bg-chat-area: #f5f7fb;
+      --bg-msg-partner: #ffffff;
+      --bg-msg-self: #2563eb;
+      --text-msg-self: #ffffff;
+      --text-primary: #1e293b;
+      --text-secondary: #64748b;
+      --text-muted: #94a3b8;
+      --border-color: #dce3ee;
+      --border-strong: #cbd5e1;
+      --accent: #2563eb;
+      --accent-hover: #1d4ed8;
+      --accent-soft: rgba(37, 99, 235, 0.1);
+      --accent-teal: #0d9488;
+      --vip-gold: #d97706;
+      --vip-bg: rgba(245, 158, 11, 0.12);
+      --vip-border: rgba(245, 158, 11, 0.35);
+      --success: #10b981;
+      --success-soft: rgba(16, 185, 129, 0.12);
+      --danger: #ef4444;
+      --danger-soft: rgba(239, 68, 68, 0.1);
+      --shadow-card: 0 4px 20px rgba(15, 23, 42, 0.05);
+      --shadow-modal: 0 20px 50px rgba(15, 23, 42, 0.18);
+    }
+
+    [data-theme="dark"] {
+      --bg-page: #0b0f19;
+      --bg-surface: #131a29;
+      --bg-subtle: #192236;
+      --bg-pill: #1e293b;
+      --bg-pill-hover: #283548;
+      --bg-chat-area: #0e1422;
+      --bg-msg-partner: #1e293b;
+      --bg-msg-self: #3b82f6;
+      --text-msg-self: #ffffff;
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --border-color: #243044;
+      --border-strong: #334155;
+      --accent: #3b82f6;
+      --accent-hover: #2563eb;
+      --accent-soft: rgba(59, 130, 246, 0.16);
+      --accent-teal: #14b8a6;
+      --vip-gold: #fbbf24;
+      --vip-bg: rgba(251, 191, 36, 0.14);
+      --vip-border: rgba(251, 191, 36, 0.35);
+      --success: #10b981;
+      --success-soft: rgba(16, 185, 129, 0.16);
+      --danger: #f87171;
+      --danger-soft: rgba(248, 113, 113, 0.14);
+      --shadow-card: 0 8px 28px rgba(0, 0, 0, 0.32);
+      --shadow-modal: 0 24px 60px rgba(0, 0, 0, 0.6);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-page);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: background-color 0.25s ease, color 0.25s ease;
+      line-height: 1.45;
+    }
+
+    /* =========================================================
+       TOP NAVBAR (NEKTO.ME / МЫВДВОЕМ CLEAN HEADER)
+       ========================================================= */
+    .navbar {
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-color);
+      padding: 12px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      transition: background-color 0.25s ease, border-color 0.25s ease;
+    }
+
+    .navbar-inner {
+      max-width: 980px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+
+    .brand-badge {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-teal));
+      color: #fff;
+      font-weight: 800;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    }
+
+    .brand-name {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-tag {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 6px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      margin-left: 4px;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 12px;
+      border-radius: 9px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-subtle);
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+
+    .nav-btn:hover {
+      background: var(--bg-pill-hover);
+      border-color: var(--border-strong);
+    }
+
+    .nav-btn.tg-verified {
+      background: var(--success-soft);
+      border-color: rgba(16, 185, 129, 0.35);
+      color: var(--success);
+    }
+
+    .nav-btn.vip-active {
+      background: var(--vip-bg);
+      border-color: var(--vip-border);
+      color: var(--vip-gold);
+    }
+
+    .nav-btn.admin-btn {
+      background: linear-gradient(135deg, #7c3aed, #4f46e5);
+      border-color: transparent;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(124, 58, 237, 0.28);
+    }
+
+    .nav-btn.admin-btn:hover {
+      filter: brightness(1.08);
+    }
+
+    /* =========================================================
+       MAIN CONTAINER
+       ========================================================= */
+    .main-container {
+      flex: 1;
+      width: 100%;
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 24px 16px 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      box-shadow: var(--shadow-card);
+      transition: background-color 0.25s ease, border-color 0.25s ease;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* =========================================================
+       SCREEN 1: GUEST ENTRY (NO TG ID / NO BOT NEEDED)
+       ========================================================= */
+    .entry-card {
+      max-width: 490px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 28px;
+    }
+
+    .entry-title {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+
+    .entry-subtitle {
+      font-size: 13.5px;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+    }
+
+    .mode-select-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px 16px;
+      border-radius: 12px;
+      border: 2px solid var(--border-color);
+      background: var(--bg-subtle);
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: all 0.18s ease;
+      text-align: left;
+      margin-bottom: 16px;
+      font-family: inherit;
+    }
+
+    .mode-select-btn:hover {
+      border-color: var(--accent);
+    }
+
+    .mode-select-btn.selected {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .mode-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .mode-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: var(--accent);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 19px;
+      flex-shrink: 0;
+    }
+
+    .radio-dot {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .mode-select-btn.selected .radio-dot {
+      border-color: var(--accent);
+    }
+
+    .mode-select-btn.selected .radio-dot::after {
+      content: '';
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    .input-field {
+      width: 100%;
+      height: 42px;
+      padding: 0 13px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border-color);
+      background: var(--bg-subtle);
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.18s ease;
+    }
+
+    .input-field:focus {
+      border-color: var(--accent);
+      background: var(--bg-surface);
+    }
+
+    .rules-panel {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 16px;
+    }
+
+    .rules-panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .link-btn {
+      background: none;
+      border: none;
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: underline;
+      font-family: inherit;
+    }
+
+    .rules-ul {
+      list-style: none;
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .rules-ul li {
+      padding-left: 14px;
+      position: relative;
+    }
+
+    .rules-ul li::before {
+      content: '•';
+      position: absolute;
+      left: 2px;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .consent-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      margin-bottom: 20px;
+      user-select: none;
+    }
+
+    .consent-row input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+      accent-color: var(--accent);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .btn-main {
+      width: 100%;
+      height: 46px;
+      border: none;
+      border-radius: 11px;
+      background: var(--accent);
+      color: #ffffff;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-main:hover:not(:disabled) {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-main:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* =========================================================
+       SCREEN 2: NEKTO.ME / МЫВДВОЕМ TWO-COLUMN LOBBY
+       ========================================================= */
+    .lobby-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 18px;
+    }
+
+    @media (max-width: 760px) {
+      .lobby-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .panel-card {
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .panel-title {
+      font-size: 16px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .panel-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: var(--bg-pill);
+      color: var(--text-secondary);
+    }
+
+    .control-block {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .control-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Segmented Pills */
+    .pill-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .pill-btn {
+      flex: 1;
+      min-width: 85px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border-color);
+      background: var(--bg-subtle);
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.16s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      position: relative;
+    }
+
+    .pill-btn:hover {
+      background: var(--bg-pill-hover);
+      border-color: var(--border-strong);
+    }
+
+    .pill-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #ffffff;
+      box-shadow: 0 3px 10px rgba(37, 99, 235, 0.25);
+    }
+
+    .pill-btn.vip-locked {
+      border-style: dashed;
+    }
+
+    .vip-tag {
+      font-size: 10px;
+      font-weight: 800;
+      padding: 1px 5px;
+      border-radius: 4px;
+      background: var(--vip-bg);
+      color: var(--vip-gold);
+      border: 1px solid var(--vip-border);
+      letter-spacing: 0.02em;
+    }
+
+    .pill-btn.active .vip-tag {
+      background: rgba(255, 255, 255, 0.22);
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    /* Age Selector Row */
+    .age-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .stepper-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-subtle);
+      color: var(--text-primary);
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
+    }
+
+    .stepper-btn:hover {
+      background: var(--bg-pill-hover);
+      border-color: var(--accent);
+    }
+
+    .select-box {
+      flex: 1;
+      height: 40px;
+      padding: 0 12px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border-color);
+      background: var(--bg-subtle);
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .select-box:focus {
+      border-color: var(--accent);
+    }
+
+    /* Theme Switcher Card Row */
+    .theme-switcher-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      border-radius: 10px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+    }
+
+    .theme-options {
+      display: flex;
+      gap: 6px;
+    }
+
+    .theme-chip {
+      padding: 5px 10px;
+      border-radius: 7px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text-secondary);
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .theme-chip.active {
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      border-color: var(--border-color);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+
+    /* Start Search CTA & Live Stats Bar */
+    .lobby-footer-card {
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .start-search-btn {
+      width: 100%;
+      max-width: 420px;
+      height: 52px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent), #1d4ed8);
+      color: #ffffff;
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(37, 99, 235, 0.3);
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .start-search-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 28px rgba(37, 99, 235, 0.4);
+    }
+
+    .live-stats-strip {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      padding-top: 12px;
+      border-top: 1px solid var(--border-color);
+      font-size: 13.5px;
+    }
+
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-secondary);
+    }
+
+    .stat-item strong {
+      color: var(--text-primary);
+      font-weight: 800;
+      font-size: 14.5px;
+    }
+
+    .pulse-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .pulse-dot.green {
+      background: var(--success);
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+    }
+
+    .pulse-dot.blue {
+      background: var(--accent);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+    }
+
+    /* =========================================================
+       SCREEN 3: SEARCHING OVERLAY / STATE
+       ========================================================= */
+    .searching-card {
+      max-width: 520px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 36px 28px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .radar-spinner {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      border: 4px solid var(--accent-soft);
+      border-top-color: var(--accent);
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .search-criteria-pills {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .criteria-chip {
+      padding: 5px 11px;
+      border-radius: 999px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .btn-outline {
+      padding: 10px 20px;
+      border-radius: 10px;
+      border: 1px solid var(--border-strong);
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-outline:hover {
+      background: var(--bg-pill-hover);
+    }
+
+    /* =========================================================
+       SCREEN 4: NEKTO.ME / МЫВДВОЕМ ACTIVE CHAT ROOM
+       ========================================================= */
+    .chat-window {
+      width: 100%;
+      height: 76vh;
+      min-height: 520px;
+      max-height: 760px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .chat-topbar {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border-color);
+      background: var(--bg-surface);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .partner-meta {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .partner-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--accent-soft);
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .partner-title {
+      font-size: 14.5px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .partner-sub {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .chat-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-next {
+      padding: 8px 14px;
+      border-radius: 9px;
+      border: 1px solid var(--accent);
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-next:hover {
+      background: var(--accent);
+      color: #ffffff;
+    }
+
+    .btn-stop {
+      padding: 8px 14px;
+      border-radius: 9px;
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      background: var(--danger-soft);
+      color: var(--danger);
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-stop:hover {
+      background: var(--danger);
+      color: #ffffff;
+    }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 18px;
+      background: var(--bg-chat-area);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .msg-system {
+      align-self: center;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      font-size: 12px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      text-align: center;
+      max-width: 88%;
+      margin: 4px 0;
+    }
+
+    .msg-row {
+      display: flex;
+      flex-direction: column;
+      max-width: 75%;
+    }
+
+    .msg-row.self {
+      align-self: flex-end;
+      align-items: flex-end;
+    }
+
+    .msg-row.partner {
+      align-self: flex-start;
+      align-items: flex-start;
+    }
+
+    .msg-bubble {
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: 14px;
+      line-height: 1.45;
+      word-break: break-word;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    }
+
+    .msg-row.self .msg-bubble {
+      background: var(--bg-msg-self);
+      color: var(--text-msg-self);
+      border-bottom-right-radius: 4px;
+    }
+
+    .msg-row.partner .msg-bubble {
+      background: var(--bg-msg-partner);
+      color: var(--text-primary);
+      border: 1px solid var(--border-color);
+      border-bottom-left-radius: 4px;
+    }
+
+    .msg-time {
+      font-size: 10.5px;
+      color: var(--text-muted);
+      margin-top: 3px;
+      padding: 0 4px;
+    }
+
+    .typing-bar {
+      padding: 6px 18px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      background: var(--bg-chat-area);
+      min-height: 26px;
+      font-style: italic;
+    }
+
+    .chat-composer {
+      padding: 12px 16px;
+      border-top: 1px solid var(--border-color);
+      background: var(--bg-surface);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .chat-input {
+      flex: 1;
+      height: 44px;
+      padding: 0 14px;
+      border-radius: 11px;
+      border: 1.5px solid var(--border-color);
+      background: var(--bg-subtle);
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .chat-input:focus {
+      border-color: var(--accent);
+    }
+
+    .send-btn {
+      height: 44px;
+      padding: 0 20px;
+      border-radius: 11px;
+      border: none;
+      background: var(--accent);
+      color: #ffffff;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    .send-btn:hover:not(:disabled) {
+      background: var(--accent-hover);
+    }
+
+    .send-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .post-chat-banner {
+      padding: 16px;
+      background: var(--bg-subtle);
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* =========================================================
+       MODALS (TG VERIFICATION FLOW, VIP MODAL, POLICY, ADMIN)
+       ========================================================= */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(5px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 200;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      box-shadow: var(--shadow-modal);
+      width: 100%;
+      max-width: 480px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .modal-box.admin-modal {
+      max-width: 680px;
+    }
+
+    .modal-head {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-head h3 {
+      font-size: 16.5px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .close-x {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-subtle);
+      color: var(--text-primary);
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .modal-body {
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      font-size: 13.5px;
+    }
+
+    /* Bot helper banner inside TG modal */
+    .bot-hint-card {
+      background: var(--accent-soft);
+      border: 1px solid rgba(37, 99, 235, 0.25);
+      border-radius: 12px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .bot-open-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 12px;
+      border-radius: 8px;
+      background: var(--accent);
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 700;
+      transition: background 0.15s ease;
+    }
+
+    .bot-open-link:hover {
+      background: var(--accent-hover);
+    }
+
+    /* Anti-Bot ("Я не робот") Widget */
+    .captcha-box {
+      border: 1.5px solid var(--border-color);
+      background: var(--bg-subtle);
+      border-radius: 12px;
+      padding: 13px 15px;
+      transition: all 0.2s ease;
+    }
+
+    .captcha-box.verified {
+      border-color: var(--success);
+      background: var(--success-soft);
+    }
+
+    .captcha-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .captcha-left {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .captcha-checkbox {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      border: 2px solid var(--border-strong);
+      background: var(--bg-surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      font-weight: 800;
+      color: #ffffff;
+      transition: all 0.18s ease;
+    }
+
+    .captcha-box.verified .captcha-checkbox {
+      background: var(--success);
+      border-color: var(--success);
+    }
+
+    .captcha-challenge {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px dashed var(--border-color);
+    }
+
+    .captcha-prompt {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .captcha-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .captcha-icon-btn {
+      height: 44px;
+      border-radius: 9px;
+      border: 1.5px solid var(--border-color);
+      background: var(--bg-surface);
+      font-size: 20px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .captcha-icon-btn:hover {
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+
+    /* Loading State inside TG Modal */
+    .linking-loader-box {
+      padding: 26px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 14px;
+    }
+
+    .dual-ring-spinner {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      border: 4px solid var(--accent-soft);
+      border-top-color: var(--accent);
+      border-right-color: var(--accent-teal);
+      animation: spin 0.85s linear infinite;
+    }
+
+    .loader-progress-bar {
+      width: 100%;
+      max-width: 280px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--bg-pill);
+      overflow: hidden;
+    }
+
+    .loader-progress-fill {
+      height: 100%;
+      width: 30%;
+      background: linear-gradient(90deg, var(--accent), var(--accent-teal));
+      border-radius: 999px;
+      transition: width 0.35s ease;
+    }
+
+    /* 6-Digit Code OTP Inputs */
+    .otp-row {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin: 6px 0;
+    }
+
+    .otp-digit {
+      width: 46px;
+      height: 54px;
+      border-radius: 11px;
+      border: 2px solid var(--border-color);
+      background: var(--bg-subtle);
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 22px;
+      font-weight: 800;
+      text-align: center;
+      outline: none;
+      transition: all 0.16s ease;
+    }
+
+    .otp-digit:focus {
+      border-color: var(--accent);
+      background: var(--bg-surface);
+      box-shadow: 0 0 0 3px var(--accent-soft);
+    }
+
+    .otp-error {
+      color: var(--danger);
+      font-size: 12.5px;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    /* Admin Console Table & Cards */
+    .admin-grant-box {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .admin-form-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr auto;
+      gap: 8px;
+    }
+
+    @media (max-width: 580px) {
+      .admin-form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .vip-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+    }
+
+    .vip-table th,
+    .vip-table td {
+      padding: 9px 10px;
+      border-bottom: 1px solid var(--border-color);
+      text-align: left;
+    }
+
+    .vip-table th {
+      color: var(--text-secondary);
+      font-weight: 700;
+      background: var(--bg-subtle);
+    }
+
+    .badge-vip {
+      display: inline-block;
+      padding: 2px 7px;
+      border-radius: 6px;
+      background: var(--vip-bg);
+      color: var(--vip-gold);
+      border: 1px solid var(--vip-border);
+      font-weight: 700;
+      font-size: 11px;
+    }
+
+    .badge-free {
+      display: inline-block;
+      padding: 2px 7px;
+      border-radius: 6px;
+      background: var(--bg-pill);
+      color: var(--text-secondary);
+      font-weight: 600;
+      font-size: 11px;
+    }
+
+    .mini-btn {
+      padding: 5px 10px;
+      border-radius: 7px;
+      border: 1px solid var(--border-color);
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .mini-btn.grant {
+      background: var(--vip-bg);
+      border-color: var(--vip-border);
+      color: var(--vip-gold);
+    }
+
+    .mini-btn.revoke {
+      color: var(--danger);
+      border-color: rgba(239, 68, 68, 0.3);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #1e293b;
+      color: #ffffff;
+      padding: 11px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+      z-index: 500;
+      opacity: 0;
+      transform: translateY(10px);
+      pointer-events: none;
+      transition: all 0.22s ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP NAVBAR -->
+  <header class="navbar">
+    <div class="navbar-inner">
+      <a href="#" class="brand" id="brandHomeLink">
+        <div class="brand-badge">N</div>
+        <div>
+          <span class="brand-name">Nexly Roulette</span>
+          <span class="brand-tag">МыВдвоём</span>
+        </div>
+      </a>
+
+      <div class="nav-actions">
+        <!-- Theme Switcher Button -->
+        <button type="button" class="nav-btn" id="headerThemeBtn" title="Сменить тему оформления">
+          <span id="themeIcon">🌙</span>
+          <span id="themeLabel">Тёмная тема</span>
+        </button>
+
+        <!-- Link Telegram ID Button (Optional verification via 6-digit bot code) -->
+        <button type="button" class="nav-btn" id="openTgIdModalBtn" title="Привязать Telegram ID через бота">
+          <span id="navTgIcon">🆔</span>
+          <span id="navTgDisplay">Привязать Telegram ID</span>
+        </button>
+
+        <!-- VIP Badge / Modal Trigger -->
+        <button type="button" class="nav-btn" id="navVipBtn">
+          <span>👑</span>
+          <span id="navVipText">VIP: Нет</span>
+        </button>
+
+        <!-- Admin Console Button (Visible ONLY after verifying TG ID 8515868917) -->
+        <button type="button" class="nav-btn admin-btn hidden" id="openAdminBtn">
+          <span>🛡️</span>
+          <span>Админ-консоль</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="main-container">
+
+    <!-- =======================================================
+         STEP 1: GUEST ENTRY (NO TG ID / NO BOT NEEDED)
+         ======================================================= -->
+    <section class="card entry-card" id="screenEntry">
+      <h1 class="entry-title">Анонимный чат вдвоём</h1>
+      <p class="entry-subtitle">Быстрый гостевой вход без регистрации и привязки аккаунтов.</p>
+
+      <button type="button" class="mode-select-btn selected" id="entryGuestModeBtn">
+        <div class="mode-info">
+          <div class="mode-avatar">👤</div>
+          <div>
+            <div style="font-weight: 700; font-size: 15px;">Вход гостя</div>
+            <div style="font-size: 12px; color: var(--text-secondary);">Анонимная сессия • Без привязки Telegram</div>
+          </div>
+        </div>
+        <div class="radio-dot"></div>
+      </button>
+
+      <!-- Rules & Privacy Policy -->
+      <div class="rules-panel">
+        <div class="rules-panel-head">
+          <span>Правила и политика конфиденциальности</span>
+          <button type="button" class="link-btn" id="openPolicyBtn">Читать полностью</button>
+        </div>
+        <ul class="rules-ul">
+          <li>Возраст участников: от 10 до 99 лет.</li>
+          <li>Запрещены оскорбления, спам, реклама и нарушение законов.</li>
+          <li>Разделы «Знакомства», «Флирт» и «18+» доступны владельцам VIP-подписки.</li>
+        </ul>
+      </div>
+
+      <label class="consent-row" for="entryPolicyCheckbox">
+        <input type="checkbox" id="entryPolicyCheckbox" />
+        <span>Я принимаю <strong>Политику конфиденциальности</strong> и обязуюсь соблюдать <strong>Правила чата</strong>.</span>
+      </label>
+
+      <button type="button" class="btn-main" id="enterLobbyBtn" disabled>
+        Войти в чат-рулетку →
+      </button>
+    </section>
+
+    <!-- =======================================================
+         STEP 2: NEKTO.ME / МЫВДВОЕМ TWO-COLUMN LOBBY
+         ======================================================= -->
+    <section id="screenLobby" class="hidden">
+      <div class="lobby-grid">
+
+        <!-- LEFT COLUMN: YOUR PARAMETERS -->
+        <div class="card panel-card">
+          <div class="panel-header">
+            <div class="panel-title">👤 Ваши параметры</div>
+            <span class="panel-badge" id="mySessionBadge">Гость</span>
+          </div>
+
+          <!-- Your Gender -->
+          <div class="control-block">
+            <label class="control-label">Ваш пол</label>
+            <div class="pill-group" id="myGenderGroup">
+              <button type="button" class="pill-btn active" data-my-gender="male">👦 Мальчик</button>
+              <button type="button" class="pill-btn" data-my-gender="female">👩 Женщина</button>
+              <button type="button" class="pill-btn" data-my-gender="trans">⚧ Транс</button>
+            </div>
+          </div>
+
+          <!-- Your Age (10 - 99) -->
+          <div class="control-block">
+            <label class="control-label" for="myAgeSelect">
+              <span>Ваш возраст (10 – 99 лет)</span>
+              <span id="myAgeTag" style="color: var(--accent);">18 лет</span>
+            </label>
+            <div class="age-row">
+              <button type="button" class="stepper-btn" id="myAgeMinus">−</button>
+              <select class="select-box" id="myAgeSelect"></select>
+              <button type="button" class="stepper-btn" id="myAgePlus">+</button>
+            </div>
+          </div>
+
+          <!-- Theme Switcher -->
+          <div class="control-block">
+            <label class="control-label">Тема оформления</label>
+            <div class="theme-switcher-bar">
+              <span style="font-size: 12.5px; color: var(--text-secondary);">Стиль интерфейса</span>
+              <div class="theme-options">
+                <button type="button" class="theme-chip active" data-set-theme="light">☀️ Светлая</button>
+                <button type="button" class="theme-chip" data-set-theme="dark">🌙 Тёмная</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN: PARTNER SEARCH FILTERS -->
+        <div class="card panel-card">
+          <div class="panel-header">
+            <div class="panel-title">🔍 Параметры собеседника</div>
+            <span class="panel-badge" id="searchModeBadge">По умолчанию</span>
+          </div>
+
+          <!-- Partner Gender -->
+          <div class="control-block">
+            <label class="control-label">
+              <span>Пол собеседника</span>
+              <span style="font-size: 11px; color: var(--text-muted);">Выбор конкретного — VIP</span>
+            </label>
+            <div class="pill-group" id="partnerGenderGroup">
+              <button type="button" class="pill-btn active" data-partner-gender="any">Любой</button>
+              <button type="button" class="pill-btn vip-locked" data-partner-gender="female">
+                Женщина <span class="vip-tag">VIP</span>
+              </button>
+              <button type="button" class="pill-btn vip-locked" data-partner-gender="male">
+                Мальчик <span class="vip-tag">VIP</span>
+              </button>
+              <button type="button" class="pill-btn vip-locked" data-partner-gender="trans">
+                Транс <span class="vip-tag">VIP</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Partner Age -->
+          <div class="control-block">
+            <label class="control-label">
+              <span>Возраст собеседника</span>
+              <span style="font-size: 11px; color: var(--text-muted);">Выбор диапазона — VIP</span>
+            </label>
+            <div class="pill-group" id="partnerAgeGroup">
+              <button type="button" class="pill-btn active" data-partner-age="any">Любой</button>
+              <button type="button" class="pill-btn vip-locked" data-partner-age="10-17">
+                10–17 <span class="vip-tag">VIP</span>
+              </button>
+              <button type="button" class="pill-btn vip-locked" data-partner-age="18-24">
+                18–24 <span class="vip-tag">VIP</span>
+              </button>
+              <button type="button" class="pill-btn vip-locked" data-partner-age="25-34">
+                25–34 <span class="vip-tag">VIP</span>
+              </button>
+              <button type="button" class="pill-btn vip-locked" data-partner-age="35-99">
+                35+ <span class="vip-tag">VIP</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Chat Topic -->
+          <div class="control-block">
+            <label class="control-label">
+              <span>Тема чата</span>
+              <span style="font-size: 11px; color: var(--text-muted);">Бесплатно: Общение</span>
+            </label>
+            <div class="pill-group" id="chatTopicGroup">
+              <button type="button" class="pill-btn active" data-topic="chat">💬 Общение</button>
+              <button type="button" class="pill-btn vip-locked" data-topic="dating">
+                ❤️ Знакомства <span class="vip-tag">VIP</span>
+              </button>
+              <button type="button" class="pill-btn vip-locked" data-topic="flirt">
+                🔥 Флирт <span class="vip-tag">VIP</span>
+              </button>
+              <button type="button" class="pill-btn vip-locked" data-topic="adult">
+                🔞 18+ <span class="vip-tag">VIP</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- BOTTOM CTA & LIVE COUNTERS -->
+      <div class="card lobby-footer-card">
+        <button type="button" class="start-search-btn" id="startSearchBtn">
+          <span>🚀 Начать поиск собеседника</span>
+        </button>
+
+        <div class="live-stats-strip">
+          <div class="stat-item">
+            <span class="pulse-dot green"></span>
+            <span>Уже общаются: <strong id="statChattingCount">1 284</strong> чел.</span>
+          </div>
+          <div class="stat-item">
+            <span class="pulse-dot blue"></span>
+            <span>В сети ищут: <strong id="statSearchingCount">342</strong> чел.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================================================
+         STEP 3: SEARCHING QUEUE SCREEN
+         ======================================================= -->
+    <section class="card searching-card hidden" id="screenSearching">
+      <div class="radar-spinner"></div>
+      <div>
+        <h2 style="font-size: 20px; font-weight: 800; margin-bottom: 6px;">Ищем собеседника...</h2>
+        <p style="font-size: 13.5px; color: var(--text-secondary);">Подбираем свободного участника в очереди Nexly Roulette</p>
+      </div>
+
+      <div class="search-criteria-pills" id="activeSearchPills"></div>
+
+      <div style="font-size: 12.5px; color: var(--text-muted);" id="searchTimerText">Время поиска: 0 сек.</div>
+
+      <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
+        <button type="button" class="btn-outline" id="cancelSearchBtn">Отменить поиск</button>
+        <button type="button" class="btn-outline" id="instantDemoMatchBtn" style="border-color: var(--accent); color: var(--accent);">
+          ⚡ Тестовый собеседник
+        </button>
+      </div>
+    </section>
+
+    <!-- =======================================================
+         STEP 4: ACTIVE CHAT ROOM
+         ======================================================= -->
+    <section class="card chat-window hidden" id="screenChat">
+      <div class="chat-topbar">
+        <div class="partner-meta">
+          <div class="partner-avatar" id="partnerAvatarIcon">👤</div>
+          <div>
+            <div class="partner-title">
+              <span id="partnerTitleText">Собеседник</span>
+              <span class="badge-vip hidden" id="partnerVipBadge">👑 VIP</span>
+            </div>
+            <div class="partner-sub" id="partnerSubText">В сети • Тема: Общение</div>
+          </div>
+        </div>
+
+        <div class="chat-controls">
+          <button type="button" class="btn-next" id="nextPartnerBtn">Следующий ⏭</button>
+          <button type="button" class="btn-stop" id="endChatBtn">Завершить ✕</button>
+        </div>
+      </div>
+
+      <div class="chat-messages" id="chatMessagesBox"></div>
+
+      <div class="typing-bar" id="typingIndicatorBar"></div>
+
+      <form class="chat-composer" id="chatComposerForm">
+        <input
+          type="text"
+          class="chat-input"
+          id="chatMessageInput"
+          placeholder="Напишите сообщение..."
+          autocomplete="off"
+          maxlength="1000"
+        />
+        <button type="submit" class="send-btn" id="sendMsgBtn">Отправить</button>
+      </form>
+
+      <div class="post-chat-banner hidden" id="postChatBanner">
+        <span style="font-size: 13.5px; font-weight: 600; color: var(--text-secondary);">
+          Диалог завершён. Хотите найти нового собеседника?
+        </span>
+        <div style="display: flex; gap: 8px;">
+          <button type="button" class="btn-outline" id="backToLobbyBtn">Настройки поиска</button>
+          <button type="button" class="btn-next" id="searchAgainBtn">Найти нового ⏭</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =========================================================
+       MODAL 1: TELEGRAM ID LINKING WITH BOT + "Я НЕ РОБОТ" + 6-DIGIT CODE
+       ========================================================= -->
+  <div class="modal-backdrop" id="tgIdModal">
+    <div class="modal-box">
+      <div class="modal-head">
+        <h3>🆔 Привязка Telegram ID</h3>
+        <button type="button" class="close-x" data-close-modal="tgIdModal">✕</button>
+      </div>
+
+      <div class="modal-body">
+
+        <!-- STAGE 1: ENTER TG ID + "Я НЕ РОБОТ" CAPTCHA -->
+        <div id="tgStageInput" style="display: flex; flex-direction: column; gap: 14px;">
+          <div class="bot-hint-card">
+            <div style="font-size: 12px; line-height: 1.4;">
+              <strong>Перед привязкой:</strong> запустите нашего бота в Telegram (<span id="botUsernameText">@nexly_bot</span>), чтобы узнать свой ID и получить 6-значный код.
+            </div>
+            <a href="https://t.me/" target="_blank" rel="noopener" class="bot-open-link" id="openBotTelegramLink">
+              ✈️ Открыть бота
+            </a>
+          </div>
+
+          <div>
+            <label style="display: block; font-size: 12.5px; font-weight: 700; color: var(--text-secondary); margin-bottom: 6px;">
+              Ваш числовой Telegram ID
+            </label>
+            <input
+              type="text"
+              class="input-field"
+              id="tgIdInputField"
+              placeholder="Например: 8515868917"
+              inputmode="numeric"
+              autocomplete="off"
+            />
+          </div>
+
+          <!-- Anti-Bot ("Я не робот") Verification Widget -->
+          <div class="captcha-box" id="antiBotBox">
+            <div class="captcha-top" id="antiBotTrigger">
+              <div class="captcha-left">
+                <div class="captcha-checkbox" id="antiBotCheck"></div>
+                <div>
+                  <div style="font-size: 13.5px; font-weight: 700;" id="antiBotLabel">Я не робот</div>
+                  <div style="font-size: 11px; color: var(--text-muted);" id="antiBotSub">Нажмите для проверки безопасности</div>
+                </div>
+              </div>
+              <div style="font-size: 20px;">🛡️</div>
+            </div>
+
+            <!-- Quick Anti-Bot Challenge -->
+            <div class="captcha-challenge hidden" id="antiBotChallenge">
+              <div class="captcha-prompt" id="captchaPromptText">Выберите символ: 🔒</div>
+              <div class="captcha-grid" id="captchaGrid"></div>
+            </div>
+          </div>
+
+          <button type="button" class="btn-main" id="sendBotCodeBtn" disabled>
+            Привязать и получить 6-значный код
+          </button>
+        </div>
+
+        <!-- STAGE 2: LOADING ANIMATION -->
+        <div id="tgStageLoading" class="linking-loader-box hidden">
+          <div class="dual-ring-spinner"></div>
+          <div>
+            <div style="font-size: 16px; font-weight: 800; margin-bottom: 4px;" id="loaderTitle">Идёт привязка Telegram ID...</div>
+            <div style="font-size: 13px; color: var(--text-secondary);" id="loaderStepText">Подключаемся к боту и отправляем 6-значный код...</div>
+          </div>
+          <div class="loader-progress-bar">
+            <div class="loader-progress-fill" id="loaderProgressFill"></div>
+          </div>
+        </div>
+
+        <!-- STAGE 3: ENTER 6-DIGIT CODE FROM TELEGRAM BOT -->
+        <div id="tgStageVerify" class="hidden" style="display: flex; flex-direction: column; gap: 14px; text-align: center;">
+          <div>
+            <div style="font-size: 16px; font-weight: 800; margin-bottom: 4px;">Введите 6-значный код из бота</div>
+            <div style="font-size: 13px; color: var(--text-secondary);">
+              Мы отправили код подтверждения в Telegram для ID <strong id="verifyTargetIdLabel">—</strong>
+            </div>
+          </div>
+
+          <div class="otp-row" id="otpInputsRow">
+            <input type="text" class="otp-digit" maxlength="1" inputmode="numeric" />
+            <input type="text" class="otp-digit" maxlength="1" inputmode="numeric" />
+            <input type="text" class="otp-digit" maxlength="1" inputmode="numeric" />
+            <input type="text" class="otp-digit" maxlength="1" inputmode="numeric" />
+            <input type="text" class="otp-digit" maxlength="1" inputmode="numeric" />
+            <input type="text" class="otp-digit" maxlength="1" inputmode="numeric" />
+          </div>
+
+          <div class="otp-error hidden" id="otpErrorMsg">Неверный код. Проверьте сообщение от бота в Telegram.</div>
+
+          <button type="button" class="btn-main" id="confirmOtpBtn" disabled>
+            Подтвердить код
+          </button>
+
+          <div style="display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: var(--text-secondary);">
+            <button type="button" class="link-btn" id="changeTgIdBackBtn">← Изменить ID</button>
+            <span id="resendTimerLabel">Повторная отправка через 45 сек.</span>
+            <button type="button" class="link-btn hidden" id="resendCodeBtn">Отправить снова</button>
+          </div>
+        </div>
+
+        <!-- STAGE 4: BOT SEND ERROR -->
+        <div id="tgStageError" class="hidden" style="display: flex; flex-direction: column; gap: 14px; text-align: center;">
+          <div style="font-size: 36px;">⚠️</div>
+          <div style="font-size: 16px; font-weight: 800;">Бот не смог отправить код</div>
+          <p style="font-size: 13px; color: var(--text-secondary);" id="tgBotErrorDetail">
+            Telegram запрещает ботам писать первыми. Откройте нашего бота, нажмите <strong>«Запустить» (/start)</strong> и повторите попытку.
+          </p>
+          <a href="https://t.me/" target="_blank" rel="noopener" class="btn-main" id="errorOpenBotBtn" style="text-decoration: none;">
+            ✈️ Перейти в бота и нажать /start
+          </a>
+          <button type="button" class="btn-outline" id="retryTgLinkBtn">Попробовать снова</button>
+        </div>
+
+        <!-- STAGE 5: VERIFIED / SUCCESS STATE -->
+        <div id="tgStageVerified" class="hidden" style="display: flex; flex-direction: column; gap: 14px; text-align: center;">
+          <div style="font-size: 40px;">✅</div>
+          <div style="font-size: 17px; font-weight: 800;">Telegram ID привязан!</div>
+          <div style="background: var(--bg-subtle); border: 1px solid var(--border-color); border-radius: 12px; padding: 12px; font-size: 13.5px;">
+            Привязанный ID: <strong id="verifiedTgIdText">—</strong>
+            <div id="verifiedRoleNote" style="margin-top: 4px; font-size: 12px; color: var(--success); font-weight: 600;"></div>
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <button type="button" class="btn-outline" id="unlinkTgIdBtn" style="flex: 1; color: var(--danger); border-color: rgba(239,68,68,0.35);">
+              Отвязать ID
+            </button>
+            <button type="button" class="btn-main" data-close-modal="tgIdModal" style="flex: 1;">
+              Готово
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       MODAL 2: VIP SUBSCRIPTION INFO
+       ========================================================= -->
+  <div class="modal-backdrop" id="vipModal">
+    <div class="modal-box">
+      <div class="modal-head">
+        <h3>👑 VIP-подписка Nexly Roulette</h3>
+        <button type="button" class="close-x" data-close-modal="vipModal">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="color: var(--text-secondary);">
+          Эта функция доступна только пользователям с активным <strong>VIP-статусом</strong>.
+        </p>
+        <div style="background: var(--bg-subtle); border: 1px solid var(--border-color); border-radius: 12px; padding: 14px;">
+          <div style="font-weight: 700; margin-bottom: 8px;">Что открывает VIP:</div>
+          <ul class="rules-ul">
+            <li><strong>Выбор пола собеседника:</strong> Женщина, Мальчик или Транс (вместо «Любой»).</li>
+            <li><strong>Фильтр возраста собеседника:</strong> 10–17, 18–24, 25–34, 35+.</li>
+            <li><strong>Закрытые темы чата:</strong> ❤️ Знакомства, 🔥 Флирт и 🔞 18+.</li>
+            <li><strong>Значок 👑 VIP</strong> рядом с вашим профилем в диалоге.</li>
+          </ul>
+        </div>
+        <div style="background: var(--vip-bg); border: 1px solid var(--vip-border); border-radius: 12px; padding: 12px; font-size: 12.5px;">
+          <strong>Как получить VIP:</strong> Привяжите свой <strong>Telegram ID</strong> (подтвердив кодом из бота) и передайте его администратору.
+          <div style="margin-top: 6px;">Ваш текущий статус: <strong id="vipModalMyId">Не привязан</strong></div>
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <button type="button" class="btn-outline" id="vipModalLinkTgBtn" style="flex: 1;">🆔 Привязать TG ID</button>
+          <button type="button" class="btn-main" data-close-modal="vipModal" style="flex: 1;">Понятно</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       MODAL 3: PRIVACY POLICY & RULES
+       ========================================================= -->
+  <div class="modal-backdrop" id="policyModal">
+    <div class="modal-box">
+      <div class="modal-head">
+        <h3>📜 Правила и политика конфиденциальности</h3>
+        <button type="button" class="close-x" data-close-modal="policyModal">✕</button>
+      </div>
+      <div class="modal-body" style="color: var(--text-secondary);">
+        <p><strong style="color: var(--text-primary);">1. Анонимность и вход:</strong> В режиме гостя вы можете общаться полностью анонимно без привязки Telegram. Привязка Telegram ID нужна только для получения VIP-статуса или админ-доступа.</p>
+        <p><strong style="color: var(--text-primary);">2. Правила общения:</strong> Уважайте собеседников. Запрещены спам, реклама, угрозы, мошенничество и распространение запрещённого контента.</p>
+        <p><strong style="color: var(--text-primary);">3. Темы 18+ и Флирт:</strong> Доступны только пользователям с активной VIP-подпиской при взаимном согласии собеседников.</p>
+        <button type="button" class="btn-main" data-close-modal="policyModal">Закрыть</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       MODAL 4: ADMIN CONSOLE (ONLY FOR VERIFIED TG ID 8515868917)
+       ========================================================= -->
+  <div class="modal-backdrop" id="adminModal">
+    <div class="modal-box admin-modal">
+      <div class="modal-head">
+        <h3>🛡️ Админ-консоль Nexly (ID: 8515868917)</h3>
+        <button type="button" class="close-x" data-close-modal="adminModal">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="admin-grant-box">
+          <div style="font-weight: 700; font-size: 14px;">👑 Выдать / Снять VIP пользователю</div>
+          <div class="admin-form-grid">
+            <input type="text" class="input-field" id="adminTargetIdInput" placeholder="Telegram ID или Guest UID пользователя" style="height: 38px;" />
+            <select class="select-box" id="adminVipDuration" style="height: 38px; font-size: 13px;">
+              <option value="forever">Навсегда (VIP)</option>
+              <option value="30d">На 30 дней</option>
+              <option value="7d">На 7 дней</option>
+              <option value="1d">На 24 часа</option>
+            </select>
+            <button type="button" class="btn-main" id="adminGrantVipBtn" style="height: 38px; padding: 0 16px; font-size: 13px;">
+              Выдать VIP
+            </button>
+          </div>
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; padding-top: 6px; border-top: 1px solid var(--border-color);">
+            <span style="font-size: 12px; color: var(--text-secondary);">Тест прав на вашем аккаунте:</span>
+            <button type="button" class="mini-btn" id="adminToggleSelfVipBtn">Переключить мой VIP (тест замков)</button>
+          </div>
+        </div>
+
+        <div>
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+            <span style="font-weight: 700; font-size: 14px;">Пользователи и VIP-реестр</span>
+            <button type="button" class="mini-btn" id="adminRefreshUsersBtn">↻ Обновить</button>
+          </div>
+          <div style="overflow-x: auto; border: 1px solid var(--border-color); border-radius: 10px;">
+            <table class="vip-table">
+              <thead>
+                <tr>
+                  <th>TG ID / UID</th>
+                  <th>Профиль</th>
+                  <th>Статус</th>
+                  <th>Действие</th>
+                </tr>
+              </thead>
+              <tbody id="adminUsersTableBody">
+                <tr>
+                  <td colspan="4" style="text-align: center; color: var(--text-muted);">Загрузка списка...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div class="toast" id="toastBox"></div>
+
+  <!-- =========================================================
+       FIREBASE SDK + TELEGRAM BOT VERIFICATION & CHAT LOGIC
+       ========================================================= -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js";
+    import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+    import {
+      getFirestore,
+      doc,
+      setDoc,
+      getDoc,
+      getDocs,
+      addDoc,
+      updateDoc,
+      deleteDoc,
+      collection,
+      query,
+      where,
+      limit,
+      onSnapshot,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyD7KNKaJY1xEHxzGzSkcbdITEVPvmYKjQA",
+      authDomain: "secretchat-a1358.firebaseapp.com",
+      projectId: "secretchat-a1358",
+      storageBucket: "secretchat-a1358.firebasestorage.app",
+      messagingSenderId: "868441433215",
+      appId: "1:868441433215:web:69a699449425b538738b4a",
+      measurementId: "G-SPJXCQZ737"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    try { getAnalytics(app); } catch (e) {}
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // CONSTANTS
+    const ADMIN_TG_ID = "8515868917";
+    const TG_BOT_TOKEN = "9022857628:AAHzNv3c9dJgEt3fCsoJfiwvoyT7wUKKoNg";
+    const TG_API_BASE = `https://api.telegram.org/bot${TG_BOT_TOKEN}`;
+    const HAS_PY_BACKEND = window.location.protocol.startsWith("http");
+
+    // STATE
+    const state = {
+      theme: localStorage.getItem("nexly_theme") || "light",
+      uid: localStorage.getItem("nexly_uid") || ("guest_" + Math.random().toString(36).slice(2, 10)),
+      tgId: localStorage.getItem("nexly_tg_verified") === "1" ? (localStorage.getItem("nexly_tg_id") || "") : "",
+      tgVerified: localStorage.getItem("nexly_tg_verified") === "1",
+      pendingTgId: "",
+      expectedOtp: "",
+      serverManagedOtp: false,
+      captchaSolved: false,
+      captchaTargetIcon: "🔒",
+      botUsername: "",
+      isAdmin: false,
+      isVip: false,
+      myGender: "male",
+      myAge: 18,
+      partnerGender: "any",
+      partnerAge: "any",
+      topic: "chat",
+      queueDocId: null,
+      roomId: null,
+      isDemoRoom: false,
+      unsubRoom: null,
+      unsubMsgs: null,
+      unsubQueue: null,
+      unsubVip: null,
+      searchTimer: null,
+      resendTimer: null,
+      searchSeconds: 0,
+      baseChatting: 1284,
+      baseSearching: 342
+    };
+
+    localStorage.setItem("nexly_uid", state.uid);
+
+    // =========================================================
+    // HELPERS
+    // =========================================================
+    function showToast(msg) {
+      const box = document.getElementById("toastBox");
+      box.textContent = msg;
+      box.classList.add("show");
+      clearTimeout(box._t);
+      box._t = setTimeout(() => box.classList.remove("show"), 3400);
+    }
+
+    function getAgeLabel(age) {
+      const m100 = age % 100;
+      const m10 = age % 10;
+      if (m100 >= 11 && m100 <= 14) return `${age} лет`;
+      if (m10 === 1) return `${age} год`;
+      if (m10 >= 2 && m10 <= 4) return `${age} года`;
+      return `${age} лет`;
+    }
+
+    function genderName(code) {
+      if (code === "male") return "Мальчик";
+      if (code === "female") return "Женщина";
+      if (code === "trans") return "Транс";
+      return "Любой";
+    }
+
+    function topicName(code) {
+      if (code === "chat") return "Общение";
+      if (code === "dating") return "Знакомства";
+      if (code === "flirt") return "Флирт";
+      if (code === "adult") return "18+";
+      return "Общение";
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function formatTime(ts) {
+      const d = ts ? new Date(ts) : new Date();
+      return d.toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" });
+    }
+
+    function applyTheme(theme) {
+      state.theme = theme;
+      localStorage.setItem("nexly_theme", theme);
+      document.documentElement.setAttribute("data-theme", theme);
+      document.getElementById("themeIcon").textContent = theme === "dark" ? "☀️" : "🌙";
+      document.getElementById("themeLabel").textContent = theme === "dark" ? "Светлая тема" : "Тёмная тема";
+      document.querySelectorAll("[data-set-theme]").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.setTheme === theme);
+      });
+    }
+
+    function openModal(id) {
+      document.getElementById(id).classList.add("open");
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove("open");
+    }
+
+    document.querySelectorAll("[data-close-modal]").forEach(btn => {
+      btn.addEventListener("click", () => closeModal(btn.dataset.closeModal));
+    });
+    document.querySelectorAll(".modal-backdrop").forEach(bg => {
+      bg.addEventListener("click", (e) => {
+        if (e.target === bg) bg.classList.remove("open");
+      });
+    });
+
+    // =========================================================
+    // FETCH TELEGRAM BOT USERNAME (/getMe)
+    // =========================================================
+    async function loadBotInfo() {
+      try {
+        const res = await fetch(`${TG_API_BASE}/getMe`);
+        const data = await res.json();
+        if (data.ok && data.result?.username) {
+          state.botUsername = data.result.username;
+          const url = `https://t.me/${state.botUsername}`;
+          document.getElementById("botUsernameText").textContent = `@${state.botUsername}`;
+          document.getElementById("openBotTelegramLink").href = url;
+          document.getElementById("openBotTelegramLink").textContent = `✈️ Открыть @${state.botUsername}`;
+          document.getElementById("errorOpenBotBtn").href = url;
+          document.getElementById("errorOpenBotBtn").textContent = `✈️ Перейти в @${state.botUsername} и нажать /start`;
+        }
+      } catch (e) {}
+    }
+
+    // =========================================================
+    // ANTI-BOT ("Я НЕ РОБОТ") CHALLENGE LOGIC
+    // =========================================================
+    const CAPTCHA_ICONS = [
+      { icon: "🔒", name: "замок" },
+      { icon: "🚀", name: "ракету" },
+      { icon: "⭐", name: "звезду" },
+      { icon: "🔑", name: "ключ" },
+      { icon: "💎", name: "кристалл" },
+      { icon: "🛡️", name: "щит" }
+    ];
+
+    function resetCaptcha() {
+      state.captchaSolved = false;
+      const box = document.getElementById("antiBotBox");
+      box.classList.remove("verified");
+      document.getElementById("antiBotCheck").textContent = "";
+      document.getElementById("antiBotLabel").textContent = "Я не робот";
+      document.getElementById("antiBotSub").textContent = "Нажмите для проверки безопасности";
+      document.getElementById("antiBotChallenge").classList.add("hidden");
+      updateSendBotCodeButton();
+    }
+
+    function openCaptchaChallenge() {
+      if (state.captchaSolved) return;
+      const shuffled = [...CAPTCHA_ICONS].sort(() => Math.random() - 0.5).slice(0, 4);
+      const target = shuffled[Math.floor(Math.random() * shuffled.length)];
+      state.captchaTargetIcon = target.icon;
+
+      document.getElementById("captchaPromptText").textContent = `Подтвердите: нажмите на ${target.name} (${target.icon})`;
+      const grid = document.getElementById("captchaGrid");
+      grid.innerHTML = "";
+
+      shuffled.forEach(item => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "captcha-icon-btn";
+        btn.textContent = item.icon;
+        btn.addEventListener("click", () => {
+          if (item.icon === state.captchaTargetIcon) {
+            state.captchaSolved = true;
+            const box = document.getElementById("antiBotBox");
+            box.classList.add("verified");
+            document.getElementById("antiBotCheck").textContent = "✓";
+            document.getElementById("antiBotLabel").textContent = "Вы не робот";
+            document.getElementById("antiBotSub").textContent = "Проверка безопасности пройдена";
+            document.getElementById("antiBotChallenge").classList.add("hidden");
+            updateSendBotCodeButton();
+          } else {
+            showToast("Неверный символ, попробуйте ещё раз");
+            openCaptchaChallenge();
+          }
+        });
+        grid.appendChild(btn);
+      });
+
+      document.getElementById("antiBotChallenge").classList.remove("hidden");
+    }
+
+    document.getElementById("antiBotTrigger").addEventListener("click", () => {
+      if (!state.captchaSolved) {
+        openCaptchaChallenge();
+      }
+    });
+
+    function updateSendBotCodeButton() {
+      const raw = document.getElementById("tgIdInputField").value.replace(/\D/g, "");
+      document.getElementById("sendBotCodeBtn").disabled = !(raw.length >= 5 && state.captchaSolved);
+    }
+
+    document.getElementById("tgIdInputField").addEventListener("input", (e) => {
+      e.target.value = e.target.value.replace(/\D/g, "");
+      updateSendBotCodeButton();
+    });
+
+    // =========================================================
+    // TELEGRAM ID LINKING STAGES & 6-DIGIT CODE VERIFICATION
+    // =========================================================
+    function showTgModalStage(stageId) {
+      ["tgStageInput", "tgStageLoading", "tgStageVerify", "tgStageError", "tgStageVerified"].forEach(id => {
+        document.getElementById(id).classList.toggle("hidden", id !== stageId);
+      });
+    }
+
+    function openTgVerificationModal() {
+      if (state.tgVerified && state.tgId) {
+        document.getElementById("verifiedTgIdText").textContent = state.tgId;
+        document.getElementById("verifiedRoleNote").textContent =
+          state.tgId === ADMIN_TG_ID
+            ? "🛡️ Статус администратора подтверждён (Админ-консоль активна)"
+            : "Аккаунт привязан для получения VIP-подписки";
+        showTgModalStage("tgStageVerified");
+      } else {
+        document.getElementById("tgIdInputField").value = "";
+        resetCaptcha();
+        showTgModalStage("tgStageInput");
+      }
+      openModal("tgIdModal");
+    }
+
+    async function sendVerificationCodeToBot(targetTgId) {
+      state.pendingTgId = targetTgId;
+      state.serverManagedOtp = false;
+
+      // Show Loading stage with progress animation
+      showTgModalStage("tgStageLoading");
+      const progressFill = document.getElementById("loaderProgressFill");
+      const loaderTitle = document.getElementById("loaderTitle");
+      const loaderStepText = document.getElementById("loaderStepText");
+
+      progressFill.style.width = "25%";
+      loaderTitle.textContent = "Идёт привязка Telegram ID...";
+      loaderStepText.textContent = "Проверка капчи и подготовка запроса...";
+
+      await new Promise(r => setTimeout(r, 400));
+      progressFill.style.width = "60%";
+      loaderStepText.textContent = "Отправляем 6-значный код в бота Telegram...";
+
+      // 1. Try Python backend API first (if served via bot.py)
+      if (HAS_PY_BACKEND) {
+        try {
+          const pyRes = await fetch("/api/send-code", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ tgId: targetTgId })
+          });
+          if (pyRes.ok) {
+            const pyData = await pyRes.json();
+            progressFill.style.width = "100%";
+            await new Promise(r => setTimeout(r, 300));
+            if (pyData.ok) {
+              state.serverManagedOtp = true;
+              document.getElementById("verifyTargetIdLabel").textContent = targetTgId;
+              clearOtpInputs();
+              document.getElementById("otpErrorMsg").classList.add("hidden");
+              startResendCountdown();
+              showTgModalStage("tgStageVerify");
+              document.querySelectorAll(".otp-digit")[0].focus();
+              return;
+            } else {
+              document.getElementById("tgBotErrorDetail").innerHTML =
+                escapeHtml(pyData.error || "Бот не смог отправить сообщение. Запустите бота (/start) и попробуйте снова.");
+              showTgModalStage("tgStageError");
+              return;
+            }
+          }
+        } catch (e) {
+          // Fallback to direct Telegram Bot API if bot.py endpoint is unavailable
+        }
+      }
+
+      // 2. Direct Telegram Bot API fallback (when opened as local HTML file)
+      const code = String(Math.floor(100000 + Math.random() * 900000));
+      state.expectedOtp = code;
+
+      const messageText =
+        `🔐 <b>Nexly Roulette — Подтверждение привязки</b>\n\n` +
+        `Ваш 6-значный код подтверждения: <code>${code}</code>\n\n` +
+        `Введите этот код на сайте, чтобы завершить привязку Telegram ID (<code>${targetTgId}</code>).`;
+
+      try {
+        const response = await fetch(`${TG_API_BASE}/sendMessage`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chat_id: targetTgId,
+            text: messageText,
+            parse_mode: "HTML"
+          })
+        });
+        const result = await response.json();
+
+        progressFill.style.width = "100%";
+        await new Promise(r => setTimeout(r, 300));
+
+        if (result.ok) {
+          document.getElementById("verifyTargetIdLabel").textContent = targetTgId;
+          clearOtpInputs();
+          document.getElementById("otpErrorMsg").classList.add("hidden");
+          startResendCountdown();
+          showTgModalStage("tgStageVerify");
+          document.querySelectorAll(".otp-digit")[0].focus();
+        } else {
+          const desc = result.description || "";
+          document.getElementById("tgBotErrorDetail").innerHTML = desc.includes("chat not found") || desc.includes("blocked")
+            ? `Telegram не разрешил отправить сообщение ID <strong>${escapeHtml(targetTgId)}</strong>. Откройте нашего бота в Telegram, нажмите <strong>«Запустить» (/start)</strong> и попробуйте снова.`
+            : `Ошибка Telegram API: <code>${escapeHtml(desc)}</code>. Убедитесь, что вы запустили бота (/start) и ввели верный числовой ID.`;
+          showTgModalStage("tgStageError");
+        }
+      } catch (err) {
+        document.getElementById("tgBotErrorDetail").textContent =
+          "Не удалось связаться с сервером Telegram. Проверьте подключение к интернету или запустите bot.py.";
+        showTgModalStage("tgStageError");
+      }
+    }
+
+    function startResendCountdown() {
+      clearInterval(state.resendTimer);
+      let sec = 45;
+      const label = document.getElementById("resendTimerLabel");
+      const btn = document.getElementById("resendCodeBtn");
+      label.classList.remove("hidden");
+      btn.classList.add("hidden");
+      label.textContent = `Повторно через ${sec} сек.`;
+
+      state.resendTimer = setInterval(() => {
+        sec--;
+        if (sec <= 0) {
+          clearInterval(state.resendTimer);
+          label.classList.add("hidden");
+          btn.classList.remove("hidden");
+        } else {
+          label.textContent = `Повторно через ${sec} сек.`;
+        }
+      }, 1000);
+    }
+
+    // OTP 6-Digit Inputs Handling
+    const otpInputs = Array.from(document.querySelectorAll(".otp-digit"));
+
+    function clearOtpInputs() {
+      otpInputs.forEach(inp => { inp.value = ""; });
+      document.getElementById("confirmOtpBtn").disabled = true;
+    }
+
+    function getEnteredOtp() {
+      return otpInputs.map(inp => inp.value).join("");
+    }
+
+    otpInputs.forEach((inp, idx) => {
+      inp.addEventListener("input", (e) => {
+        const val = e.target.value.replace(/\D/g, "");
+        e.target.value = val.slice(-1);
+        document.getElementById("otpErrorMsg").classList.add("hidden");
+
+        if (val && idx < otpInputs.length - 1) {
+          otpInputs[idx + 1].focus();
+        }
+        document.getElementById("confirmOtpBtn").disabled = getEnteredOtp().length !== 6;
+      });
+
+      inp.addEventListener("keydown", (e) => {
+        if (e.key === "Backspace" && !e.target.value && idx > 0) {
+          otpInputs[idx - 1].focus();
+        }
+      });
+
+      inp.addEventListener("paste", (e) => {
+        e.preventDefault();
+        const pasted = (e.clipboardData.getData("text") || "").replace(/\D/g, "").slice(0, 6);
+        pasted.split("").forEach((ch, i) => {
+          if (otpInputs[i]) otpInputs[i].value = ch;
+        });
+        document.getElementById("confirmOtpBtn").disabled = getEnteredOtp().length !== 6;
+        if (pasted.length > 0) {
+          otpInputs[Math.min(pasted.length, 5)].focus();
+        }
+      });
+    });
+
+    document.getElementById("sendBotCodeBtn").addEventListener("click", () => {
+      const targetId = document.getElementById("tgIdInputField").value.replace(/\D/g, "");
+      if (targetId.length < 5 || !state.captchaSolved) return;
+      sendVerificationCodeToBot(targetId);
+    });
+
+    document.getElementById("resendCodeBtn").addEventListener("click", () => {
+      if (state.pendingTgId) {
+        sendVerificationCodeToBot(state.pendingTgId);
+      }
+    });
+
+    document.getElementById("changeTgIdBackBtn").addEventListener("click", () => {
+      clearInterval(state.resendTimer);
+      resetCaptcha();
+      showTgModalStage("tgStageInput");
+    });
+
+    document.getElementById("retryTgLinkBtn").addEventListener("click", () => {
+      resetCaptcha();
+      showTgModalStage("tgStageInput");
+    });
+
+    document.getElementById("confirmOtpBtn").addEventListener("click", async () => {
+      const entered = getEnteredOtp();
+      let isValid = false;
+
+      if (state.serverManagedOtp && HAS_PY_BACKEND) {
+        try {
+          const vRes = await fetch("/api/verify-code", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ tgId: state.pendingTgId, code: entered })
+          });
+          const vData = await vRes.json();
+          isValid = !!vData.ok;
+          if (isValid && vData.isVip) {
+            const reg = getLocalVipRegistry();
+            reg[state.pendingTgId] = { active: true, updatedAt: Date.now() };
+            setLocalVipRegistry(reg);
+          }
+        } catch (e) {
+          isValid = false;
+        }
+      } else {
+        isValid = entered === state.expectedOtp;
+      }
+
+      if (!isValid) {
+        document.getElementById("otpErrorMsg").classList.remove("hidden");
+        return;
+      }
+
+      clearInterval(state.resendTimer);
+      state.tgId = state.pendingTgId;
+      state.tgVerified = true;
+      localStorage.setItem("nexly_tg_id", state.tgId);
+      localStorage.setItem("nexly_tg_verified", "1");
+
+      if (state.tgId === ADMIN_TG_ID) {
+        localStorage.removeItem("nexly_admin_test_novip");
+      }
+
+      await checkVipStatus();
+      bindRealtimeVipListener();
+      await syncUserProfileToFirestore();
+
+      document.getElementById("verifiedTgIdText").textContent = state.tgId;
+      document.getElementById("verifiedRoleNote").textContent =
+        state.tgId === ADMIN_TG_ID
+          ? "🛡️ Админ-консоль разблокирована (ID: 8515868917)!"
+          : "Ваш Telegram ID успешно подтверждён!";
+
+      showTgModalStage("tgStageVerified");
+      showToast(
+        state.tgId === ADMIN_TG_ID
+          ? "🛡️ Telegram ID подтверждён! Админ-консоль открыта."
+          : `✅ Telegram ID ${state.tgId} успешно привязан!`
+      );
+    });
+
+    document.getElementById("unlinkTgIdBtn").addEventListener("click", () => {
+      state.tgId = "";
+      state.tgVerified = false;
+      state.isAdmin = false;
+      localStorage.removeItem("nexly_tg_id");
+      localStorage.removeItem("nexly_tg_verified");
+      checkVipStatus();
+      resetCaptcha();
+      showTgModalStage("tgStageInput");
+      showToast("Telegram ID отвязан");
+    });
+
+    // =========================================================
+    // VIP & ADMIN STATUS MANAGEMENT (TG ID 8515868917)
+    // =========================================================
+    function getLocalVipRegistry() {
+      try {
+        return JSON.parse(localStorage.getItem("nexly_vip_registry") || "{}");
+      } catch {
+        return {};
+      }
+    }
+
+    function setLocalVipRegistry(reg) {
+      localStorage.setItem("nexly_vip_registry", JSON.stringify(reg));
+    }
+
+    function refreshPrivilegesUI() {
+      state.isAdmin = state.tgVerified && String(state.tgId).trim() === ADMIN_TG_ID;
+
+      const navTgBtn = document.getElementById("openTgIdModalBtn");
+      const navTgDisplay = document.getElementById("navTgDisplay");
+      const navTgIcon = document.getElementById("navTgIcon");
+
+      if (state.tgVerified && state.tgId) {
+        navTgBtn.classList.add("tg-verified");
+        navTgIcon.textContent = "✅";
+        navTgDisplay.textContent = `TG: ${state.tgId}`;
+      } else {
+        navTgBtn.classList.remove("tg-verified");
+        navTgIcon.textContent = "🆔";
+        navTgDisplay.textContent = "Привязать Telegram ID";
+      }
+
+      document.getElementById("openAdminBtn").classList.toggle("hidden", !state.isAdmin);
+
+      const navVipBtn = document.getElementById("navVipBtn");
+      const navVipText = document.getElementById("navVipText");
+      const mySessionBadge = document.getElementById("mySessionBadge");
+
+      if (state.isVip) {
+        navVipBtn.classList.add("vip-active");
+        navVipText.textContent = state.isAdmin ? "👑 VIP + Admin" : "👑 VIP активен";
+        mySessionBadge.textContent = "👑 VIP Гость";
+      } else {
+        navVipBtn.classList.remove("vip-active");
+        navVipText.textContent = "VIP: Нет";
+        mySessionBadge.textContent = state.isAdmin ? "🛡️ Админ (тест без VIP)" : "Гость";
+      }
+
+      document.getElementById("vipModalMyId").textContent = state.tgVerified && state.tgId
+        ? `Привязан TG ID: ${state.tgId}`
+        : `Не привязан (Guest UID: ${state.uid})`;
+
+      document.querySelectorAll("[data-partner-gender]").forEach(btn => {
+        if (btn.dataset.partnerGender !== "any") {
+          btn.classList.toggle("vip-locked", !state.isVip);
+        }
+      });
+
+      document.querySelectorAll("[data-partner-age]").forEach(btn => {
+        if (btn.dataset.partnerAge !== "any") {
+          btn.classList.toggle("vip-locked", !state.isVip);
+        }
+      });
+
+      document.querySelectorAll("[data-topic]").forEach(btn => {
+        if (btn.dataset.topic !== "chat") {
+          btn.classList.toggle("vip-locked", !state.isVip);
+        }
+      });
+
+      if (!state.isVip) {
+        if (state.partnerGender !== "any") selectPartnerGender("any", true);
+        if (state.partnerAge !== "any") selectPartnerAge("any", true);
+        if (state.topic !== "chat") selectTopic("chat", true);
+      }
+    }
+
+    async function checkVipStatus() {
+      const reg = getLocalVipRegistry();
+      const idKeys = [state.uid];
+      if (state.tgVerified && state.tgId) idKeys.push(String(state.tgId).trim());
+
+      let hasVip = idKeys.some(k => reg[k] && reg[k].active === true);
+
+      if (state.tgVerified && String(state.tgId).trim() === ADMIN_TG_ID && localStorage.getItem("nexly_admin_test_novip") !== "1") {
+        hasVip = true;
+      }
+
+      // Check Python backend VIP registry if running via bot.py
+      if (HAS_PY_BACKEND && state.tgVerified && state.tgId) {
+        try {
+          const r = await fetch(`/api/vip-status?tgId=${encodeURIComponent(state.tgId)}`);
+          if (r.ok) {
+            const d = await r.json();
+            if (d.isVip) hasVip = true;
+          }
+        } catch (e) {}
+      }
+
+      try {
+        for (const key of idKeys) {
+          const snap = await getDoc(doc(db, "vip_registry", key));
+          if (snap.exists() && snap.data().active === true) {
+            hasVip = true;
+          }
+        }
+      } catch (e) {}
+
+      state.isVip = hasVip;
+      refreshPrivilegesUI();
+    }
+
+    function bindRealtimeVipListener() {
+      if (state.unsubVip) state.unsubVip();
+      const targetKey = (state.tgVerified && state.tgId) ? String(state.tgId).trim() : state.uid;
+      try {
+        state.unsubVip = onSnapshot(doc(db, "vip_registry", targetKey), (snap) => {
+          if (snap.exists()) {
+            state.isVip = !!snap.data().active;
+            refreshPrivilegesUI();
+          }
+        });
+      } catch (e) {}
+    }
+
+    // =========================================================
+    // FIRESTORE USER SYNC & LIVE STATS
+    // =========================================================
+    async function syncUserProfileToFirestore() {
+      const payload = {
+        uid: state.uid,
+        tgId: state.tgVerified ? state.tgId : null,
+        gender: state.myGender,
+        age: state.myAge,
+        isVip: state.isVip,
+        updatedAt: Date.now()
+      };
+
+      const localUsers = JSON.parse(localStorage.getItem("nexly_known_users") || "{}");
+      const key = (state.tgVerified && state.tgId) ? state.tgId : state.uid;
+      localUsers[key] = payload;
+      localStorage.setItem("nexly_known_users", JSON.stringify(localUsers));
+
+      try {
+        await setDoc(doc(db, "users", key), {
+          ...payload,
+          serverUpdatedAt: serverTimestamp()
+        }, { merge: true });
+      } catch (e) {}
+    }
+
+    function startLiveCounters() {
+      const chattingEl = document.getElementById("statChattingCount");
+      const searchingEl = document.getElementById("statSearchingCount");
+      const formatNum = (n) => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+
+      setInterval(() => {
+        const dChat = Math.floor(Math.random() * 7) - 3;
+        const dSearch = Math.floor(Math.random() * 5) - 2;
+        state.baseChatting = Math.max(120, state.baseChatting + dChat);
+        state.baseSearching = Math.max(24, state.baseSearching + dSearch);
+        chattingEl.textContent = formatNum(state.baseChatting);
+        searchingEl.textContent = formatNum(state.baseSearching);
+      }, 3500);
+    }
+
+    // =========================================================
+    // INITIALIZE AGE DROPDOWN (10 TO 99) & THEME
+    // =========================================================
+    const myAgeSelect = document.getElementById("myAgeSelect");
+    for (let a = 10; a <= 99; a++) {
+      const opt = document.createElement("option");
+      opt.value = String(a);
+      opt.textContent = getAgeLabel(a);
+      if (a === 18) opt.selected = true;
+      myAgeSelect.appendChild(opt);
+    }
+
+    function setMyAge(age) {
+      const clamped = Math.min(99, Math.max(10, parseInt(age, 10) || 18));
+      state.myAge = clamped;
+      myAgeSelect.value = String(clamped);
+      document.getElementById("myAgeTag").textContent = getAgeLabel(clamped);
+    }
+
+    applyTheme(state.theme);
+    setMyAge(18);
+
+    // =========================================================
+    // EVENT LISTENERS: HEADER & ENTRY SCREEN
+    // =========================================================
+    document.getElementById("headerThemeBtn").addEventListener("click", () => {
+      applyTheme(state.theme === "light" ? "dark" : "light");
+    });
+
+    document.querySelectorAll("[data-set-theme]").forEach(btn => {
+      btn.addEventListener("click", () => applyTheme(btn.dataset.setTheme));
+    });
+
+    document.getElementById("openTgIdModalBtn").addEventListener("click", openTgVerificationModal);
+
+    document.getElementById("vipModalLinkTgBtn").addEventListener("click", () => {
+      closeModal("vipModal");
+      openTgVerificationModal();
+    });
+
+    document.getElementById("navVipBtn").addEventListener("click", () => {
+      openModal("vipModal");
+    });
+
+    document.getElementById("openPolicyBtn").addEventListener("click", () => {
+      openModal("policyModal");
+    });
+
+    const entryPolicyCheckbox = document.getElementById("entryPolicyCheckbox");
+    const enterLobbyBtn = document.getElementById("enterLobbyBtn");
+
+    entryPolicyCheckbox.addEventListener("change", (e) => {
+      enterLobbyBtn.disabled = !e.target.checked;
+    });
+
+    enterLobbyBtn.addEventListener("click", async () => {
+      if (!entryPolicyCheckbox.checked) return;
+      try {
+        const cred = await signInAnonymously(auth);
+        state.uid = cred.user.uid;
+        localStorage.setItem("nexly_uid", state.uid);
+      } catch (e) {}
+
+      await checkVipStatus();
+      bindRealtimeVipListener();
+      await syncUserProfileToFirestore();
+
+      document.getElementById("screenEntry").classList.add("hidden");
+      document.getElementById("screenLobby").classList.remove("hidden");
+    });
+
+    // =========================================================
+    // EVENT LISTENERS: LOBBY PARAMETERS & VIP GATES
+    // =========================================================
+    document.querySelectorAll("[data-my-gender]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        state.myGender = btn.dataset.myGender;
+        document.querySelectorAll("[data-my-gender]").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        syncUserProfileToFirestore();
+      });
+    });
+
+    myAgeSelect.addEventListener("change", (e) => {
+      setMyAge(e.target.value);
+      syncUserProfileToFirestore();
+    });
+
+    document.getElementById("myAgeMinus").addEventListener("click", () => {
+      setMyAge(state.myAge - 1);
+      syncUserProfileToFirestore();
+    });
+
+    document.getElementById("myAgePlus").addEventListener("click", () => {
+      setMyAge(state.myAge + 1);
+      syncUserProfileToFirestore();
+    });
+
+    function selectPartnerGender(val, silent = false) {
+      if (val !== "any" && !state.isVip) {
+        if (!silent) openModal("vipModal");
+        return;
+      }
+      state.partnerGender = val;
+      document.querySelectorAll("[data-partner-gender]").forEach(b => {
+        b.classList.toggle("active", b.dataset.partnerGender === val);
+      });
+    }
+
+    function selectPartnerAge(val, silent = false) {
+      if (val !== "any" && !state.isVip) {
+        if (!silent) openModal("vipModal");
+        return;
+      }
+      state.partnerAge = val;
+      document.querySelectorAll("[data-partner-age]").forEach(b => {
+        b.classList.toggle("active", b.dataset.partnerAge === val);
+      });
+    }
+
+    function selectTopic(val, silent = false) {
+      if (val !== "chat" && !state.isVip) {
+        if (!silent) openModal("vipModal");
+        return;
+      }
+      state.topic = val;
+      document.querySelectorAll("[data-topic]").forEach(b => {
+        b.classList.toggle("active", b.dataset.topic === val);
+      });
+    }
+
+    document.querySelectorAll("[data-partner-gender]").forEach(btn => {
+      btn.addEventListener("click", () => selectPartnerGender(btn.dataset.partnerGender));
+    });
+
+    document.querySelectorAll("[data-partner-age]").forEach(btn => {
+      btn.addEventListener("click", () => selectPartnerAge(btn.dataset.partnerAge));
+    });
+
+    document.querySelectorAll("[data-topic]").forEach(btn => {
+      btn.addEventListener("click", () => selectTopic(btn.dataset.topic));
+    });
+
+    // =========================================================
+    // ADMIN CONSOLE LOGIC (VERIFIED TG ID 8515868917)
+    // =========================================================
+    async function loadAdminUsersTable() {
+      const tbody = document.getElementById("adminUsersTableBody");
+      const localUsers = JSON.parse(localStorage.getItem("nexly_known_users") || "{}");
+      const localVips = getLocalVipRegistry();
+      const merged = { ...localUsers };
+
+      Object.keys(localVips).forEach(k => {
+        if (!merged[k]) merged[k] = { uid: k, tgId: k, gender: "male", age: 18 };
+        merged[k].isVip = !!localVips[k].active;
+      });
+
+      if (HAS_PY_BACKEND) {
+        try {
+          const r = await fetch("/api/admin/users");
+          if (r.ok) {
+            const d = await r.json();
+            Object.entries(d.vips || {}).forEach(([k, info]) => {
+              if (!merged[k]) merged[k] = { uid: k, tgId: k };
+              merged[k].isVip = !!info.active;
+            });
+          }
+        } catch (e) {}
+      }
+
+      try {
+        const usersSnap = await getDocs(collection(db, "users"));
+        usersSnap.forEach(d => {
+          merged[d.id] = { ...(merged[d.id] || {}), ...d.data() };
+        });
+        const vipsSnap = await getDocs(collection(db, "vip_registry"));
+        vipsSnap.forEach(d => {
+          if (!merged[d.id]) merged[d.id] = { uid: d.id, tgId: d.id };
+          merged[d.id].isVip = !!d.data().active;
+        });
+      } catch (e) {}
+
+      const entries = Object.entries(merged);
+      if (entries.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:var(--text-muted);">Нет сохранённых пользователей</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = "";
+      entries.forEach(([idKey, u]) => {
+        const tr = document.createElement("tr");
+        const isVip = !!u.isVip || (localVips[idKey] && localVips[idKey].active);
+        const profileStr = u.gender ? `${genderName(u.gender)}, ${u.age || 18} л.` : "—";
+
+        tr.innerHTML = `
+          <td><strong>${escapeHtml(idKey)}</strong></td>
+          <td>${escapeHtml(profileStr)}</td>
+          <td>${isVip ? '<span class="badge-vip">👑 VIP</span>' : '<span class="badge-free">Обычный</span>'}</td>
+          <td>
+            ${isVip
+              ? `<button type="button" class="mini-btn revoke" data-revoke-id="${escapeHtml(idKey)}">Забрать VIP</button>`
+              : `<button type="button" class="mini-btn grant" data-grant-id="${escapeHtml(idKey)}">Выдать VIP</button>`
+            }
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      tbody.querySelectorAll("[data-grant-id]").forEach(btn => {
+        btn.addEventListener("click", () => adminSetUserVip(btn.dataset.grantId, true, "forever"));
+      });
+      tbody.querySelectorAll("[data-revoke-id]").forEach(btn => {
+        btn.addEventListener("click", () => adminSetUserVip(btn.dataset.revokeId, false, "none"));
+      });
+    }
+
+    async function adminSetUserVip(targetId, active, duration) {
+      if (!state.isAdmin) return;
+      const cleanId = String(targetId || "").trim();
+      if (!cleanId) {
+        showToast("Введите Telegram ID или UID пользователя");
+        return;
+      }
+
+      const reg = getLocalVipRegistry();
+      reg[cleanId] = {
+        active,
+        duration,
+        grantedBy: ADMIN_TG_ID,
+        updatedAt: Date.now()
+      };
+      setLocalVipRegistry(reg);
+
+      if (HAS_PY_BACKEND) {
+        try {
+          await fetch("/api/admin/vip", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              adminId: state.tgId,
+              targetId: cleanId,
+              active,
+              duration
+            })
+          });
+        } catch (e) {}
+      }
+
+      try {
+        await setDoc(doc(db, "vip_registry", cleanId), {
+          active,
+          duration,
+          grantedBy: ADMIN_TG_ID,
+          updatedAt: serverTimestamp()
+        }, { merge: true });
+
+        await setDoc(doc(db, "users", cleanId), {
+          isVip: active
+        }, { merge: true });
+      } catch (e) {}
+
+      if (cleanId === state.tgId || cleanId === state.uid) {
+        state.isVip = active;
+        refreshPrivilegesUI();
+      }
+
+      showToast(active ? `👑 VIP выдан пользователю ${cleanId}` : `❌ VIP снят у ${cleanId}`);
+      loadAdminUsersTable();
+    }
+
+    document.getElementById("openAdminBtn").addEventListener("click", () => {
+      if (!state.isAdmin) return;
+      loadAdminUsersTable();
+      openModal("adminModal");
+    });
+
+    document.getElementById("adminGrantVipBtn").addEventListener("click", () => {
+      const target = document.getElementById("adminTargetIdInput").value;
+      const dur = document.getElementById("adminVipDuration").value;
+      adminSetUserVip(target, true, dur);
+      document.getElementById("adminTargetIdInput").value = "";
+    });
+
+    document.getElementById("adminRefreshUsersBtn").addEventListener("click", loadAdminUsersTable);
+
+    document.getElementById("adminToggleSelfVipBtn").addEventListener("click", () => {
+      if (!state.isAdmin) return;
+      state.isVip = !state.isVip;
+      if (!state.isVip) {
+        localStorage.setItem("nexly_admin_test_novip", "1");
+        showToast("Режим теста: VIP временно отключён для проверки замков");
+      } else {
+        localStorage.removeItem("nexly_admin_test_novip");
+        showToast("👑 VIP снова включён");
+      }
+      refreshPrivilegesUI();
+    });
+
+    // =========================================================
+    // MATCHMAKING & CHAT ROOM
+    // =========================================================
+    function ageMatchesFilter(age, filterRange) {
+      if (!filterRange || filterRange === "any") return true;
+      const [minA, maxA] = filterRange.split("-").map(Number);
+      return age >= minA && age <= maxA;
+    }
+
+    function genderMatchesFilter(gender, filterGender) {
+      if (!filterGender || filterGender === "any") return true;
+      return gender === filterGender;
+    }
+
+    function cleanupRoomListeners() {
+      if (state.unsubRoom) { state.unsubRoom(); state.unsubRoom = null; }
+      if (state.unsubMsgs) { state.unsubMsgs(); state.unsubMsgs = null; }
+      if (state.unsubQueue) { state.unsubQueue(); state.unsubQueue = null; }
+      clearInterval(state.searchTimer);
+    }
+
+    async function startSearching() {
+      cleanupRoomListeners();
+      state.roomId = null;
+      state.isDemoRoom = false;
+      state.searchSeconds = 0;
+
+      const pillsBox = document.getElementById("activeSearchPills");
+      pillsBox.innerHTML = `
+        <span class="criteria-chip">Я: ${genderName(state.myGender)}, ${getAgeLabel(state.myAge)}</span>
+        <span class="criteria-chip">Ищу: ${genderName(state.partnerGender)}</span>
+        <span class="criteria-chip">Возраст: ${state.partnerAge === "any" ? "Любой" : state.partnerAge + " л."}</span>
+        <span class="criteria-chip">Тема: ${topicName(state.topic)}</span>
+      `;
+
+      document.getElementById("screenLobby").classList.add("hidden");
+      document.getElementById("screenChat").classList.add("hidden");
+      document.getElementById("screenSearching").classList.remove("hidden");
+
+      const timerText = document.getElementById("searchTimerText");
+      timerText.textContent = "Время поиска: 0 сек.";
+      state.searchTimer = setInterval(() => {
+        state.searchSeconds++;
+        timerText.textContent = `Время поиска: ${state.searchSeconds} сек.`;
+      }, 1000);
+
+      try {
+        const qRef = collection(db, "match_queue");
+        const waitingSnap = await getDocs(query(qRef, where("status", "==", "waiting"), limit(20)));
+
+        let matchedDoc = null;
+        waitingSnap.forEach(docSnap => {
+          if (matchedDoc) return;
+          const d = docSnap.data();
+          if (d.uid === state.uid) return;
+          if (d.topic !== state.topic) return;
+
+          const iAcceptPartner =
+            genderMatchesFilter(d.myGender, state.partnerGender) &&
+            ageMatchesFilter(d.myAge, state.partnerAge);
+
+          const partnerAcceptsMe =
+            genderMatchesFilter(state.myGender, d.partnerGender) &&
+            ageMatchesFilter(state.myAge, d.partnerAge);
+
+          if (iAcceptPartner && partnerAcceptsMe) {
+            matchedDoc = { id: docSnap.id, ...d };
+          }
+        });
+
+        if (matchedDoc) {
+          const roomRef = await addDoc(collection(db, "chat_rooms"), {
+            status: "active",
+            topic: state.topic,
+            users: {
+              [state.uid]: { gender: state.myGender, age: state.myAge, isVip: state.isVip },
+              [matchedDoc.uid]: { gender: matchedDoc.myGender, age: matchedDoc.myAge, isVip: !!matchedDoc.isVip }
+            },
+            createdAt: serverTimestamp()
+          });
+
+          await updateDoc(doc(db, "match_queue", matchedDoc.id), {
+            status: "matched",
+            roomId: roomRef.id
+          });
+
+          enterRealChatRoom(roomRef.id, {
+            gender: matchedDoc.myGender,
+            age: matchedDoc.myAge,
+            isVip: !!matchedDoc.isVip
+          });
+          return;
+        }
+
+        const myQueueRef = await addDoc(qRef, {
+          uid: state.uid,
+          myGender: state.myGender,
+          myAge: state.myAge,
+          isVip: state.isVip,
+          partnerGender: state.partnerGender,
+          partnerAge: state.partnerAge,
+          topic: state.topic,
+          status: "waiting",
+          roomId: null,
+          createdAt: serverTimestamp()
+        });
+        state.queueDocId = myQueueRef.id;
+
+        state.unsubQueue = onSnapshot(doc(db, "match_queue", myQueueRef.id), async (snap) => {
+          if (!snap.exists()) return;
+          const data = snap.data();
+          if (data.status === "matched" && data.roomId) {
+            const roomSnap = await getDoc(doc(db, "chat_rooms", data.roomId));
+            let partnerInfo = { gender: "female", age: 21, isVip: false };
+            if (roomSnap.exists()) {
+              const usersMap = roomSnap.data().users || {};
+              const otherUid = Object.keys(usersMap).find(u => u !== state.uid);
+              if (otherUid) partnerInfo = usersMap[otherUid];
+            }
+            try { await deleteDoc(doc(db, "match_queue", myQueueRef.id)); } catch (e) {}
+            state.queueDocId = null;
+            enterRealChatRoom(data.roomId, partnerInfo);
+          }
+        });
+      } catch (e) {}
+    }
+
+    async function cancelSearching() {
+      cleanupRoomListeners();
+      if (state.queueDocId) {
+        try { await deleteDoc(doc(db, "match_queue", state.queueDocId)); } catch (e) {}
+        state.queueDocId = null;
+      }
+      document.getElementById("screenSearching").classList.add("hidden");
+      document.getElementById("screenLobby").classList.remove("hidden");
+    }
+
+    function setupChatHeader(partnerInfo) {
+      const iconMap = { male: "👦", female: "👩", trans: "⚧" };
+      document.getElementById("partnerAvatarIcon").textContent = iconMap[partnerInfo.gender] || "👤";
+      document.getElementById("partnerTitleText").textContent =
+        `Собеседник • ${genderName(partnerInfo.gender)}, ${getAgeLabel(partnerInfo.age)}`;
+      document.getElementById("partnerSubText").textContent =
+        `В сети • Тема: ${topicName(state.topic)}`;
+      document.getElementById("partnerVipBadge").classList.toggle("hidden", !partnerInfo.isVip);
+
+      const msgsBox = document.getElementById("chatMessagesBox");
+      msgsBox.innerHTML = "";
+      appendSystemMessage(`Чат начался! Тема: «${topicName(state.topic)}». Поздоровайтесь с собеседником.`);
+
+      document.getElementById("chatComposerForm").classList.remove("hidden");
+      document.getElementById("postChatBanner").classList.add("hidden");
+      document.getElementById("chatMessageInput").value = "";
+      document.getElementById("chatMessageInput").disabled = false;
+      document.getElementById("sendMsgBtn").disabled = false;
+      document.getElementById("typingIndicatorBar").textContent = "";
+    }
+
+    function appendSystemMessage(text) {
+      const msgsBox = document.getElementById("chatMessagesBox");
+      const div = document.createElement("div");
+      div.className = "msg-system";
+      div.textContent = text;
+      msgsBox.appendChild(div);
+      msgsBox.scrollTop = msgsBox.scrollHeight;
+    }
+
+    function appendChatMessage(senderType, text, timeStr) {
+      const msgsBox = document.getElementById("chatMessagesBox");
+      const row = document.createElement("div");
+      row.className = `msg-row ${senderType}`;
+      row.innerHTML = `
+        <div class="msg-bubble">${escapeHtml(text)}</div>
+        <div class="msg-time">${escapeHtml(timeStr || formatTime())}</div>
+      `;
+      msgsBox.appendChild(row);
+      msgsBox.scrollTop = msgsBox.scrollHeight;
+    }
+
+    function enterRealChatRoom(roomId, partnerInfo) {
+      clearInterval(state.searchTimer);
+      state.roomId = roomId;
+      state.isDemoRoom = false;
+
+      document.getElementById("screenSearching").classList.add("hidden");
+      document.getElementById("screenChat").classList.remove("hidden");
+      setupChatHeader(partnerInfo);
+
+      const renderedIds = new Set();
+      state.unsubMsgs = onSnapshot(collection(db, "chat_rooms", roomId, "messages"), (snap) => {
+        const docs = [];
+        snap.forEach(d => docs.push({ id: d.id, ...d.data() }));
+        docs.sort((a, b) => (a.clientTs || 0) - (b.clientTs || 0));
+
+        docs.forEach(m => {
+          if (renderedIds.has(m.id)) return;
+          renderedIds.add(m.id);
+          const side = m.senderUid === state.uid ? "self" : "partner";
+          appendChatMessage(side, m.text, formatTime(m.clientTs));
+        });
+      });
+
+      state.unsubRoom = onSnapshot(doc(db, "chat_rooms", roomId), (snap) => {
+        if (!snap.exists()) return;
+        const data = snap.data();
+        if (data.status === "closed" && data.closedBy !== state.uid) {
+          finishDialogUI("Собеседник завершил диалог.");
+        }
+      });
+    }
+
+    async function enterDemoChatRoom() {
+      if (state.queueDocId) {
+        try { await deleteDoc(doc(db, "match_queue", state.queueDocId)); } catch (e) {}
+        state.queueDocId = null;
+      }
+      clearInterval(state.searchTimer);
+      state.isDemoRoom = true;
+      state.roomId = "demo_room";
+
+      const pGender = state.partnerGender !== "any"
+        ? state.partnerGender
+        : (state.myGender === "male" ? "female" : "male");
+
+      let pAge = 21;
+      if (state.partnerAge !== "any") {
+        const [minA, maxA] = state.partnerAge.split("-").map(Number);
+        pAge = Math.floor((minA + maxA) / 2);
+      }
+
+      document.getElementById("screenSearching").classList.add("hidden");
+      document.getElementById("screenChat").classList.remove("hidden");
+      setupChatHeader({ gender: pGender, age: pAge, isVip: true });
+
+      setTimeout(() => {
+        if (!state.isDemoRoom) return;
+        document.getElementById("typingIndicatorBar").textContent = "Собеседник печатает...";
+        setTimeout(() => {
+          if (!state.isDemoRoom) return;
+          document.getElementById("typingIndicatorBar").textContent = "";
+          appendChatMessage("partner", "Привет! Как дела? Откуда ты?", formatTime());
+        }, 1200);
+      }, 900);
+    }
+
+    function finishDialogUI(reasonText) {
+      cleanupRoomListeners();
+      state.roomId = null;
+      state.isDemoRoom = false;
+      appendSystemMessage(reasonText);
+      document.getElementById("typingIndicatorBar").textContent = "";
+      document.getElementById("chatComposerForm").classList.add("hidden");
+      document.getElementById("postChatBanner").classList.remove("hidden");
+    }
+
+    async function endCurrentChat(startNextAfter = false) {
+      const currentRoom = state.roomId;
+      const wasDemo = state.isDemoRoom;
+      cleanupRoomListeners();
+
+      if (currentRoom && !wasDemo) {
+        try {
+          await updateDoc(doc(db, "chat_rooms", currentRoom), {
+            status: "closed",
+            closedBy: state.uid
+          });
+        } catch (e) {}
+      }
+
+      if (startNextAfter) {
+        startSearching();
+      } else {
+        finishDialogUI("Вы завершили диалог.");
+      }
+    }
+
+    document.getElementById("chatComposerForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const input = document.getElementById("chatMessageInput");
+      const text = input.value.trim();
+      if (!text) return;
+      input.value = "";
+
+      if (state.isDemoRoom) {
+        appendChatMessage("self", text, formatTime());
+        const replies = [
+          "Интересно! Расскажи подробнее 😊",
+          "Я тоже так думаю! А чем увлекаешься?",
+          "Классно, в Nexly Roulette очень удобный чат!",
+          "Понял тебя 👍 А какая музыка тебе нравится?"
+        ];
+        const reply = replies[Math.floor(Math.random() * replies.length)];
+        document.getElementById("typingIndicatorBar").textContent = "Собеседник печатает...";
+        setTimeout(() => {
+          if (!state.isDemoRoom) return;
+          document.getElementById("typingIndicatorBar").textContent = "";
+          appendChatMessage("partner", reply, formatTime());
+        }, 1300);
+        return;
+      }
+
+      if (state.roomId) {
+        try {
+          await addDoc(collection(db, "chat_rooms", state.roomId, "messages"), {
+            senderUid: state.uid,
+            text,
+            clientTs: Date.now()
+          });
+        } catch (err) {
+          appendChatMessage("self", text, formatTime());
+        }
+      }
+    });
+
+    document.getElementById("startSearchBtn").addEventListener("click", startSearching);
+    document.getElementById("cancelSearchBtn").addEventListener("click", cancelSearching);
+    document.getElementById("instantDemoMatchBtn").addEventListener("click", enterDemoChatRoom);
+    document.getElementById("nextPartnerBtn").addEventListener("click", () => endCurrentChat(true));
+    document.getElementById("endChatBtn").addEventListener("click", () => endCurrentChat(false));
+    document.getElementById("searchAgainBtn").addEventListener("click", startSearching);
+    document.getElementById("backToLobbyBtn").addEventListener("click", () => {
+      document.getElementById("screenChat").classList.add("hidden");
+      document.getElementById("screenLobby").classList.remove("hidden");
+    });
+
+    // Boot
+    loadBotInfo();
+    checkVipStatus();
+    if (state.tgVerified && state.tgId) {
+      bindRealtimeVipListener();
+    }
+    startLiveCounters();
+  </script>
+</body>
+</html>
