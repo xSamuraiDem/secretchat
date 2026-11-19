@@ -1,1443 +1,733 @@
 <!DOCTYPE html>
-<html lang="ru" data-theme="light">
+<html lang="ru" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Nexly Roulette — Анонимный чат вдвоём</title>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>Vortex Roullette.me — Анонимная Чат-Рулетка 18+</title>
   <style>
-    /* =========================================================
-       DESIGN TOKENS: LIGHT (МЫВДВОЁМ / NEKTO.ME) & DARK
-       ========================================================= */
-    :root,
-    [data-theme="light"] {
-      --bg-page: #eef2f7;
-      --bg-mesh: radial-gradient(circle at 10% 8%, rgba(37, 99, 235, 0.08), transparent 40%),
-                 radial-gradient(circle at 90% 92%, rgba(13, 148, 136, 0.07), transparent 40%);
-      --bg-surface: #ffffff;
-      --bg-subtle: #f6f8fc;
-      --bg-pill: #eaeff6;
-      --bg-pill-hover: #dfe7f2;
-      --text-primary: #0f172a;
-      --text-secondary: #475569;
-      --text-muted: #94a3b8;
-      --border: #dce4f0;
-      --border-strong: #cbd5e1;
-      --accent: #2563eb;
-      --accent-hover: #1d4ed8;
-      --accent-soft: rgba(37, 99, 235, 0.10);
-      --accent-teal: #0d9488;
-      --vip-gold: #d97706;
-      --vip-bg: rgba(245, 158, 11, 0.12);
-      --vip-border: rgba(245, 158, 11, 0.38);
-      --dev-amber: #b45309;
-      --dev-bg: rgba(245, 158, 11, 0.11);
-      --dev-border: rgba(245, 158, 11, 0.35);
-      --success: #059669;
-      --success-soft: rgba(16, 185, 129, 0.12);
-      --danger: #dc2626;
-      --shadow-card: 0 8px 28px rgba(15, 23, 42, 0.055);
-      --shadow-modal: 0 24px 60px rgba(15, 23, 42, 0.22);
+    :root {
+      --bg-main: #111417;
+      --bg-card: #181d22;
+      --bg-pattern-color: rgba(255, 255, 255, 0.03);
+      --text-main: #eef2f6;
+      --text-muted: #93a1b0;
+      --pill-bg: #cfd8e2;
+      --pill-text: #1c242c;
+      --pill-active-bg: #365f87;
+      --pill-active-text: #ffffff;
+      --accent-green: #22c55e;
+      --accent-green-glow: rgba(34, 197, 94, 0.2);
+      --border-color: #26303a;
+      --input-bg: #0f1317;
+      --msg-me-bg: #365f87;
+      --msg-peer-bg: #232b33;
+      --badge-go: #0ea5e9;
+      --badge-plus: #a855f7;
+      --danger: #ef4444;
     }
 
-    [data-theme="dark"] {
-      --bg-page: #090d16;
-      --bg-mesh: radial-gradient(circle at 12% 10%, rgba(59, 130, 246, 0.14), transparent 42%),
-                 radial-gradient(circle at 88% 90%, rgba(20, 184, 166, 0.10), transparent 42%);
-      --bg-surface: #111827;
-      --bg-subtle: #182234;
-      --bg-pill: #1f2b40;
-      --bg-pill-hover: #293852;
-      --text-primary: #f8fafc;
-      --text-secondary: #94a3b8;
-      --text-muted: #64748b;
-      --border: #233047;
-      --border-strong: #334155;
-      --accent: #3b82f6;
-      --accent-hover: #2563eb;
-      --accent-soft: rgba(59, 130, 246, 0.16);
-      --accent-teal: #14b8a6;
-      --vip-gold: #fbbf24;
-      --vip-bg: rgba(251, 191, 36, 0.14);
-      --vip-border: rgba(251, 191, 36, 0.38);
-      --dev-amber: #fbbf24;
-      --dev-bg: rgba(251, 191, 36, 0.11);
-      --dev-border: rgba(251, 191, 36, 0.32);
-      --success: #10b981;
-      --success-soft: rgba(16, 185, 129, 0.16);
-      --danger: #f87171;
-      --shadow-card: 0 12px 34px rgba(0, 0, 0, 0.38);
-      --shadow-modal: 0 28px 70px rgba(0, 0, 0, 0.65);
+    html[data-theme="light"] {
+      --bg-main: #edf2f7;
+      --bg-card: #ffffff;
+      --bg-pattern-color: rgba(15, 23, 42, 0.04);
+      --text-main: #182026;
+      --text-muted: #5c6b7a;
+      --pill-bg: #dfe6ee;
+      --pill-text: #1c242c;
+      --pill-active-bg: #365f87;
+      --pill-active-text: #ffffff;
+      --accent-green: #16a34a;
+      --accent-green-glow: rgba(22, 163, 74, 0.16);
+      --border-color: #d0dae4;
+      --input-bg: #f8fafc;
+      --msg-me-bg: #365f87;
+      --msg-peer-bg: #e2e8f0;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      -webkit-tap-highlight-color: transparent;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background-color: var(--bg-page);
-      background-image: var(--bg-mesh);
-      background-attachment: fixed;
-      color: var(--text-primary);
-      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+      background-color: var(--bg-main);
+      background-image:
+        radial-gradient(var(--bg-pattern-color) 1.5px, transparent 1.5px),
+        radial-gradient(var(--bg-pattern-color) 1.5px, transparent 1.5px);
+      background-size: 28px 28px;
+      background-position: 0 0, 14px 14px;
+      color: var(--text-main);
+      min-height: 100dvh;
+      display: flex;
+      justify-content: center;
+      transition: background-color 0.25s, color 0.25s;
+    }
+
+    .app-shell {
+      width: 100%;
+      max-width: 460px;
+      min-height: 100dvh;
       display: flex;
       flex-direction: column;
-      line-height: 1.45;
-      transition: background-color 0.25s ease, color 0.25s ease;
+      position: relative;
+      background: linear-gradient(180deg, rgba(0,0,0,0.06), transparent);
+      border-left: 1px solid var(--border-color);
+      border-right: 1px solid var(--border-color);
     }
 
-    .hidden {
-      display: none !important;
-    }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* =========================================================
-       TOP HEADER
-       ========================================================= */
+    /* TOP BAR */
     .topbar {
-      background: var(--bg-surface);
-      border-bottom: 1px solid var(--border);
-      padding: 11px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border-color);
       position: sticky;
       top: 0;
-      z-index: 50;
-      transition: background-color 0.25s ease, border-color 0.25s ease;
+      z-index: 20;
     }
-
-    .topbar-inner {
-      max-width: 1000px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
     .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-      color: var(--text-primary);
-    }
-
-    .brand-logo {
-      width: 38px;
-      height: 38px;
-      border-radius: 11px;
-      background: linear-gradient(135deg, var(--accent), var(--accent-teal));
-      color: #ffffff;
-      font-size: 19px;
       font-weight: 800;
+      font-size: 16px;
+      letter-spacing: 0.3px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.28);
-      flex-shrink: 0;
+      gap: 8px;
     }
-
-    .brand-info {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .brand-title-row {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .brand-title {
-      font-size: 16.5px;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-    }
-
-    .brand-pill {
-      font-size: 10.5px;
-      font-weight: 700;
-      padding: 2px 7px;
-      border-radius: 6px;
-      background: var(--accent-soft);
-      color: var(--accent);
-    }
-
-    .tg-auto-status {
-      font-size: 11px;
-      color: var(--text-secondary);
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .status-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--success);
-      display: inline-block;
-    }
-
-    .topbar-actions {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      flex-wrap: wrap;
-    }
-
-    .chip-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 7px 11px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: var(--bg-subtle);
-      color: var(--text-primary);
-      font-family: inherit;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.16s ease;
-    }
-
-    .chip-btn:hover {
-      background: var(--bg-pill-hover);
-      border-color: var(--border-strong);
-      transform: translateY(-1px);
-    }
-
-    .chip-btn.vip-on {
-      background: var(--vip-bg);
-      border-color: var(--vip-border);
-      color: var(--vip-gold);
-    }
-
-    .chip-btn.admin-trigger {
-      background: linear-gradient(135deg, #7c3aed, #4f46e5);
-      border-color: transparent;
-      color: #ffffff;
-      box-shadow: 0 4px 14px rgba(124, 58, 237, 0.32);
-    }
-
-    .chip-btn.admin-trigger:hover {
-      filter: brightness(1.08);
-    }
-
-    .tg-id-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      padding: 7px 11px;
-      border-radius: 10px;
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      background: var(--success-soft);
-      color: var(--success);
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    /* =========================================================
-       MAIN WRAPPER & CARDS
-       ========================================================= */
-    .container {
-      flex: 1;
-      width: 100%;
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 22px 14px 42px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .surface-card {
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      box-shadow: var(--shadow-card);
-      transition: background-color 0.25s ease, border-color 0.25s ease;
-    }
-
-    /* =========================================================
-       STEP 1: GUEST ENTRY & PRIVACY POLICY
-       ========================================================= */
-    .entry-box {
-      max-width: 470px;
-      width: 100%;
-      margin: 0 auto;
-      padding: 28px;
-      animation: fadeUp 0.28s ease;
-    }
-
-    .entry-head {
-      display: flex;
-      align-items: center;
-      gap: 13px;
-      margin-bottom: 14px;
-    }
-
-    .entry-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 14px;
-      background: linear-gradient(135deg, var(--accent), var(--accent-teal));
-      color: #ffffff;
-      font-size: 23px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .entry-title {
-      font-size: 21px;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-    }
-
-    .entry-desc {
-      font-size: 13.5px;
-      color: var(--text-secondary);
-      margin-bottom: 18px;
-    }
-
-    .guest-mode-card {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 16px;
-      border-radius: 13px;
-      border: 2px solid var(--accent);
-      background: var(--accent-soft);
-      margin-bottom: 16px;
-    }
-
-    .guest-mode-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .guest-avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 11px;
-      background: var(--accent);
-      color: #ffffff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 19px;
-      flex-shrink: 0;
-    }
-
-    .radio-selected {
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      border: 2px solid var(--accent);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .radio-selected::after {
-      content: '';
+    .brand-dot {
       width: 10px;
       height: 10px;
       border-radius: 50%;
-      background: var(--accent);
+      background: var(--accent-green);
+      box-shadow: 0 0 10px var(--accent-green);
     }
-
-    .rules-box {
-      background: var(--bg-subtle);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 14px;
-      margin-bottom: 16px;
-    }
-
-    .rules-top {
+    .topbar-right {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      margin-bottom: 8px;
-      font-size: 13px;
-      font-weight: 700;
+      gap: 8px;
     }
-
-    .text-link {
-      background: none;
-      border: none;
-      color: var(--accent);
-      font-family: inherit;
-      font-size: 12px;
-      font-weight: 600;
-      text-decoration: underline;
+    .plan-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      background: var(--border-color);
+      color: var(--text-main);
+    }
+    .plan-badge.go { background: var(--badge-go); color: #fff; }
+    .plan-badge.plus { background: linear-gradient(135deg, #a855f7, #ec4899); color: #fff; }
+    .icon-btn {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      border-radius: 8px;
+      width: 34px;
+      height: 34px;
       cursor: pointer;
+      display: grid;
+      place-items: center;
+      font-size: 15px;
     }
 
-    .rules-list {
-      list-style: none;
-      font-size: 12.5px;
-      color: var(--text-secondary);
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
+    /* VIEWS */
+    .view { display: none; flex: 1; flex-direction: column; padding: 16px; padding-bottom: 76px; }
+    .view.active { display: flex; }
+
+    /* CARDS (AUTH / REG) */
+    .center-card {
+      margin: auto 0;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 22px 18px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
+    }
+    .center-card h1 { font-size: 20px; margin-bottom: 6px; }
+    .center-card p.sub { font-size: 13px; color: var(--text-muted); margin-bottom: 18px; line-height: 1.45; }
+
+    .field { margin-bottom: 14px; }
+    .field label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--text-muted); }
+    .input {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      background: var(--input-bg);
+      color: var(--text-main);
+      font-size: 15px;
+      outline: none;
+    }
+    .input:focus { border-color: var(--pill-active-bg); }
+    .code-input {
+      text-align: center;
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: 8px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
     }
 
-    .rules-list li {
-      padding-left: 14px;
-      position: relative;
-    }
-
-    .rules-list li::before {
-      content: '•';
-      position: absolute;
-      left: 2px;
-      color: var(--accent);
-      font-weight: 700;
-    }
-
-    .policy-check {
+    .checkbox-row {
       display: flex;
       align-items: flex-start;
       gap: 10px;
       font-size: 13px;
-      color: var(--text-secondary);
+      line-height: 1.4;
+      color: var(--text-muted);
+      margin: 14px 0 18px;
       cursor: pointer;
-      user-select: none;
-      margin-bottom: 20px;
     }
+    .checkbox-row input { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--accent-green); }
 
-    .policy-check input {
-      width: 18px;
-      height: 18px;
-      margin-top: 2px;
-      accent-color: var(--accent);
-      cursor: pointer;
-      flex-shrink: 0;
-    }
-
-    .primary-btn {
-      width: 100%;
-      height: 46px;
-      border: none;
-      border-radius: 12px;
-      background: linear-gradient(135deg, var(--accent), #1d4ed8);
-      color: #ffffff;
-      font-family: inherit;
-      font-size: 15px;
+    /* LOBBY (NEKTO.ME STYLE) */
+    .section-title {
+      font-size: 14px;
       font-weight: 700;
-      cursor: pointer;
-      display: inline-flex;
+      margin-bottom: 8px;
+      display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 8px;
-      box-shadow: 0 6px 18px rgba(37, 99, 235, 0.25);
-      transition: all 0.16s ease;
+      justify-content: space-between;
     }
-
-    .primary-btn:hover:not(:disabled) {
-      transform: translateY(-1px);
-      box-shadow: 0 8px 22px rgba(37, 99, 235, 0.35);
+    .lock-tag {
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 6px;
+      color: #fff;
+      margin-left: 4px;
+      vertical-align: middle;
     }
+    .lock-tag.go { background: var(--badge-go); }
+    .lock-tag.plus { background: var(--badge-plus); }
 
-    .primary-btn:disabled {
-      opacity: 0.45;
-      cursor: not-allowed;
-      transform: none;
-      box-shadow: none;
-    }
-
-    /* =========================================================
-       STEP 2: TWO-COLUMN LOBBY (МЫВДВОЁМ / NEKTO.ME STYLE)
-       ========================================================= */
-    #lobbyScreen {
-      animation: fadeUp 0.28s ease;
-    }
-
-    .lobby-columns {
+    .topics-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
       margin-bottom: 18px;
     }
 
-    @media (max-width: 780px) {
-      .lobby-columns {
-        grid-template-columns: 1fr;
-      }
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 18px;
     }
+    .col-stack { display: flex; flex-direction: column; gap: 7px; }
 
-    .lobby-panel {
-      padding: 22px;
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-    }
-
-    .panel-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-bottom: 12px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .panel-heading {
-      font-size: 16px;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .panel-tag {
-      font-size: 11px;
-      font-weight: 700;
-      padding: 3px 9px;
-      border-radius: 7px;
-      background: var(--bg-pill);
-      color: var(--text-secondary);
-    }
-
-    .field-block {
-      display: flex;
-      flex-direction: column;
-      gap: 9px;
-    }
-
-    .field-label {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--text-secondary);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .seg-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .seg-btn {
-      flex: 1;
-      min-width: 84px;
-      padding: 10px 12px;
-      border-radius: 11px;
-      border: 1.5px solid var(--border);
-      background: var(--bg-subtle);
-      color: var(--text-primary);
-      font-family: inherit;
-      font-size: 13px;
+    .pill-btn {
+      width: 100%;
+      padding: 10px 8px;
+      border: none;
+      border-radius: 8px;
+      background: var(--pill-bg);
+      color: var(--pill-text);
+      font-size: 13.5px;
       font-weight: 600;
       cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      transition: all 0.15s ease;
-    }
-
-    .seg-btn:hover {
-      background: var(--bg-pill-hover);
-      border-color: var(--border-strong);
-      transform: translateY(-1px);
-    }
-
-    .seg-btn.active {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: #ffffff;
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.28);
-    }
-
-    .seg-btn.vip-locked {
-      border-style: dashed;
-    }
-
-    .vip-pill {
-      font-size: 9.5px;
-      font-weight: 800;
-      padding: 2px 5px;
-      border-radius: 5px;
-      background: var(--vip-bg);
-      color: var(--vip-gold);
-      border: 1px solid var(--vip-border);
-      letter-spacing: 0.03em;
-    }
-
-    .seg-btn.active .vip-pill {
-      background: rgba(255, 255, 255, 0.22);
-      color: #ffffff;
-      border-color: rgba(255, 255, 255, 0.45);
-    }
-
-    .age-stepper-row {
+      transition: transform 0.1s, background-color 0.18s, color 0.18s, opacity 0.18s;
       display: flex;
       align-items: center;
-      gap: 8px;
+      justify-content: center;
+      gap: 4px;
+      text-align: center;
+    }
+    .pill-btn:active { transform: scale(0.98); }
+    .pill-btn.active {
+      background: var(--pill-active-bg);
+      color: var(--pill-active-text);
+    }
+    .pill-btn.locked {
+      opacity: 0.65;
+      position: relative;
     }
 
-    .step-btn {
-      width: 42px;
-      height: 42px;
-      border-radius: 11px;
-      border: 1.5px solid var(--border);
-      background: var(--bg-subtle);
-      color: var(--text-primary);
-      font-size: 19px;
+    .hint-italic {
+      font-size: 11px;
+      font-style: italic;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: -2px;
+    }
+
+    .theme-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+
+    .btn-start {
+      width: 100%;
+      padding: 14px;
+      border-radius: 999px;
+      border: 2px solid var(--accent-green);
+      background: transparent;
+      color: var(--accent-green);
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      cursor: pointer;
+      transition: background 0.2s, box-shadow 0.2s, color 0.2s;
+      box-shadow: 0 0 18px var(--accent-green-glow);
+      text-transform: uppercase;
+    }
+    .btn-start:hover { background: var(--accent-green); color: #0b140e; }
+
+    .btn-primary {
+      width: 100%;
+      padding: 13px;
+      border-radius: 10px;
+      border: none;
+      background: var(--pill-active-bg);
+      color: #fff;
+      font-size: 15px;
       font-weight: 700;
       cursor: pointer;
-      flex-shrink: 0;
-      transition: all 0.15s ease;
     }
-
-    .step-btn:hover {
-      background: var(--bg-pill-hover);
-      border-color: var(--accent);
-    }
-
-    .select-input,
-    .text-input {
+    .btn-outline {
       width: 100%;
-      height: 42px;
-      padding: 0 12px;
-      border-radius: 11px;
-      border: 1.5px solid var(--border);
-      background: var(--bg-subtle);
-      color: var(--text-primary);
-      font-family: inherit;
+      padding: 11px;
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      background: transparent;
+      color: var(--text-main);
       font-size: 14px;
       font-weight: 600;
-      outline: none;
-      transition: border-color 0.15s ease;
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
+      text-align: center;
+      margin-top: 10px;
     }
-
-    .select-input:focus,
-    .text-input:focus {
-      border-color: var(--accent);
-      background: var(--bg-surface);
-    }
-
-    .quick-age-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-
-    .age-preset {
-      padding: 4px 10px;
-      border-radius: 7px;
-      border: 1px solid var(--border);
-      background: var(--bg-subtle);
-      color: var(--text-secondary);
-      font-family: inherit;
-      font-size: 11.5px;
-      font-weight: 600;
+    .btn-danger {
+      width: 100%;
+      padding: 11px;
+      border-radius: 10px;
+      border: 1px solid var(--danger);
+      background: transparent;
+      color: var(--danger);
+      font-weight: 700;
       cursor: pointer;
     }
 
-    .age-preset:hover {
-      border-color: var(--accent);
-      color: var(--accent);
+    /* SEARCHING */
+    .search-box {
+      margin: auto 0;
+      text-align: center;
+      padding: 24px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
     }
+    .vortex-spinner {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      border: 4px solid var(--border-color);
+      border-top-color: var(--accent-green);
+      border-right-color: var(--pill-active-bg);
+      margin: 0 auto 18px;
+      animation: spin 0.9s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
-    .theme-box {
+    /* CHAT VIEW */
+    #view-chat { padding: 0; padding-bottom: 0; height: calc(100dvh - 59px); }
+    .chat-header {
+      padding: 10px 14px;
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border-color);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 10px 14px;
-      border-radius: 12px;
-      background: var(--bg-subtle);
-      border: 1px solid var(--border);
+      gap: 8px;
     }
-
-    .theme-switch-group {
-      display: flex;
-      gap: 6px;
-    }
-
-    .theme-opt {
-      padding: 6px 11px;
+    .peer-meta { font-size: 13px; }
+    .peer-meta strong { display: block; font-size: 14px; }
+    .peer-meta span { color: var(--text-muted); font-size: 12px; }
+    .chat-actions { display: flex; gap: 6px; }
+    .mini-btn {
+      padding: 7px 10px;
       border-radius: 8px;
-      border: 1px solid transparent;
-      background: transparent;
-      color: var(--text-secondary);
-      font-family: inherit;
+      border: 1px solid var(--border-color);
+      background: var(--input-bg);
+      color: var(--text-main);
       font-size: 12px;
-      font-weight: 600;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .mini-btn.stop { border-color: var(--danger); color: var(--danger); }
+    .mini-btn.next { border-color: var(--accent-green); color: var(--accent-green); }
+
+    .messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .msg {
+      max-width: 82%;
+      padding: 9px 12px;
+      border-radius: 12px;
+      font-size: 14px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+    .msg.me {
+      align-self: flex-end;
+      background: var(--msg-me-bg);
+      color: #fff;
+      border-bottom-right-radius: 4px;
+    }
+    .msg.peer {
+      align-self: flex-start;
+      background: var(--msg-peer-bg);
+      color: var(--text-main);
+      border-bottom-left-radius: 4px;
+    }
+    .msg.sys {
+      align-self: center;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 12px;
+      text-align: center;
+      padding: 4px 10px;
+    }
+    .typing-bar {
+      padding: 4px 14px;
+      font-size: 12px;
+      color: var(--text-muted);
+      min-height: 20px;
+    }
+    .chat-input-bar {
+      display: flex;
+      gap: 8px;
+      padding: 10px 12px;
+      background: var(--bg-card);
+      border-top: 1px solid var(--border-color);
+    }
+    .chat-input-bar input { flex: 1; }
+    .send-btn {
+      padding: 0 16px;
+      border-radius: 10px;
+      border: none;
+      background: var(--accent-green);
+      color: #08120b;
+      font-weight: 800;
       cursor: pointer;
     }
 
-    .theme-opt.active {
-      background: var(--bg-surface);
-      color: var(--text-primary);
-      border-color: var(--border);
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    /* BOTTOM NAV */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 460px;
+      height: 58px;
+      background: var(--bg-card);
+      border-top: 1px solid var(--border-color);
+      display: none;
+      grid-template-columns: 1fr 1fr;
+      z-index: 25;
     }
-
-    /* =========================================================
-       CHAT SEARCH CARD ("В РАЗРАБОТКЕ") + LIVE STATS
-       ========================================================= */
-    .search-card {
-      padding: 22px 24px;
+    .bottom-nav.visible { display: grid; }
+    .nav-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 700;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 16px;
+      justify-content: center;
+      gap: 2px;
+      cursor: pointer;
     }
+    .nav-btn.active { color: var(--accent-green); }
 
-    .search-card-header {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .filter-summary {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 7px;
-    }
-
-    .filter-tag {
-      padding: 5px 10px;
-      border-radius: 8px;
-      background: var(--bg-subtle);
-      border: 1px solid var(--border);
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text-secondary);
-    }
-
-    .dev-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 5px 12px;
-      border-radius: 999px;
-      background: var(--dev-bg);
-      border: 1px solid var(--dev-border);
-      color: var(--dev-amber);
-      font-size: 11.5px;
-      font-weight: 800;
-      letter-spacing: 0.02em;
-    }
-
-    .dev-alert {
-      width: 100%;
-      background: var(--dev-bg);
-      border: 1px dashed var(--dev-border);
-      border-radius: 13px;
-      padding: 13px 16px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
+    /* TOAST & MODAL */
+    .toast {
+      position: fixed;
+      top: 68px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1e293b;
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 10px;
       font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+      z-index: 99;
+      display: none;
+      max-width: 90%;
+      text-align: center;
     }
+    .toast.show { display: block; }
 
-    .search-locked-btn {
-      width: 100%;
-      max-width: 460px;
-      height: 52px;
-      border-radius: 13px;
-      border: 1.5px dashed var(--border-strong);
-      background: var(--bg-pill);
-      color: var(--text-secondary);
-      font-family: inherit;
-      font-size: 15px;
-      font-weight: 700;
-      cursor: not-allowed;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 9px;
-      user-select: none;
-    }
-
-    .search-locked-btn:hover {
-      background: var(--bg-pill-hover);
-    }
-
-    .stats-footer {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 28px;
-      flex-wrap: wrap;
-      padding-top: 14px;
-      border-top: 1px solid var(--border);
-      font-size: 13.5px;
-    }
-
-    .stat-block {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--text-secondary);
-    }
-
-    .stat-block strong {
-      color: var(--text-primary);
-      font-weight: 800;
-      font-size: 15px;
-    }
-
-    .dot-live {
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      display: inline-block;
-    }
-
-    .dot-live.green {
-      background: var(--success);
-      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
-    }
-
-    .dot-live.blue {
-      background: var(--accent);
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
-    }
-
-    /* =========================================================
-       MODALS (VIP, POLICY, ADMIN CONSOLE)
-       ========================================================= */
-    .modal-overlay {
+    .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(9, 13, 22, 0.68);
-      backdrop-filter: blur(6px);
+      background: rgba(0, 0, 0, 0.65);
       display: none;
       align-items: center;
       justify-content: center;
-      padding: 14px;
-      z-index: 200;
+      padding: 16px;
+      z-index: 50;
     }
-
-    .modal-overlay.open {
-      display: flex;
-    }
-
-    .modal-dialog {
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      box-shadow: var(--shadow-modal);
+    .modal-backdrop.open { display: flex; }
+    .modal-box {
       width: 100%;
-      max-width: 470px;
-      max-height: 90vh;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      animation: fadeUp 0.22s ease;
+      max-width: 360px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 20px;
     }
-
-    .modal-dialog.wide {
-      max-width: 720px;
-    }
-
-    .modal-header {
-      padding: 16px 20px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .modal-header h3 {
-      font-size: 16px;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .modal-close {
-      width: 32px;
-      height: 32px;
-      border-radius: 9px;
-      border: 1px solid var(--border);
-      background: var(--bg-subtle);
-      color: var(--text-primary);
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    .modal-content {
-      padding: 18px 20px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      font-size: 13.5px;
-    }
-
-    .admin-stats-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-    }
-
-    @media (max-width: 540px) {
-      .admin-stats-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .admin-stat-tile {
-      background: var(--bg-subtle);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 12px;
-    }
-
-    .admin-stat-label {
-      font-size: 11.5px;
-      color: var(--text-secondary);
-      font-weight: 600;
-    }
-
-    .admin-stat-num {
-      font-size: 18px;
-      font-weight: 800;
-      margin-top: 2px;
-    }
-
-    .admin-vip-card {
-      background: var(--bg-subtle);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 15px;
-      display: flex;
-      flex-direction: column;
-      gap: 11px;
-    }
-
-    .admin-inputs {
-      display: grid;
-      grid-template-columns: 1.4fr 1fr auto;
-      gap: 8px;
-    }
-
-    @media (max-width: 580px) {
-      .admin-inputs {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .users-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 12.5px;
-    }
-
-    .users-table th,
-    .users-table td {
-      padding: 9px 10px;
-      border-bottom: 1px solid var(--border);
-      text-align: left;
-    }
-
-    .users-table th {
-      color: var(--text-secondary);
-      font-weight: 700;
-      background: var(--bg-subtle);
-    }
-
-    .tag-vip {
-      display: inline-block;
-      padding: 2px 7px;
-      border-radius: 6px;
-      background: var(--vip-bg);
-      color: var(--vip-gold);
-      border: 1px solid var(--vip-border);
-      font-weight: 700;
-      font-size: 11px;
-    }
-
-    .tag-regular {
-      display: inline-block;
-      padding: 2px 7px;
-      border-radius: 6px;
-      background: var(--bg-pill);
-      color: var(--text-secondary);
-      font-weight: 600;
-      font-size: 11px;
-    }
-
-    .tbl-btn {
-      padding: 5px 10px;
-      border-radius: 7px;
-      border: 1px solid var(--border);
-      background: var(--bg-surface);
-      color: var(--text-primary);
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      font-family: inherit;
-    }
-
-    .tbl-btn.give {
-      background: var(--vip-bg);
-      border-color: var(--vip-border);
-      color: var(--vip-gold);
-    }
-
-    .tbl-btn.take {
-      color: var(--danger);
-      border-color: rgba(239, 68, 68, 0.3);
-    }
-
-    .toast-bar {
-      position: fixed;
-      bottom: 20px;
-      left: 16px;
-      right: 16px;
-      max-width: 420px;
-      margin: 0 auto;
-      background: #1e293b;
-      color: #ffffff;
-      padding: 11px 16px;
-      border-radius: 11px;
-      font-size: 13px;
-      font-weight: 600;
-      text-align: center;
-      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28);
-      z-index: 500;
-      opacity: 0;
-      transform: translateY(10px);
-      pointer-events: none;
-      transition: all 0.22s ease;
-    }
-
-    .toast-bar.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .modal-box h3 { margin-bottom: 8px; }
+    .modal-box p { font-size: 13.5px; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px; }
   </style>
 </head>
 <body>
-
-  <!-- TOP BAR -->
-  <header class="topbar">
-    <div class="topbar-inner">
-      <a href="#" class="brand">
-        <div class="brand-logo">N</div>
-        <div class="brand-info">
-          <div class="brand-title-row">
-            <span class="brand-title">Nexly Roulette</span>
-            <span class="brand-pill">МыВдвоём</span>
-          </div>
-          <div class="tg-auto-status">
-            <span class="status-dot"></span>
-            <span id="autoBindStatusText">Определение аккаунта Telegram...</span>
-          </div>
-        </div>
-      </a>
-
-      <div class="topbar-actions">
-        <button type="button" class="chip-btn" id="topThemeBtn" title="Сменить тему оформления">
-          <span id="topThemeIcon">🌙</span>
-          <span id="topThemeText">Тёмная тема</span>
-        </button>
-
-        <!-- Auto-detected Telegram ID badge (no manual linking needed) -->
-        <div class="tg-id-badge" id="autoTgBadge">
-          <span>🆔</span>
-          <span id="autoTgIdText">Гость</span>
-        </div>
-
-        <button type="button" class="chip-btn" id="topVipBtn">
-          <span>👑</span>
-          <span id="topVipText">VIP: Нет</span>
-        </button>
-
-        <!-- Admin Console button appears automatically for TG ID 8515868917 -->
-        <button type="button" class="chip-btn admin-trigger hidden" id="topAdminBtn">
-          <span>🛡️</span>
-          <span>Админ-консоль</span>
-        </button>
+  <div class="app-shell">
+    <!-- TOP BAR -->
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-dot"></span>
+        <span>vortex roullette.me</span>
       </div>
-    </div>
-  </header>
-
-  <!-- MAIN CONTAINER -->
-  <main class="container">
-
-    <!-- =======================================================
-         STEP 1: GUEST ENTRY + PRIVACY POLICY
-         ======================================================= -->
-    <section class="surface-card entry-box" id="entryScreen">
-      <div class="entry-head">
-        <div class="entry-icon">💬</div>
-        <div>
-          <h1 class="entry-title">Анонимный чат вдвоём</h1>
-          <div style="font-size: 12px; color: var(--text-secondary);" id="entryAccountHint">Nexly Roulette • Telegram Mini App</div>
-        </div>
+      <div class="topbar-right">
+        <span id="plan-badge" class="plan-badge" style="display:none;">FREE</span>
+        <button id="quick-theme-btn" class="icon-btn" title="Сменить тему">🌓</button>
       </div>
+    </header>
 
-      <p class="entry-desc">
-        Ваш профиль Telegram определяется автоматически при входе. Выберите гостевой режим и примите правила сервиса.
-      </p>
-
-      <div class="guest-mode-card">
-        <div class="guest-mode-left">
-          <div class="guest-avatar">👤</div>
-          <div>
-            <div style="font-weight: 700; font-size: 15px;">Вход гостя</div>
-            <div style="font-size: 12px; color: var(--text-secondary);" id="entryAutoIdSub">Автоматическая привязка сессии</div>
-          </div>
-        </div>
-        <div class="radio-selected"></div>
-      </div>
-
-      <div class="rules-box">
-        <div class="rules-top">
-          <span>Правила и политика конфиденциальности</span>
-          <button type="button" class="text-link" id="openPolicyModalBtn">Читать полностью</button>
-        </div>
-        <ul class="rules-list">
-          <li>Возраст участников: от 10 до 99 лет.</li>
-          <li>Запрещены оскорбления, спам, реклама и нарушение законов.</li>
-          <li>Разделы «Знакомства», «Флирт» и «18+» доступны владельцам VIP-подписки.</li>
-        </ul>
-      </div>
-
-      <label class="policy-check" for="policyAgreeCheckbox">
-        <input type="checkbox" id="policyAgreeCheckbox" />
-        <span>Я принимаю <strong>Политику конфиденциальности</strong> и обязуюсь соблюдать <strong>Правила чата</strong>.</span>
-      </label>
-
-      <button type="button" class="primary-btn" id="proceedLobbyBtn" disabled>
-        Войти в Nexly Roulette →
-      </button>
-    </section>
-
-    <!-- =======================================================
-         STEP 2: TWO-COLUMN LOBBY
-         ======================================================= -->
-    <section id="lobbyScreen" class="hidden">
-      <div class="lobby-columns">
-
-        <!-- LEFT: YOUR PARAMETERS -->
-        <div class="surface-card lobby-panel">
-          <div class="panel-head">
-            <div class="panel-heading">👤 Ваши параметры</div>
-            <span class="panel-tag" id="lobbyRoleBadge">Гость</span>
-          </div>
-
-          <div class="field-block">
-            <label class="field-label">Ваш пол</label>
-            <div class="seg-grid">
-              <button type="button" class="seg-btn active" data-my-gender="male">👦 Мальчик</button>
-              <button type="button" class="seg-btn" data-my-gender="female">👩 Женщина</button>
-              <button type="button" class="seg-btn" data-my-gender="trans">⚧ Транс</button>
-            </div>
-          </div>
-
-          <div class="field-block">
-            <label class="field-label" for="myAgeDropdown">
-              <span>Ваш возраст (10 – 99 лет)</span>
-              <span id="myAgeDisplay" style="color: var(--accent);">18 лет</span>
-            </label>
-            <div class="age-stepper-row">
-              <button type="button" class="step-btn" id="ageDecBtn">−</button>
-              <select class="select-input" id="myAgeDropdown"></select>
-              <button type="button" class="step-btn" id="ageIncBtn">+</button>
-            </div>
-            <div class="quick-age-row">
-              <button type="button" class="age-preset" data-preset-age="14">14 лет</button>
-              <button type="button" class="age-preset" data-preset-age="18">18 лет</button>
-              <button type="button" class="age-preset" data-preset-age="21">21 год</button>
-              <button type="button" class="age-preset" data-preset-age="25">25 лет</button>
-              <button type="button" class="age-preset" data-preset-age="30">30 лет</button>
-            </div>
-          </div>
-
-          <div class="field-block">
-            <label class="field-label">Тема оформления</label>
-            <div class="theme-box">
-              <span style="font-size: 12.5px; color: var(--text-secondary);">Стиль интерфейса</span>
-              <div class="theme-switch-group">
-                <button type="button" class="theme-opt active" data-theme-choice="light">☀️ Светлая</button>
-                <button type="button" class="theme-opt" data-theme-choice="dark">🌙 Тёмная</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- RIGHT: PARTNER FILTERS -->
-        <div class="surface-card lobby-panel">
-          <div class="panel-head">
-            <div class="panel-heading">🔍 Параметры собеседника</div>
-            <span class="panel-tag">По умолчанию: Любой</span>
-          </div>
-
-          <div class="field-block">
-            <label class="field-label">
-              <span>Пол собеседника</span>
-              <span style="font-size: 11px; color: var(--text-muted);">Выбор конкретного — VIP</span>
-            </label>
-            <div class="seg-grid">
-              <button type="button" class="seg-btn active" data-partner-gender="any">Любой</button>
-              <button type="button" class="seg-btn vip-locked" data-partner-gender="female">
-                Женщина <span class="vip-pill">VIP</span>
-              </button>
-              <button type="button" class="seg-btn vip-locked" data-partner-gender="male">
-                Мальчик <span class="vip-pill">VIP</span>
-              </button>
-              <button type="button" class="seg-btn vip-locked" data-partner-gender="trans">
-                Транс <span class="vip-pill">VIP</span>
-              </button>
-            </div>
-          </div>
-
-          <div class="field-block">
-            <label class="field-label">
-              <span>Возраст собеседника</span>
-              <span style="font-size: 11px; color: var(--text-muted);">Выбор диапазона — VIP</span>
-            </label>
-            <div class="seg-grid">
-              <button type="button" class="seg-btn active" data-partner-age="any">Любой</button>
-              <button type="button" class="seg-btn vip-locked" data-partner-age="10-17">
-                10–17 <span class="vip-pill">VIP</span>
-              </button>
-              <button type="button" class="seg-btn vip-locked" data-partner-age="18-24">
-                18–24 <span class="vip-pill">VIP</span>
-              </button>
-              <button type="button" class="seg-btn vip-locked" data-partner-age="25-34">
-                25–34 <span class="vip-pill">VIP</span>
-              </button>
-              <button type="button" class="seg-btn vip-locked" data-partner-age="35-99">
-                35+ <span class="vip-pill">VIP</span>
-              </button>
-            </div>
-          </div>
-
-          <div class="field-block">
-            <label class="field-label">
-              <span>Тема чата</span>
-              <span style="font-size: 11px; color: var(--text-muted);">Бесплатно: Общение</span>
-            </label>
-            <div class="seg-grid">
-              <button type="button" class="seg-btn active" data-chat-topic="chat">💬 Общение</button>
-              <button type="button" class="seg-btn vip-locked" data-chat-topic="dating">
-                ❤️ Знакомства <span class="vip-pill">VIP</span>
-              </button>
-              <button type="button" class="seg-btn vip-locked" data-chat-topic="flirt">
-                🔥 Флирт <span class="vip-pill">VIP</span>
-              </button>
-              <button type="button" class="seg-btn vip-locked" data-chat-topic="adult">
-                🔞 18+ <span class="vip-pill">VIP</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- SEARCH SECTION (IN DEVELOPMENT) + LIVE STATS -->
-      <div class="surface-card search-card">
-        <div class="search-card-header">
-          <div class="filter-summary" id="selectedFiltersRow"></div>
-          <span class="dev-pill">🚧 ПОИСК В РАЗРАБОТКЕ</span>
-        </div>
-
-        <div class="dev-alert">
-          <div style="font-size: 24px; flex-shrink: 0;">🛠️</div>
-          <div>
-            <div style="font-weight: 700; margin-bottom: 2px;">Поиск чата пока недоступен — модуль в разработке</div>
-            <div style="font-size: 12.5px; color: var(--text-secondary);">
-              Мы заканчиваем настройку очереди подбора собеседников. Ваши параметры и статус VIP уже сохраняются автоматически.
-            </div>
-          </div>
-        </div>
-
-        <button type="button" class="search-locked-btn" id="searchDevLockedBtn" aria-disabled="true">
-          <span>🔒</span>
-          <span>Начать поиск чата (В разработке)</span>
-        </button>
-
-        <div class="stats-footer">
-          <div class="stat-block">
-            <span class="dot-live green"></span>
-            <span>Уже общаются: <strong id="chattingCounter">1 284</strong> чел.</span>
-          </div>
-          <div class="stat-block">
-            <span class="dot-live blue"></span>
-            <span>В сети ищут: <strong id="searchingCounter">342</strong> чел.</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- =========================================================
-       MODAL 1: VIP INFO
-       ========================================================= -->
-  <div class="modal-overlay" id="vipInfoModal">
-    <div class="modal-dialog">
-      <div class="modal-header">
-        <h3>👑 VIP-подписка Nexly Roulette</h3>
-        <button type="button" class="modal-close" data-close="vipInfoModal">✕</button>
-      </div>
-      <div class="modal-content">
-        <p style="color: var(--text-secondary);">
-          Эта функция доступна только владельцам <strong>VIP-подписки</strong>.
+    <!-- 1. ВХОД ПО 6-ЗНАЧНОМУ КОДУ -->
+    <section id="view-auth" class="view active">
+      <div class="center-card">
+        <h1>Вход в Vortex Roullette</h1>
+        <p class="sub">
+          Для защиты от ботов и подтверждения доступа введите <b>6-значный код</b>, полученный в нашем Telegram-боте.
         </p>
-        <div style="background: var(--bg-subtle); border: 1px solid var(--border); border-radius: 12px; padding: 14px;">
-          <div style="font-weight: 700; margin-bottom: 8px;">Преимущества VIP:</div>
-          <ul class="rules-list">
-            <li><strong>Выбор пола собеседника:</strong> Женщина, Мальчик или Транс.</li>
-            <li><strong>Выбор возраста собеседника:</strong> 10–17, 18–24, 25–34, 35+.</li>
-            <li><strong>Закрытые темы чата:</strong> ❤️ Знакомства, 🔥 Флирт и 🔞 18+.</li>
-          </ul>
+        <div class="field">
+          <label for="auth-code-input">Код из Telegram-бота</label>
+          <input
+            id="auth-code-input"
+            class="input code-input"
+            type="text"
+            inputmode="numeric"
+            maxlength="6"
+            placeholder="000000"
+          />
         </div>
-        <div style="background: var(--vip-bg); border: 1px solid var(--vip-border); border-radius: 12px; padding: 12px; font-size: 12.5px;">
-          Ваш Telegram ID привязан автоматически: <strong id="vipModalAutoId">—</strong>
+        <button id="btn-verify-code" class="btn-primary">Войти по коду</button>
+        <a id="bot-link" class="btn-outline" href="https://t.me/" target="_blank" rel="noopener">
+          🤖 Получить код в Telegram-боте
+        </a>
+      </div>
+    </section>
+
+    <!-- 2. РЕГИСТРАЦИЯ ГОСТЯ (18+) -->
+    <section id="view-register" class="view">
+      <div class="center-card">
+        <h1>Гостевой профиль</h1>
+        <p class="sub">Заполните анкету один раз. Сменить пол позже можно только с подпиской <b>Plus</b>.</p>
+
+        <div class="field">
+          <label for="reg-nick">Ваш никнейм (2–20 символов)</label>
+          <input id="reg-nick" class="input" type="text" maxlength="20" placeholder="Например: NightFox" />
         </div>
-        <button type="button" class="primary-btn" data-close="vipInfoModal">Понятно</button>
-      </div>
-    </div>
-  </div>
 
-  <!-- =========================================================
-       MODAL 2: PRIVACY POLICY & RULES
-       ========================================================= -->
-  <div class="modal-overlay" id="policyInfoModal">
-    <div class="modal-dialog">
-      <div class="modal-header">
-        <h3>📜 Правила и политика конфиденциальности</h3>
-        <button type="button" class="modal-close" data-close="policyInfoModal">✕</button>
-      </div>
-      <div class="modal-content" style="color: var(--text-secondary);">
-        <p><strong style="color: var(--text-primary);">1. Автоматическая сессия:</strong> При открытии через Telegram Mini App ваш числовой ID определяется автоматически для проверки VIP-статуса и сохранения настроек.</p>
-        <p><strong style="color: var(--text-primary);">2. Правила сообщества:</strong> Уважайте собеседников. Запрещены оскорбления, спам, реклама, угрозы и публикация незаконного контента.</p>
-        <p><strong style="color: var(--text-primary);">3. Возраст и темы 18+:</strong> Допускаются участники от 10 до 99 лет. Темы «Знакомства», «Флирт» и «18+» доступны с VIP-статусом.</p>
-        <button type="button" class="primary-btn" data-close="policyInfoModal">Закрыть</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- =========================================================
-       MODAL 3: ADMIN CONSOLE (AUTO-UNLOCKED FOR TG ID 8515868917)
-       ========================================================= -->
-  <div class="modal-overlay" id="adminConsoleModal">
-    <div class="modal-dialog wide">
-      <div class="modal-header">
-        <h3>🛡️ Админ-консоль Nexly (ID: 8515868917)</h3>
-        <button type="button" class="modal-close" data-close="adminConsoleModal">✕</button>
-      </div>
-      <div class="modal-content">
-        <div class="admin-stats-grid">
-          <div class="admin-stat-tile">
-            <div class="admin-stat-label">Пользователей</div>
-            <div class="admin-stat-num" id="admTotalUsers">0</div>
-          </div>
-          <div class="admin-stat-tile">
-            <div class="admin-stat-label">Активных VIP</div>
-            <div class="admin-stat-num" style="color: var(--vip-gold);" id="admActiveVips">0</div>
-          </div>
-          <div class="admin-stat-tile">
-            <div class="admin-stat-label">Бэкенд</div>
-            <div class="admin-stat-num" style="font-size: 13px; margin-top: 5px;" id="admBackendType">Авто</div>
+        <div class="field">
+          <label>Ваш пол</label>
+          <div class="topics-grid" id="reg-gender-group">
+            <button type="button" class="pill-btn" data-gender="female">Девушка</button>
+            <button type="button" class="pill-btn" data-gender="male">Парень</button>
+            <button type="button" class="pill-btn" data-gender="trans">Транс</button>
+            <button type="button" class="pill-btn active" data-gender="any">Любой</button>
           </div>
         </div>
 
-        <div class="admin-vip-card">
-          <div style="font-weight: 700; font-size: 14px;">👑 Выдать / Снять VIP пользователю</div>
-          <div class="admin-inputs">
-            <input type="text" class="text-input" id="admTargetTgInput" placeholder="Числовой Telegram ID пользователя" inputmode="numeric" style="height: 38px;" />
-            <select class="select-input" id="admDurationSelect" style="height: 38px; font-size: 13px;">
-              <option value="forever">Навсегда (VIP)</option>
-              <option value="30d">На 30 дней</option>
-              <option value="7d">На 7 дней</option>
-              <option value="1d">На 24 часа</option>
-            </select>
-            <button type="button" class="primary-btn" id="admGrantBtn" style="height: 38px; padding: 0 16px; font-size: 13px;">
-              Выдать VIP
-            </button>
+        <div class="field">
+          <label for="reg-age">Ваш возраст (от 18 до 99 лет)</label>
+          <input id="reg-age" class="input" type="number" min="18" max="99" value="21" />
+        </div>
+
+        <label class="checkbox-row">
+          <input id="reg-terms" type="checkbox" />
+          <span>
+            Подтверждаю, что мне уже исполнилось <b>18 лет</b>, и я принимаю условия пользования чат-рулеткой Vortex Roullette.me (18+).
+          </span>
+        </label>
+
+        <button id="btn-complete-reg" class="btn-start">Продолжить</button>
+      </div>
+    </section>
+
+    <!-- 3. ЛОББИ (КАК В NEKTO.ME) -->
+    <section id="view-lobby" class="view">
+      <div class="section-title">
+        <span>Тема общения:</span>
+        <span id="online-counter" style="font-size:12px;color:var(--text-muted);font-weight:600;">В поиске: 0</span>
+      </div>
+      <div class="topics-grid" id="topic-group">
+        <button class="pill-btn active" data-topic="chat">Общение</button>
+        <button class="pill-btn" data-topic="flirt">Флирт 18+</button>
+        <button class="pill-btn" data-topic="roleplay">Ролка</button>
+        <button class="pill-btn" data-topic="dating" id="btn-topic-dating">
+          Знакомства <span class="lock-tag plus">PLUS</span>
+        </button>
+      </div>
+
+      <div class="two-col">
+        <div>
+          <div class="section-title">
+            <span>Ваш пол: <span class="lock-tag plus">PLUS</span></span>
           </div>
-          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; padding-top: 6px; border-top: 1px solid var(--border);">
-            <span style="font-size: 12px; color: var(--text-secondary);">Проверка прав на вашем профиле:</span>
-            <button type="button" class="tbl-btn" id="admToggleSelfVip">Переключить мой VIP (тест замков)</button>
+          <div class="col-stack" id="my-gender-group">
+            <button class="pill-btn" data-my-gender="female">Девушка</button>
+            <button class="pill-btn" data-my-gender="male">Парень</button>
+            <button class="pill-btn" data-my-gender="trans">Транс</button>
+            <button class="pill-btn" data-my-gender="any">Любой</button>
           </div>
         </div>
 
         <div>
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
-            <span style="font-weight: 700; font-size: 14px;">Пользователи и VIP-реестр</span>
-            <button type="button" class="tbl-btn" id="admRefreshBtn">↻ Обновить</button>
-          </div>
-          <div style="overflow-x: auto; border: 1px solid var(--border); border-radius: 10px;">
-            <table class="users-table">
-              <thead>
-                <tr>
-                  <th>Telegram ID / Имя</th>
-                  <th>Анкета</th>
-                  <th>Статус</th>
-                  <th>Действие</th>
-                </tr>
-              </thead>
-              <tbody id="admUsersBody">
-                <tr>
-                  <td colspan="4" style="text-align: center; color: var(--text-muted);">Загрузка...</td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="section-title"><span>Пол собеседника:</span></div>
+          <div class="col-stack" id="target-gender-group">
+            <button class="pill-btn" data-target-gender="female">Девушка</button>
+            <button class="pill-btn" data-target-gender="male">Парень</button>
+            <button class="pill-btn" data-target-gender="trans">Транс</button>
+            <button class="pill-btn active" data-target-gender="any">Любой</button>
           </div>
         </div>
       </div>
+
+      <div class="two-col">
+        <div>
+          <div class="section-title"><span>Ваш возраст:</span></div>
+          <div class="col-stack" id="my-age-buckets">
+            <button class="pill-btn" data-my-bucket="18-21" disabled>от 18 до 21 года</button>
+            <button class="pill-btn" data-my-bucket="22-25" disabled>от 22 до 25 лет</button>
+            <button class="pill-btn" data-my-bucket="26-35" disabled>от 26 до 35 лет</button>
+            <button class="pill-btn" data-my-bucket="36-99" disabled>старше 36 лет</button>
+          </div>
+        </div>
+
+        <div>
+          <div class="section-title">
+            <span>Возраст собесед.: <span class="lock-tag go">GO</span></span>
+          </div>
+          <div class="col-stack" id="target-age-group">
+            <button class="pill-btn active" data-age-bucket="18-21">от 18 до 21 года</button>
+            <button class="pill-btn active" data-age-bucket="22-25">от 22 до 25 лет</button>
+            <button class="pill-btn active" data-age-bucket="26-35">от 26 до 35 лет</button>
+            <button class="pill-btn active" data-age-bucket="36-99">старше 36 лет</button>
+            <span class="hint-italic">можно несколько</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-title"><span>Цветовая схема:</span></div>
+      <div class="theme-row">
+        <button class="pill-btn" data-set-theme="light">Светлая</button>
+        <button class="pill-btn active" data-set-theme="dark">Темная</button>
+      </div>
+
+      <button id="btn-start-chat" class="btn-start">НАЧАТЬ ЧАТ</button>
+    </section>
+
+    <!-- 4. ПРОФИЛЬ -->
+    <section id="view-profile" class="view">
+      <div class="center-card">
+        <h1>Ваш профиль</h1>
+        <p class="sub">Данные синхронизируются с Telegram-ботом в реальном времени.</p>
+        <div class="field">
+          <label>Никнейм</label>
+          <input id="prof-nick" class="input" type="text" maxlength="20" />
+        </div>
+        <div class="field">
+          <label>Возраст (18–99)</label>
+          <input id="prof-age" class="input" type="number" min="18" max="99" />
+        </div>
+        <div class="field">
+          <label>Текущая подписка</label>
+          <input id="prof-plan" class="input" type="text" readonly />
+        </div>
+        <div class="field">
+          <label>Telegram ID</label>
+          <input id="prof-id" class="input" type="text" readonly />
+        </div>
+        <button id="btn-save-profile" class="btn-primary">Сохранить ник и возраст</button>
+        <button id="btn-logout" class="btn-danger" style="margin-top:12px;">Выйти из аккаунта</button>
+      </div>
+    </section>
+
+    <!-- 5. ПОИСК СОБЕСЕДНИКА -->
+    <section id="view-searching" class="view">
+      <div class="search-box">
+        <div class="vortex-spinner"></div>
+        <h2 style="margin-bottom:8px;">Ищем собеседника...</h2>
+        <p id="search-meta" style="font-size:13px;color:var(--text-muted);margin-bottom:20px;"></p>
+        <button id="btn-cancel-search" class="btn-danger">Отменить поиск</button>
+      </div>
+    </section>
+
+    <!-- 6. АКТИВНЫЙ ЧАТ -->
+    <section id="view-chat" class="view">
+      <div class="chat-header">
+        <div class="peer-meta">
+          <strong id="chat-peer-name">Собеседник</strong>
+          <span id="chat-peer-info">Тема: Общение</span>
+        </div>
+        <div class="chat-actions">
+          <button id="btn-next-peer" class="mini-btn next">Следующий</button>
+          <button id="btn-stop-chat" class="mini-btn stop">Стоп</button>
+        </div>
+      </div>
+      <div id="chat-messages" class="messages"></div>
+      <div id="typing-bar" class="typing-bar"></div>
+      <form id="chat-form" class="chat-input-bar">
+        <input id="chat-input" class="input" type="text" placeholder="Напишите сообщение..." autocomplete="off" />
+        <button type="submit" class="send-btn">➤</button>
+      </form>
+    </section>
+
+    <!-- НИЖНЯЯ НАВИГАЦИЯ -->
+    <nav id="bottom-nav" class="bottom-nav">
+      <button class="nav-btn active" data-nav="lobby">💬<span>Рулетка</span></button>
+      <button class="nav-btn" data-nav="profile">☰<span>Профиль</span></button>
+    </nav>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <!-- МОДАЛКА ПОДПИСКИ -->
+  <div id="sub-modal" class="modal-backdrop">
+    <div class="modal-box">
+      <h3 id="modal-title">Требуется подписка</h3>
+      <p id="modal-text"></p>
+      <button id="modal-close" class="btn-primary">Понятно</button>
     </div>
   </div>
 
-  <!-- TOAST -->
-  <div class="toast-bar" id="toastNotice"></div>
-
-  <!-- =========================================================
-       SCRIPTS: AUTO TELEGRAM BINDING + FIREBASE + AIOHTTP API
-       ========================================================= -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js";
-    import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import {
-      getFirestore,
-      doc,
-      setDoc,
-      getDoc,
-      getDocs,
-      collection,
-      onSnapshot,
-      serverTimestamp
-    } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+      getDatabase, ref, get, set, update, remove, push,
+      onValue, onChildAdded, onDisconnect, runTransaction, off
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
+    // === ВАША КОНФИГУРАЦИЯ FIREBASE ===
     const firebaseConfig = {
       apiKey: "AIzaSyD7KNKaJY1xEHxzGzSkcbdITEVPvmYKjQA",
       authDomain: "secretchat-a1358.firebaseapp.com",
+      databaseURL: "https://secretchat-a1358-default-rtdb.firebaseio.com",
       projectId: "secretchat-a1358",
       storageBucket: "secretchat-a1358.firebasestorage.app",
       messagingSenderId: "868441433215",
@@ -1446,669 +736,509 @@
     };
 
     const app = initializeApp(firebaseConfig);
-    try { getAnalytics(app); } catch (e) {}
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+    const db = getDatabase(app);
 
-    const ADMIN_TG_ID = "8515868917";
+    // === СОСТОЯНИЕ ===
+    const ALL_AGE_BUCKETS = ["18-21", "22-25", "26-35", "36-99"];
+    const GENDER_LABELS = { female: "Девушка", male: "Парень", trans: "Транс", any: "Любой" };
+    const TOPIC_LABELS = { chat: "Общение", flirt: "Флирт 18+", roleplay: "Ролка", dating: "Знакомства" };
 
-    // Поддержка aiohttp-сервера (если передан ?api=https://... или открыто напрямую с сервера)
-    const URL_PARAMS = new URLSearchParams(window.location.search);
-    if (URL_PARAMS.get("api")) {
-      localStorage.setItem("nexly_api_base", URL_PARAMS.get("api").replace(/\/$/, ""));
-    }
-    const CUSTOM_API_BASE = localStorage.getItem("nexly_api_base") || "";
-    const IS_GITHUB_PAGES = window.location.hostname.endsWith("github.io");
-    const API_BASE = CUSTOM_API_BASE || (!IS_GITHUB_PAGES && window.location.protocol.startsWith("http") ? window.location.origin : "");
-    const HAS_PY_BACKEND = Boolean(API_BASE);
+    let currentTgId = localStorage.getItem("vortex_tg_id") || null;
+    let userData = null;
+    let userUnsub = null;
 
-    // =========================================================
-    // AUTOMATIC TELEGRAM ACCOUNT DETECTION (NO MANUAL LINKING)
-    // =========================================================
-    let tgInitData = "";
-    let autoTgId = "";
-    let autoFirstName = "";
-    let autoUsername = "";
-    let tgColorScheme = "";
-
-    try {
-      const tg = window.Telegram?.WebApp;
-      if (tg) {
-        tg.ready();
-        tg.expand();
-        tgInitData = tg.initData || "";
-        const u = tg.initDataUnsafe?.user;
-        if (u && u.id) {
-          autoTgId = String(u.id);
-          autoFirstName = u.first_name || "";
-          autoUsername = u.username || "";
-        }
-        if (tg.colorScheme === "dark" || tg.colorScheme === "light") {
-          tgColorScheme = tg.colorScheme;
-        }
-      }
-    } catch (e) {}
-
-    // Fallback for direct browser testing (?tg_id=8515868917)
-    if (!autoTgId && URL_PARAMS.get("tg_id")) {
-      autoTgId = URL_PARAMS.get("tg_id").replace(/\D/g, "");
-    }
-
-    const fallbackGuestUid = localStorage.getItem("nexly_uid") || ("guest_" + Math.random().toString(36).slice(2, 10));
-    localStorage.setItem("nexly_uid", fallbackGuestUid);
-
-    const state = {
-      theme: localStorage.getItem("nexly_theme") || tgColorScheme || "light",
-      uid: fallbackGuestUid,
-      tgId: autoTgId,
-      firstName: autoFirstName,
-      username: autoUsername,
-      isAdmin: autoTgId === ADMIN_TG_ID,
-      isVip: false,
-      myGender: "male",
-      myAge: 18,
-      partnerGender: "any",
-      partnerAge: "any",
+    let selectedRegGender = "any";
+    let searchPrefs = {
       topic: "chat",
-      unsubVip: null,
-      baseChatting: 1284,
-      baseSearching: 342
+      targetGender: "any",
+      targetAges: [...ALL_AGE_BUCKETS]
     };
 
-    // =========================================================
-    // UI HELPERS
-    // =========================================================
+    let activeRoomId = null;
+    let roomRefs = [];
+    let queueWatchRef = null;
+    let typingTimer = null;
+
+    // === УТИЛИТЫ UI ===
+    const $ = (id) => document.getElementById(id);
+
     function showToast(msg) {
-      const el = document.getElementById("toastNotice");
+      const el = $("toast");
       el.textContent = msg;
       el.classList.add("show");
-      clearTimeout(el._timer);
-      el._timer = setTimeout(() => el.classList.remove("show"), 3200);
+      clearTimeout(el._t);
+      el._t = setTimeout(() => el.classList.remove("show"), 3000);
     }
 
-    function ageText(age) {
-      const m100 = age % 100;
-      const m10 = age % 10;
-      if (m100 >= 11 && m100 <= 14) return `${age} лет`;
-      if (m10 === 1) return `${age} год`;
-      if (m10 >= 2 && m10 <= 4) return `${age} года`;
-      return `${age} лет`;
+    function openSubModal(title, text) {
+      $("modal-title").textContent = title;
+      $("modal-text").innerHTML = text;
+      $("sub-modal").classList.add("open");
     }
+    $("modal-close").onclick = () => $("sub-modal").classList.remove("open");
 
-    function genderLabel(code) {
-      if (code === "male") return "Мальчик";
-      if (code === "female") return "Женщина";
-      if (code === "trans") return "Транс";
-      return "Любой";
-    }
-
-    function topicLabel(code) {
-      if (code === "chat") return "Общение";
-      if (code === "dating") return "Знакомства";
-      if (code === "flirt") return "Флирт";
-      if (code === "adult") return "18+";
-      return "Общение";
-    }
-
-    function escapeHtml(str) {
-      return String(str)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;");
+    function showView(viewId) {
+      document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
+      $(viewId).classList.add("active");
+      const showNav = viewId === "view-lobby" || viewId === "view-profile";
+      $("bottom-nav").classList.toggle("visible", showNav);
+      document.querySelectorAll(".nav-btn").forEach(b => {
+        b.classList.toggle("active", `view-${b.dataset.nav}` === viewId);
+      });
     }
 
     function applyTheme(theme) {
-      state.theme = theme;
-      localStorage.setItem("nexly_theme", theme);
       document.documentElement.setAttribute("data-theme", theme);
-      document.getElementById("topThemeIcon").textContent = theme === "dark" ? "☀️" : "🌙";
-      document.getElementById("topThemeText").textContent = theme === "dark" ? "Светлая" : "Тёмная";
-      document.querySelectorAll("[data-theme-choice]").forEach(btn => {
-        btn.classList.toggle("active", btn.dataset.themeChoice === theme);
+      localStorage.setItem("vortex_theme", theme);
+      document.querySelectorAll("[data-set-theme]").forEach(b => {
+        b.classList.toggle("active", b.dataset.setTheme === theme);
       });
+      if (currentTgId && userData) {
+        update(ref(db, `users/${currentTgId}`), { theme }).catch(() => {});
+      }
     }
 
-    function openModal(id) {
-      document.getElementById(id).classList.add("open");
+    function getAgeBucket(age) {
+      const n = Number(age);
+      if (n <= 21) return "18-21";
+      if (n <= 25) return "22-25";
+      if (n <= 35) return "26-35";
+      return "36-99";
     }
 
-    function closeModal(id) {
-      document.getElementById(id).classList.remove("open");
+    function hasGo() {
+      return userData && (userData.plan === "go" || userData.plan === "plus");
+    }
+    function hasPlus() {
+      return userData && userData.plan === "plus";
     }
 
-    document.querySelectorAll("[data-close]").forEach(btn => {
-      btn.addEventListener("click", () => closeModal(btn.dataset.close));
+    // Инициализация темы
+    applyTheme(localStorage.getItem("vortex_theme") || "dark");
+
+    $("quick-theme-btn").onclick = () => {
+      const next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+      applyTheme(next);
+    };
+    document.querySelectorAll("[data-set-theme]").forEach(btn => {
+      btn.onclick = () => applyTheme(btn.dataset.setTheme);
     });
-    document.querySelectorAll(".modal-overlay").forEach(overlay => {
-      overlay.addEventListener("click", (e) => {
-        if (e.target === overlay) overlay.classList.remove("open");
-      });
+
+    // Счётчик очереди онлайн
+    onValue(ref(db, "queue"), (snap) => {
+      const val = snap.val();
+      const count = val ? Object.keys(val).length : 0;
+      $("online-counter").textContent = `В поиске: ${count}`;
     });
 
-    function renderSelectedFilters() {
-      const row = document.getElementById("selectedFiltersRow");
-      if (!row) return;
-      row.innerHTML = `
-        <span class="filter-tag">Я: <strong>${genderLabel(state.myGender)}, ${ageText(state.myAge)}</strong></span>
-        <span class="filter-tag">Собеседник: <strong>${genderLabel(state.partnerGender)}</strong></span>
-        <span class="filter-tag">Возраст: <strong>${state.partnerAge === "any" ? "Любой" : state.partnerAge + " л."}</strong></span>
-        <span class="filter-tag">Тема: <strong>${topicLabel(state.topic)}</strong></span>
-      `;
-    }
-
-    // =========================================================
-    // PRIVILEGE & VIP SYNCHRONIZATION
-    // =========================================================
-    function getLocalVips() {
+    // === 1. ВХОД ПО КОДУ ===
+    $("btn-verify-code").onclick = async () => {
+      const code = $("auth-code-input").value.trim();
+      if (!/^\d{6}$/.test(code)) {
+        return showToast("Введите ровно 6 цифр кода из бота");
+      }
       try {
-        return JSON.parse(localStorage.getItem("nexly_vip_registry") || "{}");
-      } catch {
-        return {};
+        const snap = await get(ref(db, `auth_codes/${code}`));
+        if (!snap.exists()) return showToast("Код не найден. Получите новый в боте.");
+        const data = snap.val();
+        if (data.used) return showToast("Этот код уже использован.");
+        if (Date.now() > data.expires_at) return showToast("Срок действия кода истёк.");
+
+        await update(ref(db, `auth_codes/${code}`), { used: true });
+        currentTgId = String(data.tg_id);
+        localStorage.setItem("vortex_tg_id", currentTgId);
+        $("auth-code-input").value = "";
+        attachUserListener();
+      } catch (e) {
+        console.error(e);
+        showToast("Ошибка подключения к базе данных");
       }
-    }
+    };
 
-    function saveLocalVips(map) {
-      localStorage.setItem("nexly_vip_registry", JSON.stringify(map));
-    }
+    // === СИНХРОНИЗАЦИЯ ПРОФИЛЯ ===
+    function attachUserListener() {
+      if (userUnsub) userUnsub();
+      const uRef = ref(db, `users/${currentTgId}`);
+      userUnsub = onValue(uRef, (snap) => {
+        if (!snap.exists()) {
+          // Аккаунт удалён в боте
+          logoutLocal("Аккаунт был удалён в Telegram-боте.");
+          return;
+        }
+        userData = snap.val();
+        syncUIWithUser();
 
-    function updateIdentityAndPrivilegesUI() {
-      state.isAdmin = state.tgId === ADMIN_TG_ID;
-
-      const autoBindText = document.getElementById("autoBindStatusText");
-      const autoTgIdText = document.getElementById("autoTgIdText");
-      const entryAccountHint = document.getElementById("entryAccountHint");
-      const entryAutoIdSub = document.getElementById("entryAutoIdSub");
-      const vipModalAutoId = document.getElementById("vipModalAutoId");
-
-      if (state.tgId) {
-        const displayUser = state.username ? `@${state.username}` : (state.firstName || "Telegram");
-        autoBindText.textContent = `Привязан автоматически • ${displayUser}`;
-        autoTgIdText.textContent = `TG ID: ${state.tgId}`;
-        entryAccountHint.textContent = `Telegram: ${displayUser} (ID: ${state.tgId})`;
-        entryAutoIdSub.textContent = `Аккаунт Telegram ID ${state.tgId} привязан автоматически`;
-        vipModalAutoId.textContent = `${state.tgId} (${displayUser})`;
-      } else {
-        autoBindText.textContent = "Веб-режим (гостевая сессия)";
-        autoTgIdText.textContent = `ID: ${state.uid.slice(0, 10)}`;
-        entryAccountHint.textContent = "Откройте через Telegram бота для авто-привязки ID";
-        entryAutoIdSub.textContent = "Анонимная сессия без регистрации";
-        vipModalAutoId.textContent = state.uid;
-      }
-
-      document.getElementById("topAdminBtn").classList.toggle("hidden", !state.isAdmin);
-
-      const topVipBtn = document.getElementById("topVipBtn");
-      const topVipText = document.getElementById("topVipText");
-      const lobbyRoleBadge = document.getElementById("lobbyRoleBadge");
-
-      if (state.isVip) {
-        topVipBtn.classList.add("vip-on");
-        topVipText.textContent = state.isAdmin ? "👑 VIP + Admin" : "👑 VIP активен";
-        lobbyRoleBadge.textContent = "👑 VIP Гость";
-      } else {
-        topVipBtn.classList.remove("vip-on");
-        topVipText.textContent = "VIP: Нет";
-        lobbyRoleBadge.textContent = state.isAdmin ? "🛡️ Админ (тест без VIP)" : "Гость";
-      }
-
-      document.querySelectorAll("[data-partner-gender]").forEach(btn => {
-        if (btn.dataset.partnerGender !== "any") {
-          btn.classList.toggle("vip-locked", !state.isVip);
+        if (!userData.registered || !userData.accepted_terms) {
+          showView("view-register");
+        } else if (!activeRoomId && !queueWatchRef) {
+          const isProfile = $("view-profile").classList.contains("active");
+          showView(isProfile ? "view-profile" : "view-lobby");
         }
       });
-      document.querySelectorAll("[data-partner-age]").forEach(btn => {
-        if (btn.dataset.partnerAge !== "any") {
-          btn.classList.toggle("vip-locked", !state.isVip);
-        }
+    }
+
+    function syncUIWithUser() {
+      if (!userData) return;
+      const badge = $("plan-badge");
+      badge.style.display = "inline-block";
+      badge.className = `plan-badge ${userData.plan || "free"}`;
+      badge.textContent = (userData.plan || "free").toUpperCase();
+
+      // Профиль
+      $("prof-nick").value = userData.nick || "";
+      $("prof-age").value = userData.age || 18;
+      $("prof-plan").value = (userData.plan || "free").toUpperCase();
+      $("prof-id").value = userData.tg_id || currentTgId;
+
+      // Мой пол
+      document.querySelectorAll("[data-my-gender]").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.myGender === userData.gender);
+        btn.classList.toggle("locked", !hasPlus() && btn.dataset.myGender !== userData.gender);
       });
-      document.querySelectorAll("[data-chat-topic]").forEach(btn => {
-        if (btn.dataset.chatTopic !== "chat") {
-          btn.classList.toggle("vip-locked", !state.isVip);
-        }
+
+      // Мой возраст
+      const myBucket = getAgeBucket(userData.age || 18);
+      document.querySelectorAll("[data-my-bucket]").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.myBucket === myBucket);
       });
 
-      if (!state.isVip) {
-        if (state.partnerGender !== "any") selectPartnerGender("any", true);
-        if (state.partnerAge !== "any") selectPartnerAge("any", true);
-        if (state.topic !== "chat") selectChatTopic("chat", true);
+      // Тема "Знакомства" только Plus
+      $("btn-topic-dating").classList.toggle("locked", !hasPlus());
+      if (!hasPlus() && searchPrefs.topic === "dating") {
+        searchPrefs.topic = "chat";
+        renderLobbySelections();
       }
 
-      renderSelectedFilters();
-    }
-
-    async function syncAccountAndVip() {
-      const localVips = getLocalVips();
-      const keys = [state.uid];
-      if (state.tgId) keys.push(state.tgId);
-
-      let hasVip = keys.some(k => localVips[k] && localVips[k].active === true);
-
-      if (state.tgId === ADMIN_TG_ID && localStorage.getItem("nexly_admin_test_novip") !== "1") {
-        hasVip = true;
+      // Возраст собеседника только от Go
+      if (!hasGo()) {
+        searchPrefs.targetAges = [...ALL_AGE_BUCKETS];
       }
-
-      // Sync with aiohttp backend if available
-      if (HAS_PY_BACKEND && state.tgId) {
-        try {
-          const res = await fetch(`${API_BASE}/api/sync`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              initData: tgInitData,
-              tgId: state.tgId,
-              firstName: state.firstName,
-              username: state.username,
-              gender: state.myGender,
-              age: state.myAge
-            })
-          });
-          if (res.ok) {
-            const data = await res.json();
-            if (data.ok && data.isVip) hasVip = true;
-          }
-        } catch (e) {}
-      }
-
-      // Check Firestore VIP registry
-      try {
-        for (const k of keys) {
-          const snap = await getDoc(doc(db, "vip_registry", k));
-          if (snap.exists() && snap.data().active === true) {
-            hasVip = true;
-          }
-        }
-      } catch (e) {}
-
-      state.isVip = hasVip;
-      updateIdentityAndPrivilegesUI();
+      document.querySelectorAll("[data-age-bucket]").forEach(btn => {
+        btn.classList.toggle("locked", !hasGo());
+        btn.classList.toggle("active", searchPrefs.targetAges.includes(btn.dataset.ageBucket));
+      });
     }
 
-    function bindRealtimeVip() {
-      if (state.unsubVip) state.unsubVip();
-      const key = state.tgId || state.uid;
-      try {
-        state.unsubVip = onSnapshot(doc(db, "vip_registry", key), (snap) => {
-          if (snap.exists()) {
-            state.isVip = !!snap.data().active;
-            updateIdentityAndPrivilegesUI();
-          }
-        });
-      } catch (e) {}
+    function renderLobbySelections() {
+      document.querySelectorAll("[data-topic]").forEach(b => {
+        b.classList.toggle("active", b.dataset.topic === searchPrefs.topic);
+      });
+      document.querySelectorAll("[data-target-gender]").forEach(b => {
+        b.classList.toggle("active", b.dataset.targetGender === searchPrefs.targetGender);
+      });
+      document.querySelectorAll("[data-age-bucket]").forEach(b => {
+        b.classList.toggle("active", searchPrefs.targetAges.includes(b.dataset.ageBucket));
+      });
     }
 
-    async function saveProfileToCloud() {
-      const key = state.tgId || state.uid;
-      const record = {
-        uid: state.uid,
-        tgId: state.tgId || null,
-        firstName: state.firstName || null,
-        username: state.username || null,
-        gender: state.myGender,
-        age: state.myAge,
-        isVip: state.isVip,
-        updatedAt: Date.now()
+    // === 2. ГОСТЕВАЯ РЕГИСТРАЦИЯ ===
+    document.querySelectorAll("#reg-gender-group .pill-btn").forEach(btn => {
+      btn.onclick = () => {
+        selectedRegGender = btn.dataset.gender;
+        document.querySelectorAll("#reg-gender-group .pill-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
       };
-
-      const known = JSON.parse(localStorage.getItem("nexly_known_users") || "{}");
-      known[key] = record;
-      localStorage.setItem("nexly_known_users", JSON.stringify(known));
-
-      if (HAS_PY_BACKEND && state.tgId) {
-        try {
-          await fetch(`${API_BASE}/api/sync`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              initData: tgInitData,
-              tgId: state.tgId,
-              firstName: state.firstName,
-              username: state.username,
-              gender: state.myGender,
-              age: state.myAge
-            })
-          });
-        } catch (e) {}
-      }
-
-      try {
-        await setDoc(doc(db, "users", key), {
-          ...record,
-          serverUpdatedAt: serverTimestamp()
-        }, { merge: true });
-      } catch (e) {}
-    }
-
-    // =========================================================
-    // AGE SELECTOR & LIVE COUNTERS
-    // =========================================================
-    const myAgeDropdown = document.getElementById("myAgeDropdown");
-    for (let a = 10; a <= 99; a++) {
-      const opt = document.createElement("option");
-      opt.value = String(a);
-      opt.textContent = ageText(a);
-      if (a === 18) opt.selected = true;
-      myAgeDropdown.appendChild(opt);
-    }
-
-    function setMyAge(val) {
-      const age = Math.min(99, Math.max(10, parseInt(val, 10) || 18));
-      state.myAge = age;
-      myAgeDropdown.value = String(age);
-      document.getElementById("myAgeDisplay").textContent = ageText(age);
-      renderSelectedFilters();
-    }
-
-    function startStatsTicker() {
-      const cEl = document.getElementById("chattingCounter");
-      const sEl = document.getElementById("searchingCounter");
-      const fmt = (n) => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-
-      setInterval(() => {
-        state.baseChatting = Math.max(120, state.baseChatting + (Math.floor(Math.random() * 7) - 3));
-        state.baseSearching = Math.max(24, state.baseSearching + (Math.floor(Math.random() * 5) - 2));
-        cEl.textContent = fmt(state.baseChatting);
-        sEl.textContent = fmt(state.baseSearching);
-      }, 3500);
-    }
-
-    // =========================================================
-    // EVENT HANDLERS
-    // =========================================================
-    document.getElementById("topThemeBtn").addEventListener("click", () => {
-      applyTheme(state.theme === "light" ? "dark" : "light");
     });
 
-    document.querySelectorAll("[data-theme-choice]").forEach(btn => {
-      btn.addEventListener("click", () => applyTheme(btn.dataset.themeChoice));
-    });
+    $("btn-complete-reg").onclick = async () => {
+      const nick = $("reg-nick").value.trim();
+      const age = parseInt($("reg-age").value, 10);
+      const accepted = $("reg-terms").checked;
 
-    document.getElementById("topVipBtn").addEventListener("click", () => openModal("vipInfoModal"));
-    document.getElementById("openPolicyModalBtn").addEventListener("click", () => openModal("policyInfoModal"));
+      if (nick.length < 2 || nick.length > 20) return showToast("Никнейм должен быть от 2 до 20 символов");
+      if (isNaN(age) || age < 18 || age > 99) return showToast("Доступ разрешён только от 18 до 99 лет");
+      if (!accepted) return showToast("Подтвердите, что вам 18+ и вы принимаете условия");
 
-    const policyAgreeCheckbox = document.getElementById("policyAgreeCheckbox");
-    const proceedLobbyBtn = document.getElementById("proceedLobbyBtn");
+      await update(ref(db, `users/${currentTgId}`), {
+        nick,
+        gender: selectedRegGender,
+        age,
+        accepted_terms: true,
+        registered: true
+      });
+      showToast("Добро пожаловать в Vortex Roullette!");
+    };
 
-    policyAgreeCheckbox.addEventListener("change", (e) => {
-      proceedLobbyBtn.disabled = !e.target.checked;
-    });
-
-    proceedLobbyBtn.addEventListener("click", async () => {
-      if (!policyAgreeCheckbox.checked) return;
-      try {
-        const cred = await signInAnonymously(auth);
-        state.uid = cred.user.uid;
-        localStorage.setItem("nexly_uid", state.uid);
-      } catch (e) {}
-
-      await syncAccountAndVip();
-      bindRealtimeVip();
-      await saveProfileToCloud();
-
-      document.getElementById("entryScreen").classList.add("hidden");
-      document.getElementById("lobbyScreen").classList.remove("hidden");
+    // === 3. ЛОББИ И ПОДПИСОЧНЫЕ ОГРАНИЧЕНИЯ ===
+    document.querySelectorAll("[data-topic]").forEach(btn => {
+      btn.onclick = () => {
+        const topic = btn.dataset.topic;
+        if (topic === "dating" && !hasPlus()) {
+          return openSubModal(
+            "Раздел «Знакомства» — только Plus",
+            "Категория <b>Знакомства</b> доступна владельцам подписки <b>Plus</b>. Оформите её в нашем Telegram-боте."
+          );
+        }
+        searchPrefs.topic = topic;
+        renderLobbySelections();
+      };
     });
 
     document.querySelectorAll("[data-my-gender]").forEach(btn => {
-      btn.addEventListener("click", () => {
-        state.myGender = btn.dataset.myGender;
-        document.querySelectorAll("[data-my-gender]").forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        renderSelectedFilters();
-        saveProfileToCloud();
-      });
-    });
-
-    myAgeDropdown.addEventListener("change", (e) => {
-      setMyAge(e.target.value);
-      saveProfileToCloud();
-    });
-
-    document.getElementById("ageDecBtn").addEventListener("click", () => {
-      setMyAge(state.myAge - 1);
-      saveProfileToCloud();
-    });
-
-    document.getElementById("ageIncBtn").addEventListener("click", () => {
-      setMyAge(state.myAge + 1);
-      saveProfileToCloud();
-    });
-
-    document.querySelectorAll("[data-preset-age]").forEach(btn => {
-      btn.addEventListener("click", () => {
-        setMyAge(btn.dataset.presetAge);
-        saveProfileToCloud();
-      });
-    });
-
-    function selectPartnerGender(val, silent = false) {
-      if (val !== "any" && !state.isVip) {
-        if (!silent) openModal("vipInfoModal");
-        return;
-      }
-      state.partnerGender = val;
-      document.querySelectorAll("[data-partner-gender]").forEach(b => {
-        b.classList.toggle("active", b.dataset.partnerGender === val);
-      });
-      renderSelectedFilters();
-    }
-
-    function selectPartnerAge(val, silent = false) {
-      if (val !== "any" && !state.isVip) {
-        if (!silent) openModal("vipInfoModal");
-        return;
-      }
-      state.partnerAge = val;
-      document.querySelectorAll("[data-partner-age]").forEach(b => {
-        b.classList.toggle("active", b.dataset.partnerAge === val);
-      });
-      renderSelectedFilters();
-    }
-
-    function selectChatTopic(val, silent = false) {
-      if (val !== "chat" && !state.isVip) {
-        if (!silent) openModal("vipInfoModal");
-        return;
-      }
-      state.topic = val;
-      document.querySelectorAll("[data-chat-topic]").forEach(b => {
-        b.classList.toggle("active", b.dataset.chatTopic === val);
-      });
-      renderSelectedFilters();
-    }
-
-    document.querySelectorAll("[data-partner-gender]").forEach(btn => {
-      btn.addEventListener("click", () => selectPartnerGender(btn.dataset.partnerGender));
-    });
-    document.querySelectorAll("[data-partner-age]").forEach(btn => {
-      btn.addEventListener("click", () => selectPartnerAge(btn.dataset.partnerAge));
-    });
-    document.querySelectorAll("[data-chat-topic]").forEach(btn => {
-      btn.addEventListener("click", () => selectChatTopic(btn.dataset.chatTopic));
-    });
-
-    document.getElementById("searchDevLockedBtn").addEventListener("click", () => {
-      showToast("🚧 Поиск чата пока в разработке — скоро откроем!");
-    });
-
-    // =========================================================
-    // ADMIN CONSOLE (AUTO-UNLOCKED FOR TG ID 8515868917)
-    // =========================================================
-    async function loadAdminUsers() {
-      const tbody = document.getElementById("admUsersBody");
-      const known = JSON.parse(localStorage.getItem("nexly_known_users") || "{}");
-      const localVips = getLocalVips();
-      const merged = { ...known };
-
-      Object.keys(localVips).forEach(k => {
-        if (!merged[k]) merged[k] = { uid: k, tgId: k };
-        merged[k].isVip = !!localVips[k].active;
-        merged[k].duration = localVips[k].duration || "forever";
-      });
-
-      document.getElementById("admBackendType").textContent = HAS_PY_BACKEND ? "aiohttp + Cloud" : "Firebase Cloud";
-
-      if (HAS_PY_BACKEND) {
-        try {
-          const r = await fetch(`${API_BASE}/api/admin/users`);
-          if (r.ok) {
-            const d = await r.json();
-            Object.entries(d.users || {}).forEach(([k, u]) => {
-              merged[k] = { ...(merged[k] || {}), ...u };
-            });
-            Object.entries(d.vips || {}).forEach(([k, v]) => {
-              if (!merged[k]) merged[k] = { uid: k, tgId: k };
-              merged[k].isVip = !!v.active;
-              merged[k].duration = v.duration || "forever";
-            });
-          }
-        } catch (e) {}
-      }
-
-      try {
-        const uSnap = await getDocs(collection(db, "users"));
-        uSnap.forEach(d => {
-          merged[d.id] = { ...(merged[d.id] || {}), ...d.data() };
-        });
-        const vSnap = await getDocs(collection(db, "vip_registry"));
-        vSnap.forEach(d => {
-          if (!merged[d.id]) merged[d.id] = { uid: d.id, tgId: d.id };
-          merged[d.id].isVip = !!d.data().active;
-          merged[d.id].duration = d.data().duration || merged[d.id].duration || "forever";
-        });
-      } catch (e) {}
-
-      const entries = Object.entries(merged);
-      document.getElementById("admTotalUsers").textContent = String(entries.length);
-      document.getElementById("admActiveVips").textContent = String(entries.filter(([, u]) => !!u.isVip).length);
-
-      if (entries.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:var(--text-muted);">Нет пользователей</td></tr>`;
-        return;
-      }
-
-      tbody.innerHTML = "";
-      entries.forEach(([idKey, u]) => {
-        const tr = document.createElement("tr");
-        const isVip = !!u.isVip;
-        const subName = u.firstName || u.username
-          ? `<div style="font-size:11px;color:var(--text-secondary);">${escapeHtml(u.firstName || "")} ${u.username ? "(@" + escapeHtml(u.username) + ")" : ""}</div>`
-          : "";
-        const profileInfo = u.gender ? `${genderLabel(u.gender)}, ${u.age || 18} л.` : "—";
-        const durBadge = isVip && u.duration && u.duration !== "forever" ? ` (${escapeHtml(u.duration)})` : "";
-
-        tr.innerHTML = `
-          <td><strong>${escapeHtml(idKey)}</strong>${subName}</td>
-          <td>${escapeHtml(profileInfo)}</td>
-          <td>${isVip ? `<span class="tag-vip">👑 VIP${durBadge}</span>` : '<span class="tag-regular">Обычный</span>'}</td>
-          <td>
-            ${isVip
-              ? `<button type="button" class="tbl-btn take" data-take-vip="${escapeHtml(idKey)}">Забрать VIP</button>`
-              : `<button type="button" class="tbl-btn give" data-give-vip="${escapeHtml(idKey)}">Выдать VIP</button>`
-            }
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-
-      tbody.querySelectorAll("[data-give-vip]").forEach(btn => {
-        btn.addEventListener("click", () => adminChangeVip(btn.dataset.giveVip, true, "forever"));
-      });
-      tbody.querySelectorAll("[data-take-vip]").forEach(btn => {
-        btn.addEventListener("click", () => adminChangeVip(btn.dataset.takeVip, false, "none"));
-      });
-    }
-
-    async function adminChangeVip(targetId, active, duration) {
-      if (!state.isAdmin) return;
-      const cleanId = String(targetId || "").replace(/\D/g, "") || String(targetId || "").trim();
-      if (!cleanId) {
-        showToast("Введите числовой Telegram ID пользователя");
-        return;
-      }
-
-      const vips = getLocalVips();
-      vips[cleanId] = {
-        active,
-        duration,
-        grantedBy: ADMIN_TG_ID,
-        updatedAt: Date.now()
+      btn.onclick = async () => {
+        const newGender = btn.dataset.myGender;
+        if (newGender === userData.gender) return;
+        if (!hasPlus()) {
+          return openSubModal(
+            "Смена пола — только Plus",
+            "Изменять свой пол после регистрации могут только пользователи с подпиской <b>Plus</b>."
+          );
+        }
+        await update(ref(db, `users/${currentTgId}`), { gender: newGender });
+        showToast(`Ваш пол изменён: ${GENDER_LABELS[newGender]}`);
       };
-      saveLocalVips(vips);
+    });
 
-      if (HAS_PY_BACKEND) {
-        try {
-          await fetch(`${API_BASE}/api/admin/vip`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              adminId: state.tgId,
-              initData: tgInitData,
-              targetId: cleanId,
-              active,
-              duration
-            })
-          });
-        } catch (e) {}
-      }
+    document.querySelectorAll("[data-target-gender]").forEach(btn => {
+      btn.onclick = () => {
+        searchPrefs.targetGender = btn.dataset.targetGender;
+        renderLobbySelections();
+      };
+    });
 
-      try {
-        await setDoc(doc(db, "vip_registry", cleanId), {
-          active,
-          duration,
-          grantedBy: ADMIN_TG_ID,
-          updatedAt: serverTimestamp()
-        }, { merge: true });
+    document.querySelectorAll("[data-age-bucket]").forEach(btn => {
+      btn.onclick = () => {
+        if (!hasGo()) {
+          return openSubModal(
+            "Фильтр по возрасту — от подписки Go",
+            "Выбор возраста собеседника доступен начиная с тарифа <b>Go</b> (и включён в <b>Plus</b>). На бесплатном тарифе поиск идёт по всем возрастам 18–99."
+          );
+        }
+        const bucket = btn.dataset.ageBucket;
+        const idx = searchPrefs.targetAges.indexOf(bucket);
+        if (idx >= 0) {
+          if (searchPrefs.targetAges.length === 1) {
+            return showToast("Выберите хотя бы один возрастной диапазон");
+          }
+          searchPrefs.targetAges.splice(idx, 1);
+        } else {
+          searchPrefs.targetAges.push(bucket);
+        }
+        renderLobbySelections();
+      };
+    });
 
-        await setDoc(doc(db, "users", cleanId), {
-          isVip: active
-        }, { merge: true });
-      } catch (e) {}
+    // Навигация и профиль
+    document.querySelectorAll(".nav-btn").forEach(btn => {
+      btn.onclick = () => showView(`view-${btn.dataset.nav}`);
+    });
 
-      if (cleanId === state.tgId || cleanId === state.uid) {
-        state.isVip = active;
-        updateIdentityAndPrivilegesUI();
-      }
+    $("btn-save-profile").onclick = async () => {
+      const nick = $("prof-nick").value.trim();
+      const age = parseInt($("prof-age").value, 10);
+      if (nick.length < 2 || nick.length > 20) return showToast("Ник должен быть от 2 до 20 символов");
+      if (isNaN(age) || age < 18 || age > 99) return showToast("Возраст должен быть от 18 до 99 лет");
+      await update(ref(db, `users/${currentTgId}`), { nick, age });
+      showToast("Профиль обновлён");
+    };
 
-      showToast(active ? `👑 VIP выдан ID ${cleanId}` : `❌ VIP снят у ID ${cleanId}`);
-      loadAdminUsers();
+    function logoutLocal(message) {
+      stopSearch();
+      leaveRoom(false);
+      if (userUnsub) userUnsub();
+      userUnsub = null;
+      currentTgId = null;
+      userData = null;
+      localStorage.removeItem("vortex_tg_id");
+      $("plan-badge").style.display = "none";
+      showView("view-auth");
+      if (message) showToast(message);
+    }
+    $("btn-logout").onclick = () => logoutLocal("Вы вышли из аккаунта");
+
+    // === 4. МАТЧМЕЙКИНГ И ЧАТ ===
+    function isCompatible(myEntry, peer) {
+      if (peer.room_id) return false;
+      if (peer.topic !== myEntry.topic) return false;
+
+      const iWantPeerGender = myEntry.target_gender === "any" || myEntry.target_gender === peer.gender;
+      const peerWantsMyGender = peer.target_gender === "any" || peer.target_gender === myEntry.gender;
+      if (!iWantPeerGender || !peerWantsMyGender) return false;
+
+      const peerBucket = getAgeBucket(peer.age);
+      const myBucket = getAgeBucket(myEntry.age);
+      const peerAges = Array.isArray(peer.target_ages) ? peer.target_ages : ALL_AGE_BUCKETS;
+      const myAges = Array.isArray(myEntry.target_ages) ? myEntry.target_ages : ALL_AGE_BUCKETS;
+
+      return myAges.includes(peerBucket) && peerAges.includes(myBucket);
     }
 
-    document.getElementById("topAdminBtn").addEventListener("click", () => {
-      if (!state.isAdmin) return;
-      loadAdminUsers();
-      openModal("adminConsoleModal");
-    });
+    async function startSearch() {
+      if (!userData) return;
+      showView("view-searching");
+      $("search-meta").textContent =
+        `Тема: ${TOPIC_LABELS[searchPrefs.topic]} • Собеседник: ${GENDER_LABELS[searchPrefs.targetGender]}`;
 
-    document.getElementById("admGrantBtn").addEventListener("click", () => {
-      const target = document.getElementById("admTargetTgInput").value;
-      const dur = document.getElementById("admDurationSelect").value;
-      adminChangeVip(target, true, dur);
-      document.getElementById("admTargetTgInput").value = "";
-    });
+      const myEntry = {
+        tg_id: currentTgId,
+        nick: userData.nick,
+        gender: userData.gender,
+        age: userData.age,
+        topic: searchPrefs.topic,
+        target_gender: searchPrefs.targetGender,
+        target_ages: hasGo() ? searchPrefs.targetAges : ALL_AGE_BUCKETS,
+        room_id: null,
+        ts: Date.now()
+      };
 
-    document.getElementById("admRefreshBtn").addEventListener("click", loadAdminUsers);
+      const myQueueRef = ref(db, `queue/${currentTgId}`);
+      await set(myQueueRef, myEntry);
+      onDisconnect(myQueueRef).remove();
 
-    document.getElementById("admToggleSelfVip").addEventListener("click", () => {
-      if (!state.isAdmin) return;
-      state.isVip = !state.isVip;
-      if (!state.isVip) {
-        localStorage.setItem("nexly_admin_test_novip", "1");
-        showToast("Тест: VIP временно выключен для проверки замков");
-      } else {
-        localStorage.removeItem("nexly_admin_test_novip");
-        showToast("👑 VIP снова включён");
+      // Слушаем, если нас сматчит кто-то другой
+      queueWatchRef = ref(db, `queue/${currentTgId}/room_id`);
+      onValue(queueWatchRef, async (snap) => {
+        const roomId = snap.val();
+        if (roomId && !activeRoomId) {
+          await stopSearch();
+          enterRoom(roomId);
+        }
+      });
+
+      // Ищем подходящего собеседника среди уже ждущих
+      const qSnap = await get(ref(db, "queue"));
+      const allQueue = qSnap.val() || {};
+      for (const [peerId, peer] of Object.entries(allQueue)) {
+        if (peerId === currentTgId || !peer) continue;
+        if (!isCompatible(myEntry, peer)) continue;
+
+        const newRoomId = `room_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+        const tx = await runTransaction(ref(db, `queue/${peerId}`), (curr) => {
+          if (!curr || curr.room_id) return; // уже занят
+          curr.room_id = newRoomId;
+          return curr;
+        });
+
+        if (tx.committed) {
+          await set(ref(db, `rooms/${newRoomId}`), {
+            active: true,
+            topic: myEntry.topic,
+            created_at: Date.now(),
+            users: {
+              [currentTgId]: { nick: myEntry.nick, gender: myEntry.gender, age: myEntry.age, typing: false },
+              [peerId]: { nick: peer.nick, gender: peer.gender, age: peer.age, typing: false }
+            }
+          });
+          await stopSearch();
+          enterRoom(newRoomId);
+          return;
+        }
       }
-      updateIdentityAndPrivilegesUI();
-    });
+    }
 
-    // Boot
-    applyTheme(state.theme);
-    setMyAge(18);
-    updateIdentityAndPrivilegesUI();
-    syncAccountAndVip();
-    if (state.tgId) bindRealtimeVip();
-    startStatsTicker();
+    async function stopSearch() {
+      if (queueWatchRef) {
+        off(queueWatchRef);
+        queueWatchRef = null;
+      }
+      if (currentTgId) {
+        await remove(ref(db, `queue/${currentTgId}`)).catch(() => {});
+      }
+    }
+
+    function appendMsg(text, cls) {
+      const box = $("chat-messages");
+      const div = document.createElement("div");
+      div.className = `msg ${cls}`;
+      div.textContent = text;
+      box.appendChild(div);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function enterRoom(roomId) {
+      activeRoomId = roomId;
+      $("chat-messages").innerHTML = "";
+      $("typing-bar").textContent = "";
+      $("chat-input").disabled = false;
+      showView("view-chat");
+
+      const roomRef = ref(db, `rooms/${roomId}`);
+      const activeRef = ref(db, `rooms/${roomId}/active`);
+      const usersRef = ref(db, `rooms/${roomId}/users`);
+      const msgsRef = ref(db, `rooms/${roomId}/messages`);
+      roomRefs = [activeRef, usersRef, msgsRef];
+
+      onDisconnect(activeRef).set(false);
+
+      appendMsg("Собеседник найден! Приятного общения.", "sys");
+
+      onValue(usersRef, (snap) => {
+        const users = snap.val() || {};
+        const peerId = Object.keys(users).find(id => id !== currentTgId);
+        if (peerId && users[peerId]) {
+          const p = users[peerId];
+          $("chat-peer-name").textContent = `${p.nick} (${p.age})`;
+          $("chat-peer-info").textContent =
+            `${GENDER_LABELS[p.gender] || "Любой"} • ${TOPIC_LABELS[searchPrefs.topic]}`;
+          $("typing-bar").textContent = p.typing ? `${p.nick} печатает...` : "";
+        }
+      });
+
+      onChildAdded(msgsRef, (snap) => {
+        const m = snap.val();
+        if (!m) return;
+        appendMsg(m.text, m.sender === currentTgId ? "me" : "peer");
+      });
+
+      onValue(activeRef, (snap) => {
+        if (snap.val() === false && activeRoomId === roomId) {
+          appendMsg("Собеседник покинул чат.", "sys");
+          $("chat-input").disabled = true;
+          $("typing-bar").textContent = "";
+        }
+      });
+    }
+
+    async function leaveRoom(goLobby = true) {
+      const rid = activeRoomId;
+      activeRoomId = null;
+      roomRefs.forEach(r => off(r));
+      roomRefs = [];
+      if (rid) {
+        await set(ref(db, `rooms/${rid}/active`), false).catch(() => {});
+      }
+      if (goLobby) showView("view-lobby");
+    }
+
+    $("btn-start-chat").onclick = startSearch;
+    $("btn-cancel-search").onclick = async () => {
+      await stopSearch();
+      showView("view-lobby");
+    };
+    $("btn-stop-chat").onclick = () => leaveRoom(true);
+    $("btn-next-peer").onclick = async () => {
+      await leaveRoom(false);
+      startSearch();
+    };
+
+    $("chat-form").onsubmit = async (e) => {
+      e.preventDefault();
+      if (!activeRoomId) return;
+      const text = $("chat-input").value.trim();
+      if (!text) return;
+      $("chat-input").value = "";
+      await push(ref(db, `rooms/${activeRoomId}/messages`), {
+        sender: currentTgId,
+        text,
+        ts: Date.now()
+      });
+      update(ref(db, `rooms/${activeRoomId}/users/${currentTgId}`), { typing: false }).catch(() => {});
+    };
+
+    $("chat-input").oninput = () => {
+      if (!activeRoomId) return;
+      const myTypingRef = ref(db, `rooms/${activeRoomId}/users/${currentTgId}`);
+      update(myTypingRef, { typing: true }).catch(() => {});
+      clearTimeout(typingTimer);
+      typingTimer = setTimeout(() => {
+        update(myTypingRef, { typing: false }).catch(() => {});
+      }, 1500);
+    };
+
+    // Автоматический вход при сохраненной сессии
+    if (currentTgId) {
+      attachUserListener();
+    }
   </script>
 </body>
 </html>
