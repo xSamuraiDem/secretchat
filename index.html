@@ -6,71 +6,81 @@
   <title>Vortex Roullette.me — Анонимная Чат-Рулетка 18+</title>
   <style>
     :root {
-      --bg-main: #111417;
-      --bg-card: #181d22;
-      --bg-pattern-color: rgba(255, 255, 255, 0.03);
-      --text-main: #eef2f6;
-      --text-muted: #93a1b0;
+      --bg-main: #0f1215;
+      --bg-card: #161b20;
+      --bg-elevated: #1d242b;
+      --grid-line: rgba(255, 255, 255, 0.03);
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
       --pill-bg: #cfd8e2;
-      --pill-text: #1c242c;
-      --pill-active-bg: #365f87;
+      --pill-text: #141a20;
+      --pill-active-bg: #2f5b86;
       --pill-active-text: #ffffff;
       --accent-green: #22c55e;
-      --accent-green-glow: rgba(34, 197, 94, 0.2);
-      --border-color: #26303a;
-      --input-bg: #0f1317;
-      --msg-me-bg: #365f87;
-      --msg-peer-bg: #232b33;
-      --badge-go: #0ea5e9;
-      --badge-plus: #a855f7;
+      --accent-green-dim: rgba(34, 197, 94, 0.14);
+      --border-color: #29333f;
+      --border-strong: #3b4958;
+      --input-bg: #0c0f12;
+      --msg-me-bg: #2f5b86;
+      --msg-peer-bg: #202831;
+      --badge-go: #0284c7;
+      --badge-plus: #9333ea;
+      --star-gold: #f59e0b;
       --danger: #ef4444;
     }
 
     html[data-theme="light"] {
-      --bg-main: #edf2f7;
+      --bg-main: #e8eef4;
       --bg-card: #ffffff;
-      --bg-pattern-color: rgba(15, 23, 42, 0.04);
-      --text-main: #182026;
-      --text-muted: #5c6b7a;
-      --pill-bg: #dfe6ee;
-      --pill-text: #1c242c;
-      --pill-active-bg: #365f87;
+      --bg-elevated: #f3f6fa;
+      --grid-line: rgba(15, 23, 42, 0.045);
+      --text-main: #111827;
+      --text-muted: #526071;
+      --pill-bg: #dce4ed;
+      --pill-text: #111827;
+      --pill-active-bg: #2f5b86;
       --pill-active-text: #ffffff;
       --accent-green: #16a34a;
-      --accent-green-glow: rgba(22, 163, 74, 0.16);
-      --border-color: #d0dae4;
+      --accent-green-dim: rgba(22, 163, 74, 0.12);
+      --border-color: #c5d1de;
+      --border-strong: #9fb0c3;
       --input-bg: #f8fafc;
-      --msg-me-bg: #365f87;
-      --msg-peer-bg: #e2e8f0;
+      --msg-me-bg: #2f5b86;
+      --msg-peer-bg: #dce4ed;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      border-radius: 0 !important; /* СТРОГО КВАДРАТНЫЙ СТИЛЬ */
+      -webkit-tap-highlight-color: transparent;
+    }
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
       background-color: var(--bg-main);
       background-image:
-        radial-gradient(var(--bg-pattern-color) 1.5px, transparent 1.5px),
-        radial-gradient(var(--bg-pattern-color) 1.5px, transparent 1.5px);
-      background-size: 28px 28px;
-      background-position: 0 0, 14px 14px;
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+      background-size: 24px 24px;
       color: var(--text-main);
       min-height: 100dvh;
       display: flex;
       justify-content: center;
-      transition: background-color 0.25s, color 0.25s;
+      transition: background-color 0.2s, color 0.2s;
     }
 
     .app-shell {
       width: 100%;
-      max-width: 460px;
+      max-width: 480px;
       min-height: 100dvh;
       display: flex;
       flex-direction: column;
-      position: relative;
-      background: linear-gradient(180deg, rgba(0,0,0,0.06), transparent);
+      background: var(--bg-main);
       border-left: 1px solid var(--border-color);
       border-right: 1px solid var(--border-color);
+      position: relative;
     }
 
     /* TOP BAR */
@@ -78,49 +88,58 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 12px 16px;
+      padding: 10px 14px;
       background: var(--bg-card);
       border-bottom: 1px solid var(--border-color);
       position: sticky;
       top: 0;
       z-index: 20;
+      gap: 8px;
     }
+    .brand-wrap { display: flex; flex-direction: column; gap: 2px; }
     .brand {
-      font-weight: 800;
-      font-size: 16px;
-      letter-spacing: 0.3px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .brand-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: var(--accent-green);
-      box-shadow: 0 0 10px var(--accent-green);
-    }
-    .topbar-right {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .plan-badge {
-      font-size: 11px;
-      font-weight: 700;
-      padding: 3px 8px;
-      border-radius: 999px;
+      font-weight: 900;
+      font-size: 14px;
+      letter-spacing: 0.6px;
       text-transform: uppercase;
-      background: var(--border-color);
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .brand-sq {
+      width: 9px;
+      height: 9px;
+      background: var(--accent-green);
+      display: inline-block;
+      box-shadow: 0 0 8px var(--accent-green);
+    }
+    .online-strip {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 600;
+      display: flex;
+      gap: 10px;
+    }
+    .online-strip b { color: var(--accent-green); }
+
+    .topbar-right { display: flex; align-items: center; gap: 6px; }
+    .plan-badge {
+      font-size: 10px;
+      font-weight: 800;
+      padding: 4px 7px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-strong);
       color: var(--text-main);
     }
-    .plan-badge.go { background: var(--badge-go); color: #fff; }
-    .plan-badge.plus { background: linear-gradient(135deg, #a855f7, #ec4899); color: #fff; }
+    .plan-badge.go { background: var(--badge-go); border-color: var(--badge-go); color: #fff; }
+    .plan-badge.plus { background: var(--badge-plus); border-color: var(--badge-plus); color: #fff; }
+
     .icon-btn {
-      background: transparent;
+      background: var(--bg-elevated);
       border: 1px solid var(--border-color);
       color: var(--text-main);
-      border-radius: 8px;
       width: 34px;
       height: 34px;
       cursor: pointer;
@@ -130,39 +149,83 @@
     }
 
     /* VIEWS */
-    .view { display: none; flex: 1; flex-direction: column; padding: 16px; padding-bottom: 76px; }
+    .view { display: none; flex: 1; flex-direction: column; padding: 14px; padding-bottom: 78px; }
     .view.active { display: flex; }
 
-    /* CARDS (AUTH / REG) */
-    .center-card {
-      margin: auto 0;
+    /* CARDS */
+    .card {
       background: var(--bg-card);
       border: 1px solid var(--border-color);
-      border-radius: 16px;
-      padding: 22px 18px;
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
+      padding: 18px 16px;
     }
-    .center-card h1 { font-size: 20px; margin-bottom: 6px; }
-    .center-card p.sub { font-size: 13px; color: var(--text-muted); margin-bottom: 18px; line-height: 1.45; }
+    .center-card { margin: auto 0; }
+    .card h1, .card h2 {
+      font-size: 18px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      margin-bottom: 6px;
+    }
+    .sub { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.45; }
 
+    /* LIMIT BAR */
+    .limit-bar {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      padding: 10px 12px;
+      margin-bottom: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .limit-top {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .limit-track {
+      width: 100%;
+      height: 6px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+    }
+    .limit-fill {
+      height: 100%;
+      background: var(--accent-green);
+      width: 0%;
+      transition: width 0.25s;
+    }
+    .limit-fill.warn { background: var(--star-gold); }
+    .limit-fill.full { background: var(--danger); }
+
+    /* INPUTS */
     .field { margin-bottom: 14px; }
-    .field label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--text-muted); }
+    .field label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      margin-bottom: 6px;
+      color: var(--text-muted);
+    }
     .input {
       width: 100%;
-      padding: 12px 14px;
-      border-radius: 10px;
-      border: 1px solid var(--border-color);
+      padding: 11px 12px;
+      border: 1px solid var(--border-strong);
       background: var(--input-bg);
       color: var(--text-main);
-      font-size: 15px;
+      font-size: 14px;
       outline: none;
     }
-    .input:focus { border-color: var(--pill-active-bg); }
+    .input:focus { border-color: var(--accent-green); }
     .code-input {
       text-align: center;
       font-size: 26px;
-      font-weight: 800;
-      letter-spacing: 8px;
+      font-weight: 900;
+      letter-spacing: 10px;
       font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
     }
 
@@ -170,31 +233,47 @@
       display: flex;
       align-items: flex-start;
       gap: 10px;
-      font-size: 13px;
-      line-height: 1.4;
+      font-size: 12.5px;
+      line-height: 1.45;
       color: var(--text-muted);
-      margin: 14px 0 18px;
+      margin: 14px 0 16px;
       cursor: pointer;
     }
-    .checkbox-row input { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--accent-green); }
+    .checkbox-row input { width: 18px; height: 18px; margin-top: 1px; accent-color: var(--accent-green); }
 
-    /* LOBBY (NEKTO.ME STYLE) */
+    /* SWITCH ROW */
+    .switch-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 11px 12px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-color);
+      margin-bottom: 14px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .switch-row input { width: 18px; height: 18px; accent-color: var(--accent-green); cursor: pointer; }
+
+    /* LOBBY */
     .section-title {
-      font-size: 14px;
-      font-weight: 700;
+      font-size: 12.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
       margin-bottom: 8px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 6px;
     }
     .lock-tag {
-      font-size: 10px;
-      font-weight: 800;
-      padding: 2px 6px;
-      border-radius: 6px;
+      font-size: 9.5px;
+      font-weight: 900;
+      padding: 2px 5px;
       color: #fff;
-      margin-left: 4px;
-      vertical-align: middle;
+      letter-spacing: 0.4px;
     }
     .lock-tag.go { background: var(--badge-go); }
     .lock-tag.plus { background: var(--badge-plus); }
@@ -202,139 +281,229 @@
     .topics-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
-      margin-bottom: 18px;
+      gap: 7px;
+      margin-bottom: 16px;
     }
-
     .two-col {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 18px;
+      gap: 10px;
+      margin-bottom: 16px;
     }
-    .col-stack { display: flex; flex-direction: column; gap: 7px; }
+    .col-stack { display: flex; flex-direction: column; gap: 6px; }
 
-    .pill-btn {
+    .sq-btn {
       width: 100%;
       padding: 10px 8px;
-      border: none;
-      border-radius: 8px;
+      border: 1px solid var(--border-strong);
       background: var(--pill-bg);
       color: var(--pill-text);
-      font-size: 13.5px;
-      font-weight: 600;
+      font-size: 13px;
+      font-weight: 700;
       cursor: pointer;
-      transition: transform 0.1s, background-color 0.18s, color 0.18s, opacity 0.18s;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 4px;
+      gap: 5px;
       text-align: center;
+      transition: background-color 0.15s, color 0.15s, border-color 0.15s;
     }
-    .pill-btn:active { transform: scale(0.98); }
-    .pill-btn.active {
+    .sq-btn:active { transform: translateY(1px); }
+    .sq-btn.active {
       background: var(--pill-active-bg);
+      border-color: var(--pill-active-bg);
       color: var(--pill-active-text);
     }
-    .pill-btn.locked {
-      opacity: 0.65;
-      position: relative;
-    }
+    .sq-btn.locked { opacity: 0.62; }
+    .sq-btn:disabled { cursor: default; }
 
     .hint-italic {
       font-size: 11px;
       font-style: italic;
       color: var(--text-muted);
       text-align: center;
-      margin-top: -2px;
     }
 
     .theme-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 22px;
+      gap: 8px;
+      margin-bottom: 18px;
     }
 
     .btn-start {
       width: 100%;
       padding: 14px;
-      border-radius: 999px;
       border: 2px solid var(--accent-green);
-      background: transparent;
+      background: var(--accent-green-dim);
       color: var(--accent-green);
       font-size: 15px;
-      font-weight: 800;
-      letter-spacing: 0.8px;
-      cursor: pointer;
-      transition: background 0.2s, box-shadow 0.2s, color 0.2s;
-      box-shadow: 0 0 18px var(--accent-green-glow);
+      font-weight: 900;
+      letter-spacing: 1px;
       text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
     }
-    .btn-start:hover { background: var(--accent-green); color: #0b140e; }
+    .btn-start:hover { background: var(--accent-green); color: #07120a; }
 
     .btn-primary {
       width: 100%;
-      padding: 13px;
-      border-radius: 10px;
-      border: none;
+      padding: 12px;
+      border: 1px solid var(--pill-active-bg);
       background: var(--pill-active-bg);
       color: #fff;
-      font-size: 15px;
-      font-weight: 700;
+      font-size: 13.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
       cursor: pointer;
     }
-    .btn-outline {
+    .btn-gold {
       width: 100%;
-      padding: 11px;
-      border-radius: 10px;
-      border: 1px solid var(--border-color);
-      background: transparent;
-      color: var(--text-main);
-      font-size: 14px;
-      font-weight: 600;
+      padding: 12px;
+      border: 1px solid var(--star-gold);
+      background: var(--star-gold);
+      color: #111;
+      font-size: 13.5px;
+      font-weight: 900;
+      text-transform: uppercase;
       cursor: pointer;
       text-decoration: none;
       display: block;
       text-align: center;
-      margin-top: 10px;
+    }
+    .btn-plus {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--badge-plus);
+      background: var(--badge-plus);
+      color: #fff;
+      font-size: 13.5px;
+      font-weight: 900;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
+      text-align: center;
+    }
+    .btn-outline {
+      width: 100%;
+      padding: 11px;
+      border: 1px solid var(--border-strong);
+      background: transparent;
+      color: var(--text-main);
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
+      text-align: center;
+      margin-top: 8px;
     }
     .btn-danger {
       width: 100%;
       padding: 11px;
-      border-radius: 10px;
       border: 1px solid var(--danger);
       background: transparent;
       color: var(--danger);
-      font-weight: 700;
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
       cursor: pointer;
     }
+
+    /* SHOP */
+    .shop-grid { display: flex; flex-direction: column; gap: 12px; }
+    .plan-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      padding: 16px;
+    }
+    .plan-card.featured-go { border-color: var(--badge-go); }
+    .plan-card.featured-plus { border-color: var(--badge-plus); border-width: 2px; }
+    .plan-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .plan-title { font-size: 16px; font-weight: 900; text-transform: uppercase; }
+    .plan-price { font-size: 15px; font-weight: 900; color: var(--star-gold); }
+    .plan-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 14px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    .plan-list li::before { content: "▪ "; color: var(--accent-green); font-weight: 900; }
+    .plan-list li b { color: var(--text-main); }
+
+    /* RULES */
+    .rules-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .rule-item {
+      background: var(--bg-elevated);
+      border-left: 3px solid var(--accent-green);
+      border-top: 1px solid var(--border-color);
+      border-right: 1px solid var(--border-color);
+      border-bottom: 1px solid var(--border-color);
+      padding: 10px 12px;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    .rule-item strong { display: block; margin-bottom: 3px; text-transform: uppercase; font-size: 12px; }
 
     /* SEARCHING */
     .search-box {
       margin: auto 0;
       text-align: center;
-      padding: 24px;
+      padding: 26px 18px;
       background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
+      border: 1px solid var(--border-strong);
     }
-    .vortex-spinner {
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      border: 4px solid var(--border-color);
+    .sq-loader {
+      width: 52px;
+      height: 52px;
+      border: 3px solid var(--border-strong);
       border-top-color: var(--accent-green);
       border-right-color: var(--pill-active-bg);
-      margin: 0 auto 18px;
-      animation: spin 0.9s linear infinite;
+      margin: 0 auto 16px;
+      animation: sqSpin 1s linear infinite;
     }
-    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes sqSpin { to { transform: rotate(360deg); } }
+    .search-timer {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 30px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      margin: 10px 0;
+      color: var(--accent-green);
+    }
+    .boost-banner {
+      display: inline-block;
+      background: var(--badge-plus);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 5px 10px;
+      margin-bottom: 14px;
+      letter-spacing: 0.5px;
+    }
 
-    /* CHAT VIEW */
-    #view-chat { padding: 0; padding-bottom: 0; height: calc(100dvh - 59px); }
+    /* CHAT */
+    #view-chat { padding: 0; height: calc(100dvh - 59px); }
     .chat-header {
-      padding: 10px 14px;
+      padding: 10px 12px;
       background: var(--bg-card);
       border-bottom: 1px solid var(--border-color);
       display: flex;
@@ -342,18 +511,22 @@
       justify-content: space-between;
       gap: 8px;
     }
-    .peer-meta { font-size: 13px; }
-    .peer-meta strong { display: block; font-size: 14px; }
+    .peer-meta strong {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+    }
     .peer-meta span { color: var(--text-muted); font-size: 12px; }
     .chat-actions { display: flex; gap: 6px; }
     .mini-btn {
       padding: 7px 10px;
-      border-radius: 8px;
-      border: 1px solid var(--border-color);
+      border: 1px solid var(--border-strong);
       background: var(--input-bg);
       color: var(--text-main);
-      font-size: 12px;
-      font-weight: 700;
+      font-size: 11.5px;
+      font-weight: 800;
+      text-transform: uppercase;
       cursor: pointer;
     }
     .mini-btn.stop { border-color: var(--danger); color: var(--danger); }
@@ -362,7 +535,7 @@
     .messages {
       flex: 1;
       overflow-y: auto;
-      padding: 14px;
+      padding: 12px;
       display: flex;
       flex-direction: column;
       gap: 8px;
@@ -370,37 +543,22 @@
     .msg {
       max-width: 82%;
       padding: 9px 12px;
-      border-radius: 12px;
       font-size: 14px;
       line-height: 1.4;
       word-break: break-word;
+      border: 1px solid var(--border-color);
     }
-    .msg.me {
-      align-self: flex-end;
-      background: var(--msg-me-bg);
-      color: #fff;
-      border-bottom-right-radius: 4px;
-    }
-    .msg.peer {
-      align-self: flex-start;
-      background: var(--msg-peer-bg);
-      color: var(--text-main);
-      border-bottom-left-radius: 4px;
-    }
+    .msg.me { align-self: flex-end; background: var(--msg-me-bg); border-color: var(--msg-me-bg); color: #fff; }
+    .msg.peer { align-self: flex-start; background: var(--msg-peer-bg); color: var(--text-main); }
     .msg.sys {
       align-self: center;
       background: transparent;
+      border: none;
       color: var(--text-muted);
       font-size: 12px;
       text-align: center;
-      padding: 4px 10px;
     }
-    .typing-bar {
-      padding: 4px 14px;
-      font-size: 12px;
-      color: var(--text-muted);
-      min-height: 20px;
-    }
+    .typing-bar { padding: 4px 12px; font-size: 12px; color: var(--text-muted); min-height: 20px; }
     .chat-input-bar {
       display: flex;
       gap: 8px;
@@ -410,62 +568,67 @@
     }
     .chat-input-bar input { flex: 1; }
     .send-btn {
-      padding: 0 16px;
-      border-radius: 10px;
+      padding: 0 18px;
       border: none;
       background: var(--accent-green);
-      color: #08120b;
-      font-weight: 800;
+      color: #07120a;
+      font-weight: 900;
       cursor: pointer;
     }
 
-    /* BOTTOM NAV */
+    /* BOTTOM NAV (4 ВКЛАДКИ) */
     .bottom-nav {
       position: fixed;
       bottom: 0;
       left: 50%;
       transform: translateX(-50%);
       width: 100%;
-      max-width: 460px;
+      max-width: 480px;
       height: 58px;
       background: var(--bg-card);
       border-top: 1px solid var(--border-color);
       display: none;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(4, 1fr);
       z-index: 25;
     }
     .bottom-nav.visible { display: grid; }
     .nav-btn {
       background: transparent;
       border: none;
+      border-right: 1px solid var(--border-color);
       color: var(--text-muted);
-      font-size: 13px;
-      font-weight: 700;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 2px;
+      gap: 3px;
       cursor: pointer;
     }
-    .nav-btn.active { color: var(--accent-green); }
+    .nav-btn:last-child { border-right: none; }
+    .nav-btn.active {
+      color: var(--accent-green);
+      background: var(--accent-green-dim);
+      border-top: 2px solid var(--accent-green);
+    }
 
     /* TOAST & MODAL */
     .toast {
       position: fixed;
-      top: 68px;
+      top: 66px;
       left: 50%;
       transform: translateX(-50%);
-      background: #1e293b;
+      background: #111827;
+      border: 1px solid var(--accent-green);
       color: #fff;
       padding: 10px 16px;
-      border-radius: 10px;
       font-size: 13px;
-      font-weight: 600;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+      font-weight: 700;
       z-index: 99;
       display: none;
-      max-width: 90%;
+      max-width: 92%;
       text-align: center;
     }
     .toast.show { display: block; }
@@ -473,7 +636,7 @@
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.65);
+      background: rgba(0, 0, 0, 0.72);
       display: none;
       align-items: center;
       justify-content: center;
@@ -485,11 +648,10 @@
       width: 100%;
       max-width: 360px;
       background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
+      border: 2px solid var(--border-strong);
       padding: 20px;
     }
-    .modal-box h3 { margin-bottom: 8px; }
+    .modal-box h3 { font-size: 16px; text-transform: uppercase; margin-bottom: 8px; }
     .modal-box p { font-size: 13.5px; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px; }
   </style>
 </head>
@@ -497,9 +659,15 @@
   <div class="app-shell">
     <!-- TOP BAR -->
     <header class="topbar">
-      <div class="brand">
-        <span class="brand-dot"></span>
-        <span>vortex roullette.me</span>
+      <div class="brand-wrap">
+        <div class="brand">
+          <span class="brand-sq"></span>
+          <span>vortex roullette.me</span>
+        </div>
+        <div class="online-strip">
+          <span>Онлайн: <b id="online-total">0</b></span>
+          <span>В поиске: <b id="queue-total">0</b></span>
+        </div>
       </div>
       <div class="topbar-right">
         <span id="plan-badge" class="plan-badge" style="display:none;">FREE</span>
@@ -509,13 +677,13 @@
 
     <!-- 1. ВХОД ПО 6-ЗНАЧНОМУ КОДУ -->
     <section id="view-auth" class="view active">
-      <div class="center-card">
-        <h1>Вход в Vortex Roullette</h1>
+      <div class="card center-card">
+        <h1>Вход по коду</h1>
         <p class="sub">
-          Для защиты от ботов и подтверждения доступа введите <b>6-значный код</b>, полученный в нашем Telegram-боте.
+          Введите <b>6-значный код</b>, полученный в Telegram-боте Vortex Roullette.me. Сервис строго 18+.
         </p>
         <div class="field">
-          <label for="auth-code-input">Код из Telegram-бота</label>
+          <label for="auth-code-input">6-значный код из бота</label>
           <input
             id="auth-code-input"
             class="input code-input"
@@ -525,61 +693,73 @@
             placeholder="000000"
           />
         </div>
-        <button id="btn-verify-code" class="btn-primary">Войти по коду</button>
-        <a id="bot-link" class="btn-outline" href="https://t.me/" target="_blank" rel="noopener">
+        <button id="btn-verify-code" class="btn-start">Войти</button>
+        <a id="bot-auth-link" class="btn-outline" href="https://t.me/" target="_blank" rel="noopener">
           🤖 Получить код в Telegram-боте
         </a>
       </div>
     </section>
 
-    <!-- 2. РЕГИСТРАЦИЯ ГОСТЯ (18+) -->
+    <!-- 2. РЕГИСТРАЦИЯ ГОСТЯ -->
     <section id="view-register" class="view">
-      <div class="center-card">
-        <h1>Гостевой профиль</h1>
-        <p class="sub">Заполните анкету один раз. Сменить пол позже можно только с подпиской <b>Plus</b>.</p>
+      <div class="card center-card">
+        <h1>Гостевая анкета 18+</h1>
+        <p class="sub">Укажите данные для входа. Позже сменить пол можно только с подпиской <b>Plus</b>.</p>
 
         <div class="field">
           <label for="reg-nick">Ваш никнейм (2–20 символов)</label>
-          <input id="reg-nick" class="input" type="text" maxlength="20" placeholder="Например: NightFox" />
+          <input id="reg-nick" class="input" type="text" maxlength="20" placeholder="Например: VortexUser" />
         </div>
 
         <div class="field">
           <label>Ваш пол</label>
           <div class="topics-grid" id="reg-gender-group">
-            <button type="button" class="pill-btn" data-gender="female">Девушка</button>
-            <button type="button" class="pill-btn" data-gender="male">Парень</button>
-            <button type="button" class="pill-btn" data-gender="trans">Транс</button>
-            <button type="button" class="pill-btn active" data-gender="any">Любой</button>
+            <button type="button" class="sq-btn" data-gender="female">Девушка</button>
+            <button type="button" class="sq-btn" data-gender="male">Парень</button>
+            <button type="button" class="sq-btn" data-gender="trans">Транс</button>
+            <button type="button" class="sq-btn active" data-gender="any">Любой</button>
           </div>
         </div>
 
         <div class="field">
           <label for="reg-age">Ваш возраст (от 18 до 99 лет)</label>
-          <input id="reg-age" class="input" type="number" min="18" max="99" value="21" />
+          <input id="reg-age" class="input" type="number" min="18" max="99" value="20" />
         </div>
 
         <label class="checkbox-row">
           <input id="reg-terms" type="checkbox" />
           <span>
-            Подтверждаю, что мне уже исполнилось <b>18 лет</b>, и я принимаю условия пользования чат-рулеткой Vortex Roullette.me (18+).
+            Мне исполнилось <b>18 лет</b>, и я полностью соглашаюсь с
+            <a href="#" id="reg-rules-link" style="color:var(--accent-green);font-weight:700;">правилами Vortex Roullette.me</a>.
           </span>
         </label>
 
-        <button id="btn-complete-reg" class="btn-start">Продолжить</button>
+        <button id="btn-complete-reg" class="btn-start">Завершить регистрацию</button>
       </div>
     </section>
 
-    <!-- 3. ЛОББИ (КАК В NEKTO.ME) -->
+    <!-- 3. ЛОББИ -->
     <section id="view-lobby" class="view">
+      <div class="limit-bar">
+        <div class="limit-top">
+          <span>Лимит чатов на сегодня</span>
+          <span id="limit-text">0 / 50</span>
+        </div>
+        <div class="limit-track"><div id="limit-fill" class="limit-fill"></div></div>
+      </div>
+
       <div class="section-title">
         <span>Тема общения:</span>
-        <span id="online-counter" style="font-size:12px;color:var(--text-muted);font-weight:600;">В поиске: 0</span>
       </div>
       <div class="topics-grid" id="topic-group">
-        <button class="pill-btn active" data-topic="chat">Общение</button>
-        <button class="pill-btn" data-topic="flirt">Флирт 18+</button>
-        <button class="pill-btn" data-topic="roleplay">Ролка</button>
-        <button class="pill-btn" data-topic="dating" id="btn-topic-dating">
+        <button class="sq-btn active" data-topic="chat">Общение</button>
+        <button class="sq-btn" data-topic="flirt" id="btn-topic-flirt">
+          Флирт 18+ <span class="lock-tag plus">PLUS</span>
+        </button>
+        <button class="sq-btn" data-topic="roleplay" id="btn-topic-roleplay">
+          Ролка <span class="lock-tag plus">PLUS</span>
+        </button>
+        <button class="sq-btn" data-topic="dating" id="btn-topic-dating">
           Знакомства <span class="lock-tag plus">PLUS</span>
         </button>
       </div>
@@ -587,23 +767,27 @@
       <div class="two-col">
         <div>
           <div class="section-title">
-            <span>Ваш пол: <span class="lock-tag plus">PLUS</span></span>
+            <span>Ваш пол:</span>
+            <span class="lock-tag plus">PLUS</span>
           </div>
           <div class="col-stack" id="my-gender-group">
-            <button class="pill-btn" data-my-gender="female">Девушка</button>
-            <button class="pill-btn" data-my-gender="male">Парень</button>
-            <button class="pill-btn" data-my-gender="trans">Транс</button>
-            <button class="pill-btn" data-my-gender="any">Любой</button>
+            <button class="sq-btn" data-my-gender="female">Девушка</button>
+            <button class="sq-btn" data-my-gender="male">Парень</button>
+            <button class="sq-btn" data-my-gender="trans">Транс</button>
+            <button class="sq-btn" data-my-gender="any">Любой</button>
           </div>
         </div>
 
         <div>
-          <div class="section-title"><span>Пол собеседника:</span></div>
+          <div class="section-title">
+            <span>Пол собесед.:</span>
+            <span class="lock-tag plus">PLUS</span>
+          </div>
           <div class="col-stack" id="target-gender-group">
-            <button class="pill-btn" data-target-gender="female">Девушка</button>
-            <button class="pill-btn" data-target-gender="male">Парень</button>
-            <button class="pill-btn" data-target-gender="trans">Транс</button>
-            <button class="pill-btn active" data-target-gender="any">Любой</button>
+            <button class="sq-btn" data-target-gender="female">Девушка</button>
+            <button class="sq-btn" data-target-gender="male">Парень</button>
+            <button class="sq-btn" data-target-gender="trans">Транс</button>
+            <button class="sq-btn active" data-target-gender="any">Любой</button>
           </div>
         </div>
       </div>
@@ -612,22 +796,23 @@
         <div>
           <div class="section-title"><span>Ваш возраст:</span></div>
           <div class="col-stack" id="my-age-buckets">
-            <button class="pill-btn" data-my-bucket="18-21" disabled>от 18 до 21 года</button>
-            <button class="pill-btn" data-my-bucket="22-25" disabled>от 22 до 25 лет</button>
-            <button class="pill-btn" data-my-bucket="26-35" disabled>от 26 до 35 лет</button>
-            <button class="pill-btn" data-my-bucket="36-99" disabled>старше 36 лет</button>
+            <button class="sq-btn" data-my-bucket="18-21" disabled>от 18 до 21 года</button>
+            <button class="sq-btn" data-my-bucket="22-25" disabled>от 22 до 25 лет</button>
+            <button class="sq-btn" data-my-bucket="26-35" disabled>от 26 до 35 лет</button>
+            <button class="sq-btn" data-my-bucket="36-99" disabled>старше 36 лет</button>
           </div>
         </div>
 
         <div>
           <div class="section-title">
-            <span>Возраст собесед.: <span class="lock-tag go">GO</span></span>
+            <span>Возраст собес.:</span>
+            <span class="lock-tag go">GO</span>
           </div>
           <div class="col-stack" id="target-age-group">
-            <button class="pill-btn active" data-age-bucket="18-21">от 18 до 21 года</button>
-            <button class="pill-btn active" data-age-bucket="22-25">от 22 до 25 лет</button>
-            <button class="pill-btn active" data-age-bucket="26-35">от 26 до 35 лет</button>
-            <button class="pill-btn active" data-age-bucket="36-99">старше 36 лет</button>
+            <button class="sq-btn active" data-age-bucket="18-21">от 18 до 21 года</button>
+            <button class="sq-btn active" data-age-bucket="22-25">от 22 до 25 лет</button>
+            <button class="sq-btn active" data-age-bucket="26-35">от 26 до 35 лет</button>
+            <button class="sq-btn active" data-age-bucket="36-99">старше 36 лет</button>
             <span class="hint-italic">можно несколько</span>
           </div>
         </div>
@@ -635,18 +820,101 @@
 
       <div class="section-title"><span>Цветовая схема:</span></div>
       <div class="theme-row">
-        <button class="pill-btn" data-set-theme="light">Светлая</button>
-        <button class="pill-btn active" data-set-theme="dark">Темная</button>
+        <button class="sq-btn" data-set-theme="light">Светлая</button>
+        <button class="sq-btn active" data-set-theme="dark">Темная</button>
       </div>
 
       <button id="btn-start-chat" class="btn-start">НАЧАТЬ ЧАТ</button>
     </section>
 
-    <!-- 4. ПРОФИЛЬ -->
+    <!-- 4. МАГАЗИН ПОДПИСОК (TELEGRAM STARS) -->
+    <section id="view-shop" class="view">
+      <div class="shop-grid">
+        <div class="plan-card">
+          <div class="plan-head">
+            <span class="plan-title">FREE</span>
+            <span class="plan-price">0 ⭐</span>
+          </div>
+          <ul class="plan-list">
+            <li>Лимит: <b>50 чатов в день</b></li>
+            <li>Тема: <b>Общение</b></li>
+            <li>Стандартная скорость поиска</li>
+            <li>Собеседник: любой пол и возраст 18+</li>
+          </ul>
+          <button class="btn-outline" disabled>Базовый тариф</button>
+        </div>
+
+        <div class="plan-card featured-go">
+          <div class="plan-head">
+            <span class="plan-title" style="color:var(--badge-go);">GO</span>
+            <span class="plan-price">150 ⭐ / мес</span>
+          </div>
+          <ul class="plan-list">
+            <li>Лимит: <b>100 чатов в день</b></li>
+            <li>Фильтр по <b>возрасту собеседника</b> (можно несколько)</li>
+            <li>Возможность <b>скрыть подписку</b> от других</li>
+            <li>Оплата через Telegram Stars на 30 дней</li>
+          </ul>
+          <a id="buy-go-link" class="btn-gold" href="https://t.me/" target="_blank" rel="noopener">
+            ⭐ Купить GO за 150 звёзд
+          </a>
+        </div>
+
+        <div class="plan-card featured-plus">
+          <div class="plan-head">
+            <span class="plan-title" style="color:var(--badge-plus);">PLUS</span>
+            <span class="plan-price">500 ⭐ / мес</span>
+          </div>
+          <ul class="plan-list">
+            <li>Лимит: <b>250 чатов в день</b></li>
+            <li>⚡ <b>Ускоренный приоритетный поиск</b> собеседника</li>
+            <li>Доступ к темам: <b>Флирт 18+</b>, <b>Ролка</b>, <b>Знакомства</b></li>
+            <li>Смена <b>своего пола</b> + выбор <b>пола собеседника</b></li>
+            <li>Фильтр возраста собеседника + скрытие подписки</li>
+          </ul>
+          <a id="buy-plus-link" class="btn-plus" href="https://t.me/" target="_blank" rel="noopener">
+            ⭐ Купить PLUS за 500 звёзд
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. ПРАВИЛА -->
+    <section id="view-rules" class="view">
+      <div class="card">
+        <h2>Правила Vortex Roullette.me</h2>
+        <p class="sub">Соблюдение правил обязательно для всех участников.</p>
+        <div class="rules-list">
+          <div class="rule-item">
+            <strong>1. Возрастной ценз 18+</strong>
+            Использовать чат-рулетку разрешено строго лицам от 18 до 99 лет. При регистрации вы подтверждаете свой возраст.
+          </div>
+          <div class="rule-item">
+            <strong>2. Уважение и согласие</strong>
+            Темы «Флирт 18+», «Ролка» и «Знакомства» предназначены для общения по взаимному согласию. Оскорбления, угрозы и травля запрещены.
+          </div>
+          <div class="rule-item">
+            <strong>3. Запрет спама и рекламы</strong>
+            Любые ссылки, реклама сторонних сервисов, мошенничество и рассылка спама ведут к блокировке аккаунта.
+          </div>
+          <div class="rule-item">
+            <strong>4. Дневные лимиты чатов</strong>
+            Для защиты от флуда действуют суточные лимиты: Free — 50 чатов/день, Go — 100 чатов/день, Plus — 250 чатов/день. Лимит обновляется ежедневно в 00:00 UTC.
+          </div>
+          <div class="rule-item">
+            <strong>5. Приватность и подписки</strong>
+            Переписка анонимна. Вы можете скрыть значок своей подписки от собеседников в разделе «Профиль» или в Telegram-боте.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. ПРОФИЛЬ -->
     <section id="view-profile" class="view">
-      <div class="center-card">
-        <h1>Ваш профиль</h1>
-        <p class="sub">Данные синхронизируются с Telegram-ботом в реальном времени.</p>
+      <div class="card">
+        <h2>Профиль</h2>
+        <p class="sub">Синхронизация с Telegram-ботом в реальном времени.</p>
+
         <div class="field">
           <label>Никнейм</label>
           <input id="prof-nick" class="input" type="text" maxlength="20" />
@@ -655,30 +923,45 @@
           <label>Возраст (18–99)</label>
           <input id="prof-age" class="input" type="number" min="18" max="99" />
         </div>
+
+        <label class="switch-row">
+          <span>Скрывать мою подписку от собеседников</span>
+          <input id="prof-hide-plan" type="checkbox" />
+        </label>
+
         <div class="field">
-          <label>Текущая подписка</label>
+          <label>Тариф и срок действия</label>
           <input id="prof-plan" class="input" type="text" readonly />
+        </div>
+        <div class="field">
+          <label>Использовано чатов сегодня</label>
+          <input id="prof-chats" class="input" type="text" readonly />
         </div>
         <div class="field">
           <label>Telegram ID</label>
           <input id="prof-id" class="input" type="text" readonly />
         </div>
-        <button id="btn-save-profile" class="btn-primary">Сохранить ник и возраст</button>
-        <button id="btn-logout" class="btn-danger" style="margin-top:12px;">Выйти из аккаунта</button>
+
+        <button id="btn-save-profile" class="btn-primary">Сохранить изменения</button>
+        <button id="btn-logout" class="btn-danger" style="margin-top:10px;">Выйти из аккаунта</button>
       </div>
     </section>
 
-    <!-- 5. ПОИСК СОБЕСЕДНИКА -->
+    <!-- 7. ПОИСК СОБЕСЕДНИКА С ТАЙМЕРОМ -->
     <section id="view-searching" class="view">
       <div class="search-box">
-        <div class="vortex-spinner"></div>
-        <h2 style="margin-bottom:8px;">Ищем собеседника...</h2>
-        <p id="search-meta" style="font-size:13px;color:var(--text-muted);margin-bottom:20px;"></p>
+        <div class="sq-loader"></div>
+        <div id="plus-boost-badge" class="boost-banner" style="display:none;">
+          ⚡ Ускоренный поиск PLUS активен
+        </div>
+        <h2 style="text-transform:uppercase;font-size:16px;">Ищем собеседника...</h2>
+        <div id="search-timer" class="search-timer">00:00</div>
+        <p id="search-meta" style="font-size:12.5px;color:var(--text-muted);margin-bottom:20px;"></p>
         <button id="btn-cancel-search" class="btn-danger">Отменить поиск</button>
       </div>
     </section>
 
-    <!-- 6. АКТИВНЫЙ ЧАТ -->
+    <!-- 8. АКТИВНЫЙ ЧАТ -->
     <section id="view-chat" class="view">
       <div class="chat-header">
         <div class="peer-meta">
@@ -686,33 +969,36 @@
           <span id="chat-peer-info">Тема: Общение</span>
         </div>
         <div class="chat-actions">
-          <button id="btn-next-peer" class="mini-btn next">Следующий</button>
+          <button id="btn-next-peer" class="mini-btn next">Далее</button>
           <button id="btn-stop-chat" class="mini-btn stop">Стоп</button>
         </div>
       </div>
       <div id="chat-messages" class="messages"></div>
       <div id="typing-bar" class="typing-bar"></div>
       <form id="chat-form" class="chat-input-bar">
-        <input id="chat-input" class="input" type="text" placeholder="Напишите сообщение..." autocomplete="off" />
+        <input id="chat-input" class="input" type="text" placeholder="Введите сообщение..." autocomplete="off" />
         <button type="submit" class="send-btn">➤</button>
       </form>
     </section>
 
     <!-- НИЖНЯЯ НАВИГАЦИЯ -->
     <nav id="bottom-nav" class="bottom-nav">
-      <button class="nav-btn active" data-nav="lobby">💬<span>Рулетка</span></button>
-      <button class="nav-btn" data-nav="profile">☰<span>Профиль</span></button>
+      <button class="nav-btn active" data-nav="lobby"><span>💬</span><span>Чат</span></button>
+      <button class="nav-btn" data-nav="shop"><span>⭐</span><span>Магазин</span></button>
+      <button class="nav-btn" data-nav="rules"><span>📜</span><span>Правила</span></button>
+      <button class="nav-btn" data-nav="profile"><span>👤</span><span>Профиль</span></button>
     </nav>
   </div>
 
   <div id="toast" class="toast"></div>
 
-  <!-- МОДАЛКА ПОДПИСКИ -->
+  <!-- МОДАЛЬНОЕ ОКНО -->
   <div id="sub-modal" class="modal-backdrop">
     <div class="modal-box">
-      <h3 id="modal-title">Требуется подписка</h3>
+      <h3 id="modal-title">Ограничение тарифа</h3>
       <p id="modal-text"></p>
-      <button id="modal-close" class="btn-primary">Понятно</button>
+      <button id="modal-go-shop" class="btn-plus" style="margin-bottom:8px;">Перейти в магазин ⭐</button>
+      <button id="modal-close" class="btn-outline" style="margin-top:0;">Закрыть</button>
     </div>
   </div>
 
@@ -723,7 +1009,10 @@
       onValue, onChildAdded, onDisconnect, runTransaction, off
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-    // === ВАША КОНФИГУРАЦИЯ FIREBASE ===
+    // === УКАЖИТЕ ЮЗЕРНЕЙМ ВАШЕГО БОТА (БЕЗ @) ===
+    const BOT_USERNAME = "YOUR_BOT_USERNAME";
+
+    // === КОНФИГУРАЦИЯ FIREBASE ===
     const firebaseConfig = {
       apiKey: "AIzaSyD7KNKaJY1xEHxzGzSkcbdITEVPvmYKjQA",
       authDomain: "secretchat-a1358.firebaseapp.com",
@@ -738,14 +1027,23 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    // === СОСТОЯНИЕ ===
+    // Ссылки на Telegram-бота и оплату Stars
+    const botBase = `https://t.me/${BOT_USERNAME}`;
+    document.getElementById("bot-auth-link").href = botBase;
+    document.getElementById("buy-go-link").href = `${botBase}?start=buy_go`;
+    document.getElementById("buy-plus-link").href = `${botBase}?start=buy_plus`;
+
+    // === КОНСТАНТЫ ===
     const ALL_AGE_BUCKETS = ["18-21", "22-25", "26-35", "36-99"];
+    const PLAN_LIMITS = { free: 50, go: 100, plus: 250 };
     const GENDER_LABELS = { female: "Девушка", male: "Парень", trans: "Транс", any: "Любой" };
     const TOPIC_LABELS = { chat: "Общение", flirt: "Флирт 18+", roleplay: "Ролка", dating: "Знакомства" };
 
+    // === СОСТОЯНИЕ ===
     let currentTgId = localStorage.getItem("vortex_tg_id") || null;
     let userData = null;
     let userUnsub = null;
+    let presenceId = null;
 
     let selectedRegGender = "any";
     let searchPrefs = {
@@ -757,17 +1055,49 @@
     let activeRoomId = null;
     let roomRefs = [];
     let queueWatchRef = null;
+    let searchTimerInt = null;
+    let searchRetryInt = null;
+    let searchStartedAt = 0;
     let typingTimer = null;
 
-    // === УТИЛИТЫ UI ===
     const $ = (id) => document.getElementById(id);
+
+    function todayUTC() {
+      return new Date().toISOString().slice(0, 10);
+    }
+
+    function getEffectivePlan() {
+      if (!userData) return "free";
+      const plan = userData.plan || "free";
+      const exp = Number(userData.plan_expires_at || 0);
+      if (plan !== "free" && exp > 0 && Date.now() > exp) {
+        update(ref(db, `users/${currentTgId}`), { plan: "free", plan_expires_at: 0 }).catch(() => {});
+        return "free";
+      }
+      return plan;
+    }
+
+    function hasGo() {
+      const p = getEffectivePlan();
+      return p === "go" || p === "plus";
+    }
+    function hasPlus() {
+      return getEffectivePlan() === "plus";
+    }
+    function getDailyLimit() {
+      return PLAN_LIMITS[getEffectivePlan()] || 50;
+    }
+    function getDailyUsed() {
+      if (!userData) return 0;
+      return userData.daily_chats_date === todayUTC() ? Number(userData.daily_chats_count || 0) : 0;
+    }
 
     function showToast(msg) {
       const el = $("toast");
       el.textContent = msg;
       el.classList.add("show");
       clearTimeout(el._t);
-      el._t = setTimeout(() => el.classList.remove("show"), 3000);
+      el._t = setTimeout(() => el.classList.remove("show"), 3200);
     }
 
     function openSubModal(title, text) {
@@ -776,12 +1106,16 @@
       $("sub-modal").classList.add("open");
     }
     $("modal-close").onclick = () => $("sub-modal").classList.remove("open");
+    $("modal-go-shop").onclick = () => {
+      $("sub-modal").classList.remove("open");
+      if (userData && userData.registered) showView("view-shop");
+    };
 
     function showView(viewId) {
       document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
       $(viewId).classList.add("active");
-      const showNav = viewId === "view-lobby" || viewId === "view-profile";
-      $("bottom-nav").classList.toggle("visible", showNav);
+      const navViews = ["view-lobby", "view-shop", "view-rules", "view-profile"];
+      $("bottom-nav").classList.toggle("visible", navViews.includes(viewId));
       document.querySelectorAll(".nav-btn").forEach(b => {
         b.classList.toggle("active", `view-${b.dataset.nav}` === viewId);
       });
@@ -806,16 +1140,8 @@
       return "36-99";
     }
 
-    function hasGo() {
-      return userData && (userData.plan === "go" || userData.plan === "plus");
-    }
-    function hasPlus() {
-      return userData && userData.plan === "plus";
-    }
-
     // Инициализация темы
     applyTheme(localStorage.getItem("vortex_theme") || "dark");
-
     $("quick-theme-btn").onclick = () => {
       const next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
       applyTheme(next);
@@ -824,34 +1150,50 @@
       btn.onclick = () => applyTheme(btn.dataset.setTheme);
     });
 
-    // Счётчик очереди онлайн
+    // === ЖИВОЙ ОНЛАЙН (PRESENCE) ===
+    function registerPresence(id) {
+      if (presenceId && presenceId !== id) {
+        remove(ref(db, `online/${presenceId}`)).catch(() => {});
+      }
+      presenceId = id;
+      const pRef = ref(db, `online/${id}`);
+      set(pRef, { ts: Date.now() });
+      onDisconnect(pRef).remove();
+    }
+
+    // Гостевой онлайн до авторизации
+    const guestPresenceKey = `guest_${Math.random().toString(36).slice(2, 10)}`;
+    registerPresence(currentTgId || guestPresenceKey);
+
+    onValue(ref(db, "online"), (snap) => {
+      const val = snap.val();
+      $("online-total").textContent = val ? Object.keys(val).length : 0;
+    });
     onValue(ref(db, "queue"), (snap) => {
       const val = snap.val();
-      const count = val ? Object.keys(val).length : 0;
-      $("online-counter").textContent = `В поиске: ${count}`;
+      $("queue-total").textContent = val ? Object.keys(val).length : 0;
     });
 
-    // === 1. ВХОД ПО КОДУ ===
+    // === 1. ВХОД ПО 6-ЗНАЧНОМУ КОДУ ===
     $("btn-verify-code").onclick = async () => {
       const code = $("auth-code-input").value.trim();
-      if (!/^\d{6}$/.test(code)) {
-        return showToast("Введите ровно 6 цифр кода из бота");
-      }
+      if (!/^\d{6}$/.test(code)) return showToast("Введите ровно 6 цифр кода из бота");
       try {
         const snap = await get(ref(db, `auth_codes/${code}`));
         if (!snap.exists()) return showToast("Код не найден. Получите новый в боте.");
         const data = snap.val();
-        if (data.used) return showToast("Этот код уже использован.");
+        if (data.used) return showToast("Код уже использован.");
         if (Date.now() > data.expires_at) return showToast("Срок действия кода истёк.");
 
         await update(ref(db, `auth_codes/${code}`), { used: true });
         currentTgId = String(data.tg_id);
         localStorage.setItem("vortex_tg_id", currentTgId);
         $("auth-code-input").value = "";
+        registerPresence(currentTgId);
         attachUserListener();
       } catch (e) {
         console.error(e);
-        showToast("Ошибка подключения к базе данных");
+        showToast("Ошибка подключения к Firebase");
       }
     };
 
@@ -861,8 +1203,7 @@
       const uRef = ref(db, `users/${currentTgId}`);
       userUnsub = onValue(uRef, (snap) => {
         if (!snap.exists()) {
-          // Аккаунт удалён в боте
-          logoutLocal("Аккаунт был удалён в Telegram-боте.");
+          logoutLocal("Аккаунт удалён в Telegram-боте.");
           return;
         }
         userData = snap.val();
@@ -871,29 +1212,66 @@
         if (!userData.registered || !userData.accepted_terms) {
           showView("view-register");
         } else if (!activeRoomId && !queueWatchRef) {
-          const isProfile = $("view-profile").classList.contains("active");
-          showView(isProfile ? "view-profile" : "view-lobby");
+          const activeId = document.querySelector(".view.active")?.id;
+          if (!["view-lobby", "view-shop", "view-rules", "view-profile"].includes(activeId)) {
+            showView("view-lobby");
+          }
         }
       });
     }
 
     function syncUIWithUser() {
       if (!userData) return;
+      const plan = getEffectivePlan();
+      const limit = getDailyLimit();
+      const used = getDailyUsed();
+
+      // Бейдж в шапке
       const badge = $("plan-badge");
       badge.style.display = "inline-block";
-      badge.className = `plan-badge ${userData.plan || "free"}`;
-      badge.textContent = (userData.plan || "free").toUpperCase();
+      badge.className = `plan-badge ${plan}`;
+      badge.textContent = plan.toUpperCase();
+
+      // Прогресс-бар дневного лимита
+      $("limit-text").textContent = `${used} / ${limit}`;
+      const pct = Math.min(100, Math.round((used / limit) * 100));
+      const fill = $("limit-fill");
+      fill.style.width = `${pct}%`;
+      fill.className = "limit-fill" + (pct >= 100 ? " full" : pct >= 80 ? " warn" : "");
 
       // Профиль
+      const expMs = Number(userData.plan_expires_at || 0);
+      const expLabel = plan !== "free" && expMs > 0
+        ? `до ${new Date(expMs).toLocaleDateString("ru-RU")}`
+        : "Бессрочно";
+
       $("prof-nick").value = userData.nick || "";
       $("prof-age").value = userData.age || 18;
-      $("prof-plan").value = (userData.plan || "free").toUpperCase();
+      $("prof-hide-plan").checked = Boolean(userData.hide_plan);
+      $("prof-plan").value = `${plan.toUpperCase()} (${expLabel})`;
+      $("prof-chats").value = `${used} из ${limit} за сегодня`;
       $("prof-id").value = userData.tg_id || currentTgId;
 
-      // Мой пол
+      // Темы (Флирт 18+, Ролка, Знакомства — строго PLUS)
+      ["btn-topic-flirt", "btn-topic-roleplay", "btn-topic-dating"].forEach(id => {
+        $(id).classList.toggle("locked", !hasPlus());
+      });
+      if (!hasPlus() && searchPrefs.topic !== "chat") {
+        searchPrefs.topic = "chat";
+      }
+
+      // Ваш пол — смена строго PLUS
       document.querySelectorAll("[data-my-gender]").forEach(btn => {
         btn.classList.toggle("active", btn.dataset.myGender === userData.gender);
         btn.classList.toggle("locked", !hasPlus() && btn.dataset.myGender !== userData.gender);
+      });
+
+      // Пол собеседника — выбор строго PLUS (иначе только "Любой")
+      if (!hasPlus()) {
+        searchPrefs.targetGender = "any";
+      }
+      document.querySelectorAll("[data-target-gender]").forEach(btn => {
+        btn.classList.toggle("locked", !hasPlus() && btn.dataset.targetGender !== "any");
       });
 
       // Мой возраст
@@ -902,21 +1280,15 @@
         btn.classList.toggle("active", btn.dataset.myBucket === myBucket);
       });
 
-      // Тема "Знакомства" только Plus
-      $("btn-topic-dating").classList.toggle("locked", !hasPlus());
-      if (!hasPlus() && searchPrefs.topic === "dating") {
-        searchPrefs.topic = "chat";
-        renderLobbySelections();
-      }
-
-      // Возраст собеседника только от Go
+      // Возраст собеседника — от GO
       if (!hasGo()) {
         searchPrefs.targetAges = [...ALL_AGE_BUCKETS];
       }
       document.querySelectorAll("[data-age-bucket]").forEach(btn => {
         btn.classList.toggle("locked", !hasGo());
-        btn.classList.toggle("active", searchPrefs.targetAges.includes(btn.dataset.ageBucket));
       });
+
+      renderLobbySelections();
     }
 
     function renderLobbySelections() {
@@ -931,23 +1303,31 @@
       });
     }
 
-    // === 2. ГОСТЕВАЯ РЕГИСТРАЦИЯ ===
-    document.querySelectorAll("#reg-gender-group .pill-btn").forEach(btn => {
+    // === 2. РЕГИСТРАЦИЯ ГОСТЯ ===
+    document.querySelectorAll("#reg-gender-group .sq-btn").forEach(btn => {
       btn.onclick = () => {
         selectedRegGender = btn.dataset.gender;
-        document.querySelectorAll("#reg-gender-group .pill-btn").forEach(b => b.classList.remove("active"));
+        document.querySelectorAll("#reg-gender-group .sq-btn").forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
       };
     });
+
+    $("reg-rules-link").onclick = (e) => {
+      e.preventDefault();
+      openSubModal(
+        "Правила 18+",
+        "1. Строго 18–99 лет.<br>2. Без спама, рекламы и оскорблений.<br>3. Лимиты: Free 50/день, Go 100/день, Plus 250/день."
+      );
+    };
 
     $("btn-complete-reg").onclick = async () => {
       const nick = $("reg-nick").value.trim();
       const age = parseInt($("reg-age").value, 10);
       const accepted = $("reg-terms").checked;
 
-      if (nick.length < 2 || nick.length > 20) return showToast("Никнейм должен быть от 2 до 20 символов");
-      if (isNaN(age) || age < 18 || age > 99) return showToast("Доступ разрешён только от 18 до 99 лет");
-      if (!accepted) return showToast("Подтвердите, что вам 18+ и вы принимаете условия");
+      if (nick.length < 2 || nick.length > 20) return showToast("Ник должен быть от 2 до 20 символов");
+      if (isNaN(age) || age < 18 || age > 99) return showToast("Возраст должен быть от 18 до 99 лет");
+      if (!accepted) return showToast("Подтвердите возраст 18+ и согласие с правилами");
 
       await update(ref(db, `users/${currentTgId}`), {
         nick,
@@ -956,17 +1336,17 @@
         accepted_terms: true,
         registered: true
       });
-      showToast("Добро пожаловать в Vortex Roullette!");
+      showToast("Профиль создан!");
     };
 
-    // === 3. ЛОББИ И ПОДПИСОЧНЫЕ ОГРАНИЧЕНИЯ ===
+    // === 3. ЛОББИ И ПОДПИСКИ ===
     document.querySelectorAll("[data-topic]").forEach(btn => {
       btn.onclick = () => {
         const topic = btn.dataset.topic;
-        if (topic === "dating" && !hasPlus()) {
+        if (topic !== "chat" && !hasPlus()) {
           return openSubModal(
-            "Раздел «Знакомства» — только Plus",
-            "Категория <b>Знакомства</b> доступна владельцам подписки <b>Plus</b>. Оформите её в нашем Telegram-боте."
+            `Тема «${TOPIC_LABELS[topic]}» — только PLUS`,
+            `Темы <b>Флирт 18+</b>, <b>Ролка</b> и <b>Знакомства</b> открываются с подпиской <b>PLUS (500 ⭐/мес)</b>.`
           );
         }
         searchPrefs.topic = topic;
@@ -980,8 +1360,8 @@
         if (newGender === userData.gender) return;
         if (!hasPlus()) {
           return openSubModal(
-            "Смена пола — только Plus",
-            "Изменять свой пол после регистрации могут только пользователи с подпиской <b>Plus</b>."
+            "Смена своего пола — только PLUS",
+            "Изменять свой пол после регистрации могут только владельцы подписки <b>PLUS (500 ⭐/мес)</b>."
           );
         }
         await update(ref(db, `users/${currentTgId}`), { gender: newGender });
@@ -991,7 +1371,14 @@
 
     document.querySelectorAll("[data-target-gender]").forEach(btn => {
       btn.onclick = () => {
-        searchPrefs.targetGender = btn.dataset.targetGender;
+        const g = btn.dataset.targetGender;
+        if (g !== "any" && !hasPlus()) {
+          return openSubModal(
+            "Выбор пола собеседника — только PLUS",
+            "Поиск по конкретному полу собеседника доступен только с подпиской <b>PLUS (500 ⭐/мес)</b>."
+          );
+        }
+        searchPrefs.targetGender = g;
         renderLobbySelections();
       };
     });
@@ -1000,16 +1387,14 @@
       btn.onclick = () => {
         if (!hasGo()) {
           return openSubModal(
-            "Фильтр по возрасту — от подписки Go",
-            "Выбор возраста собеседника доступен начиная с тарифа <b>Go</b> (и включён в <b>Plus</b>). На бесплатном тарифе поиск идёт по всем возрастам 18–99."
+            "Возраст собеседника — от подписки GO",
+            "Фильтр по возрасту собеседника открывается начиная с тарифа <b>GO (150 ⭐/мес)</b>."
           );
         }
         const bucket = btn.dataset.ageBucket;
         const idx = searchPrefs.targetAges.indexOf(bucket);
         if (idx >= 0) {
-          if (searchPrefs.targetAges.length === 1) {
-            return showToast("Выберите хотя бы один возрастной диапазон");
-          }
+          if (searchPrefs.targetAges.length === 1) return showToast("Оставьте хотя бы один диапазон возраста");
           searchPrefs.targetAges.splice(idx, 1);
         } else {
           searchPrefs.targetAges.push(bucket);
@@ -1023,13 +1408,26 @@
       btn.onclick = () => showView(`view-${btn.dataset.nav}`);
     });
 
+    $("prof-hide-plan").onchange = async (e) => {
+      const checked = e.target.checked;
+      if (checked && !hasGo()) {
+        e.target.checked = false;
+        return openSubModal(
+          "Скрытие подписки — от GO",
+          "Скрывать значок своей подписки от собеседников можно с тарифами <b>GO</b> и <b>PLUS</b>."
+        );
+      }
+      await update(ref(db, `users/${currentTgId}`), { hide_plan: checked });
+      showToast(checked ? "Подписка скрыта от других" : "Подписка видна собеседникам");
+    };
+
     $("btn-save-profile").onclick = async () => {
       const nick = $("prof-nick").value.trim();
       const age = parseInt($("prof-age").value, 10);
       if (nick.length < 2 || nick.length > 20) return showToast("Ник должен быть от 2 до 20 символов");
-      if (isNaN(age) || age < 18 || age > 99) return showToast("Возраст должен быть от 18 до 99 лет");
+      if (isNaN(age) || age < 18 || age > 99) return showToast("Возраст от 18 до 99 лет");
       await update(ref(db, `users/${currentTgId}`), { nick, age });
-      showToast("Профиль обновлён");
+      showToast("Изменения сохранены");
     };
 
     function logoutLocal(message) {
@@ -1041,14 +1439,31 @@
       userData = null;
       localStorage.removeItem("vortex_tg_id");
       $("plan-badge").style.display = "none";
+      registerPresence(guestPresenceKey);
       showView("view-auth");
       if (message) showToast(message);
     }
     $("btn-logout").onclick = () => logoutLocal("Вы вышли из аккаунта");
 
-    // === 4. МАТЧМЕЙКИНГ И ЧАТ ===
+    // === 4. МАТЧМЕЙКИНГ (С ТАЙМЕРОМ, ПРИОРИТЕТОМ PLUS И ЛИМИТАМИ) ===
+    function formatTimer(sec) {
+      const m = String(Math.floor(sec / 60)).padStart(2, "0");
+      const s = String(sec % 60).padStart(2, "0");
+      return `${m}:${s}`;
+    }
+
+    function startSearchTimer() {
+      clearInterval(searchTimerInt);
+      searchStartedAt = Date.now();
+      $("search-timer").textContent = "00:00";
+      searchTimerInt = setInterval(() => {
+        const sec = Math.floor((Date.now() - searchStartedAt) / 1000);
+        $("search-timer").textContent = formatTimer(sec);
+      }, 1000);
+    }
+
     function isCompatible(myEntry, peer) {
-      if (peer.room_id) return false;
+      if (!peer || peer.room_id) return false;
       if (peer.topic !== myEntry.topic) return false;
 
       const iWantPeerGender = myEntry.target_gender === "any" || myEntry.target_gender === peer.gender;
@@ -1063,48 +1478,33 @@
       return myAges.includes(peerBucket) && peerAges.includes(myBucket);
     }
 
-    async function startSearch() {
-      if (!userData) return;
-      showView("view-searching");
-      $("search-meta").textContent =
-        `Тема: ${TOPIC_LABELS[searchPrefs.topic]} • Собеседник: ${GENDER_LABELS[searchPrefs.targetGender]}`;
-
-      const myEntry = {
-        tg_id: currentTgId,
-        nick: userData.nick,
-        gender: userData.gender,
-        age: userData.age,
-        topic: searchPrefs.topic,
-        target_gender: searchPrefs.targetGender,
-        target_ages: hasGo() ? searchPrefs.targetAges : ALL_AGE_BUCKETS,
-        room_id: null,
-        ts: Date.now()
-      };
-
-      const myQueueRef = ref(db, `queue/${currentTgId}`);
-      await set(myQueueRef, myEntry);
-      onDisconnect(myQueueRef).remove();
-
-      // Слушаем, если нас сматчит кто-то другой
-      queueWatchRef = ref(db, `queue/${currentTgId}/room_id`);
-      onValue(queueWatchRef, async (snap) => {
-        const roomId = snap.val();
-        if (roomId && !activeRoomId) {
-          await stopSearch();
-          enterRoom(roomId);
-        }
+    async function incrementDailyChats() {
+      const today = todayUTC();
+      const nextCount = getDailyUsed() + 1;
+      await update(ref(db, `users/${currentTgId}`), {
+        daily_chats_date: today,
+        daily_chats_count: nextCount
       });
+    }
 
-      // Ищем подходящего собеседника среди уже ждущих
+    async function tryFindMatch(myEntry) {
+      if (activeRoomId || !queueWatchRef) return;
       const qSnap = await get(ref(db, "queue"));
       const allQueue = qSnap.val() || {};
-      for (const [peerId, peer] of Object.entries(allQueue)) {
-        if (peerId === currentTgId || !peer) continue;
-        if (!isCompatible(myEntry, peer)) continue;
 
+      // Сортируем кандидатов: PLUS-пользователи имеют приоритет, затем кто дольше ждёт
+      const candidates = Object.entries(allQueue)
+        .filter(([peerId, peer]) => peerId !== currentTgId && isCompatible(myEntry, peer))
+        .sort((a, b) => {
+          const prioDiff = (b[1].priority || 0) - (a[1].priority || 0);
+          if (prioDiff !== 0) return prioDiff;
+          return (a[1].ts || 0) - (b[1].ts || 0);
+        });
+
+      for (const [peerId, peer] of candidates) {
         const newRoomId = `room_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
         const tx = await runTransaction(ref(db, `queue/${peerId}`), (curr) => {
-          if (!curr || curr.room_id) return; // уже занят
+          if (!curr || curr.room_id) return;
           curr.room_id = newRoomId;
           return curr;
         });
@@ -1115,18 +1515,94 @@
             topic: myEntry.topic,
             created_at: Date.now(),
             users: {
-              [currentTgId]: { nick: myEntry.nick, gender: myEntry.gender, age: myEntry.age, typing: false },
-              [peerId]: { nick: peer.nick, gender: peer.gender, age: peer.age, typing: false }
+              [currentTgId]: {
+                nick: myEntry.nick,
+                gender: myEntry.gender,
+                age: myEntry.age,
+                plan: myEntry.visible_plan,
+                typing: false
+              },
+              [peerId]: {
+                nick: peer.nick,
+                gender: peer.gender,
+                age: peer.age,
+                plan: peer.visible_plan || "free",
+                typing: false
+              }
             }
           });
           await stopSearch();
-          enterRoom(newRoomId);
+          await enterRoom(newRoomId);
           return;
         }
       }
     }
 
+    async function startSearch() {
+      if (!userData) return;
+
+      // Проверка дневного лимита
+      const used = getDailyUsed();
+      const limit = getDailyLimit();
+      if (used >= limit) {
+        return openSubModal(
+          "Дневной лимит исчерпан",
+          `Вы уже открыли <b>${used} из ${limit}</b> чатов за сегодня. Обновите тариф в магазине (Go — 100/день, Plus — 250/день) или возвращайтесь завтра.`
+        );
+      }
+
+      const plan = getEffectivePlan();
+      const priority = plan === "plus" ? 2 : plan === "go" ? 1 : 0;
+      const visiblePlan = userData.hide_plan ? "hidden" : plan;
+
+      showView("view-searching");
+      $("plus-boost-badge").style.display = plan === "plus" ? "inline-block" : "none";
+      $("search-meta").textContent =
+        `Тема: ${TOPIC_LABELS[searchPrefs.topic]} • Пол собеседника: ${GENDER_LABELS[searchPrefs.targetGender]}`;
+      startSearchTimer();
+
+      const myEntry = {
+        tg_id: currentTgId,
+        nick: userData.nick,
+        gender: userData.gender,
+        age: userData.age,
+        visible_plan: visiblePlan,
+        priority,
+        topic: searchPrefs.topic,
+        target_gender: hasPlus() ? searchPrefs.targetGender : "any",
+        target_ages: hasGo() ? searchPrefs.targetAges : ALL_AGE_BUCKETS,
+        room_id: null,
+        ts: Date.now()
+      };
+
+      const myQueueRef = ref(db, `queue/${currentTgId}`);
+      await set(myQueueRef, myEntry);
+      onDisconnect(myQueueRef).remove();
+
+      queueWatchRef = ref(db, `queue/${currentTgId}/room_id`);
+      onValue(queueWatchRef, async (snap) => {
+        const roomId = snap.val();
+        if (roomId && !activeRoomId) {
+          await stopSearch();
+          await enterRoom(roomId);
+        }
+      });
+
+      // Ускоренный поиск для PLUS: моментальный старт + сканирование каждые 0.8с
+      // Для GO: задержка 1.2с, сканирование раз в 2с; для FREE: задержка 2.5с, сканирование раз в 3.5с
+      const initialDelay = plan === "plus" ? 0 : plan === "go" ? 1200 : 2500;
+      const scanPeriod = plan === "plus" ? 800 : plan === "go" ? 2000 : 3500;
+
+      setTimeout(() => {
+        tryFindMatch(myEntry);
+        clearInterval(searchRetryInt);
+        searchRetryInt = setInterval(() => tryFindMatch(myEntry), scanPeriod);
+      }, initialDelay);
+    }
+
     async function stopSearch() {
+      clearInterval(searchTimerInt);
+      clearInterval(searchRetryInt);
       if (queueWatchRef) {
         off(queueWatchRef);
         queueWatchRef = null;
@@ -1145,29 +1621,32 @@
       box.scrollTop = box.scrollHeight;
     }
 
-    function enterRoom(roomId) {
+    async function enterRoom(roomId) {
       activeRoomId = roomId;
+      await incrementDailyChats();
+
       $("chat-messages").innerHTML = "";
       $("typing-bar").textContent = "";
       $("chat-input").disabled = false;
       showView("view-chat");
 
-      const roomRef = ref(db, `rooms/${roomId}`);
       const activeRef = ref(db, `rooms/${roomId}/active`);
       const usersRef = ref(db, `rooms/${roomId}/users`);
       const msgsRef = ref(db, `rooms/${roomId}/messages`);
       roomRefs = [activeRef, usersRef, msgsRef];
 
       onDisconnect(activeRef).set(false);
-
-      appendMsg("Собеседник найден! Приятного общения.", "sys");
+      appendMsg("Собеседник найден! Соблюдайте правила 18+.", "sys");
 
       onValue(usersRef, (snap) => {
         const users = snap.val() || {};
         const peerId = Object.keys(users).find(id => id !== currentTgId);
         if (peerId && users[peerId]) {
           const p = users[peerId];
-          $("chat-peer-name").textContent = `${p.nick} (${p.age})`;
+          const badgeHtml =
+            p.plan === "plus" ? `<span class="lock-tag plus">PLUS</span>` :
+            p.plan === "go" ? `<span class="lock-tag go">GO</span>` : "";
+          $("chat-peer-name").innerHTML = `${p.nick} (${p.age}) ${badgeHtml}`;
           $("chat-peer-info").textContent =
             `${GENDER_LABELS[p.gender] || "Любой"} • ${TOPIC_LABELS[searchPrefs.topic]}`;
           $("typing-bar").textContent = p.typing ? `${p.nick} печатает...` : "";
@@ -1182,7 +1661,7 @@
 
       onValue(activeRef, (snap) => {
         if (snap.val() === false && activeRoomId === roomId) {
-          appendMsg("Собеседник покинул чат.", "sys");
+          appendMsg("Собеседник завершил диалог.", "sys");
           $("chat-input").disabled = true;
           $("typing-bar").textContent = "";
         }
@@ -1235,7 +1714,6 @@
       }, 1500);
     };
 
-    // Автоматический вход при сохраненной сессии
     if (currentTgId) {
       attachUserListener();
     }
