@@ -6,533 +6,521 @@
   <title>Vortex Roullette.me — Анонимная Чат-Рулетка 18+</title>
   <style>
     :root {
-      --bg-main: #0f1215;
-      --bg-card: #161b20;
-      --bg-elevated: #1d242b;
-      --grid-line: rgba(255, 255, 255, 0.03);
-      --text-main: #f1f5f9;
-      --text-muted: #94a3b8;
-      --pill-bg: #cfd8e2;
-      --pill-text: #141a20;
-      --pill-active-bg: #2f5b86;
-      --pill-active-text: #ffffff;
-      --accent-green: #22c55e;
-      --accent-green-dim: rgba(34, 197, 94, 0.14);
-      --border-color: #29333f;
-      --border-strong: #3b4958;
-      --input-bg: #0c0f12;
-      --msg-me-bg: #2f5b86;
-      --msg-peer-bg: #202831;
-      --badge-go: #0284c7;
-      --badge-plus: #9333ea;
-      --star-gold: #f59e0b;
+      --bg-app: #0b0e12;
+      --bg-surface: #12171e;
+      --bg-panel: #19202a;
+      --bg-tile: #202936;
+      --grid-line: rgba(255, 255, 255, 0.028);
+      --text-main: #f3f6fa;
+      --text-muted: #8b9bb0;
+      --border: #283241;
+      --border-hi: #3b4b61;
+      --accent: #10b981;
+      --accent-soft: rgba(16, 185, 129, 0.14);
+      --blue: #2563eb;
+      --blue-soft: rgba(37, 99, 235, 0.18);
+      --go: #0ea5e9;
+      --plus: #a855f7;
+      --gold: #f59e0b;
       --danger: #ef4444;
+      --danger-soft: rgba(239, 68, 68, 0.14);
+      --banned-bg: #2a3038;
+      --banned-text: #7a8594;
+      --msg-me: #1d4ed8;
+      --msg-peer: #1d2530;
     }
 
     html[data-theme="light"] {
-      --bg-main: #e8eef4;
-      --bg-card: #ffffff;
-      --bg-elevated: #f3f6fa;
+      --bg-app: #e7edf4;
+      --bg-surface: #ffffff;
+      --bg-panel: #f4f7fb;
+      --bg-tile: #e2eaf3;
       --grid-line: rgba(15, 23, 42, 0.045);
-      --text-main: #111827;
-      --text-muted: #526071;
-      --pill-bg: #dce4ed;
-      --pill-text: #111827;
-      --pill-active-bg: #2f5b86;
-      --pill-active-text: #ffffff;
-      --accent-green: #16a34a;
-      --accent-green-dim: rgba(22, 163, 74, 0.12);
-      --border-color: #c5d1de;
-      --border-strong: #9fb0c3;
-      --input-bg: #f8fafc;
-      --msg-me-bg: #2f5b86;
-      --msg-peer-bg: #dce4ed;
+      --text-main: #0f172a;
+      --text-muted: #526277;
+      --border: #cbd5e1;
+      --border-hi: #94a3b8;
+      --accent: #059669;
+      --accent-soft: rgba(5, 150, 105, 0.12);
+      --blue: #1d4ed8;
+      --blue-soft: rgba(29, 78, 216, 0.12);
+      --banned-bg: #cbd5e1;
+      --banned-text: #64748b;
+      --msg-me: #1d4ed8;
+      --msg-peer: #e2e8f0;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      border-radius: 0 !important; /* СТРОГО КВАДРАТНЫЙ СТИЛЬ */
+      border-radius: 0 !important;
       -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+    }
+
+    input, textarea {
+      user-select: text !important;
+      -webkit-user-select: text !important;
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
-      background-color: var(--bg-main);
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-app);
       background-image:
         linear-gradient(var(--grid-line) 1px, transparent 1px),
         linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-      background-size: 24px 24px;
+      background-size: 22px 22px;
       color: var(--text-main);
       min-height: 100dvh;
       display: flex;
       justify-content: center;
-      transition: background-color 0.2s, color 0.2s;
+      overflow-x: hidden;
     }
 
-    .app-shell {
+    .shell {
       width: 100%;
-      max-width: 480px;
+      max-width: 500px;
       min-height: 100dvh;
       display: flex;
       flex-direction: column;
-      background: var(--bg-main);
-      border-left: 1px solid var(--border-color);
-      border-right: 1px solid var(--border-color);
+      background: var(--bg-app);
+      border-left: 1px solid var(--border);
+      border-right: 1px solid var(--border);
       position: relative;
     }
 
-    /* TOP BAR */
-    .topbar {
+    /* HEADER HUD */
+    .hud {
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 10px 14px;
-      background: var(--bg-card);
-      border-bottom: 1px solid var(--border-color);
       position: sticky;
       top: 0;
-      z-index: 20;
-      gap: 8px;
+      z-index: 30;
     }
-    .brand-wrap { display: flex; flex-direction: column; gap: 2px; }
-    .brand {
-      font-weight: 900;
-      font-size: 14px;
-      letter-spacing: 0.6px;
-      text-transform: uppercase;
+    .hud-brand {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .logo-row {
       display: flex;
       align-items: center;
-      gap: 7px;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: 0.9px;
+      text-transform: uppercase;
     }
-    .brand-sq {
+    .pulse-sq {
       width: 9px;
       height: 9px;
-      background: var(--accent-green);
-      display: inline-block;
-      box-shadow: 0 0 8px var(--accent-green);
+      background: var(--accent);
+      box-shadow: 0 0 10px var(--accent);
+      animation: pulseSq 1.8s infinite;
     }
-    .online-strip {
-      font-size: 11px;
-      color: var(--text-muted);
-      font-weight: 600;
+    @keyframes pulseSq { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+    .live-stats {
       display: flex;
-      gap: 10px;
+      gap: 12px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
     }
-    .online-strip b { color: var(--accent-green); }
+    .live-stats b { color: var(--accent); }
 
-    .topbar-right { display: flex; align-items: center; gap: 6px; }
-    .plan-badge {
+    .hud-controls { display: flex; align-items: center; gap: 6px; }
+    .tag-plan {
       font-size: 10px;
-      font-weight: 800;
-      padding: 4px 7px;
+      font-weight: 900;
+      padding: 5px 8px;
+      letter-spacing: 0.6px;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      background: var(--bg-elevated);
-      border: 1px solid var(--border-strong);
-      color: var(--text-main);
+      background: var(--bg-panel);
+      border: 1px solid var(--border-hi);
     }
-    .plan-badge.go { background: var(--badge-go); border-color: var(--badge-go); color: #fff; }
-    .plan-badge.plus { background: var(--badge-plus); border-color: var(--badge-plus); color: #fff; }
+    .tag-plan.go { background: var(--go); border-color: var(--go); color: #fff; }
+    .tag-plan.plus { background: var(--plus); border-color: var(--plus); color: #fff; }
 
-    .icon-btn {
-      background: var(--bg-elevated);
-      border: 1px solid var(--border-color);
-      color: var(--text-main);
+    .hud-btn {
       width: 34px;
       height: 34px;
-      cursor: pointer;
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      color: var(--text-main);
       display: grid;
       place-items: center;
+      cursor: pointer;
       font-size: 15px;
     }
 
     /* VIEWS */
-    .view { display: none; flex: 1; flex-direction: column; padding: 14px; padding-bottom: 78px; }
+    .view {
+      display: none;
+      flex: 1;
+      flex-direction: column;
+      padding: 14px;
+      padding-bottom: 76px;
+      gap: 12px;
+    }
     .view.active { display: flex; }
 
-    /* CARDS */
-    .card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      padding: 18px 16px;
+    /* PANEL / CARD */
+    .panel {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      padding: 16px;
     }
-    .center-card { margin: auto 0; }
-    .card h1, .card h2 {
-      font-size: 18px;
-      font-weight: 800;
+    .panel-title {
+      font-size: 12px;
+      font-weight: 900;
       text-transform: uppercase;
-      letter-spacing: 0.4px;
+      letter-spacing: 0.7px;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .h1 {
+      font-size: 18px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
       margin-bottom: 6px;
     }
-    .sub { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.45; }
+    .desc { font-size: 13px; color: var(--text-muted); line-height: 1.45; margin-bottom: 14px; }
 
-    /* LIMIT BAR */
-    .limit-bar {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      padding: 10px 12px;
-      margin-bottom: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
+    /* BAN ALERT */
+    .ban-banner {
+      display: none;
+      background: var(--danger-soft);
+      border: 2px solid var(--danger);
+      padding: 12px 14px;
+      font-size: 12.5px;
+      line-height: 1.45;
     }
-    .limit-top {
+    .ban-banner.show { display: block; }
+    .ban-banner strong {
+      display: block;
+      color: var(--danger);
+      text-transform: uppercase;
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    /* LIMIT METER */
+    .limit-strip {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+    }
+    .limit-row {
       display: flex;
       justify-content: space-between;
-      font-size: 12px;
-      font-weight: 700;
+      font-size: 11.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-bottom: 6px;
     }
-    .limit-track {
-      width: 100%;
+    .meter {
       height: 6px;
-      background: var(--bg-elevated);
-      border: 1px solid var(--border-color);
-      overflow: hidden;
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
     }
-    .limit-fill {
-      height: 100%;
-      background: var(--accent-green);
-      width: 0%;
-      transition: width 0.25s;
-    }
-    .limit-fill.warn { background: var(--star-gold); }
-    .limit-fill.full { background: var(--danger); }
+    .meter-fill { height: 100%; background: var(--accent); width: 0%; transition: width 0.25s; }
+    .meter-fill.warn { background: var(--gold); }
+    .meter-fill.full { background: var(--danger); }
 
     /* INPUTS */
-    .field { margin-bottom: 14px; }
+    .field { margin-bottom: 12px; }
     .field label {
       display: block;
-      font-size: 12px;
-      font-weight: 700;
+      font-size: 11px;
+      font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.4px;
-      margin-bottom: 6px;
+      letter-spacing: 0.5px;
       color: var(--text-muted);
+      margin-bottom: 5px;
     }
-    .input {
+    .input, .textarea, .select {
       width: 100%;
       padding: 11px 12px;
-      border: 1px solid var(--border-strong);
-      background: var(--input-bg);
+      background: var(--bg-app);
+      border: 1px solid var(--border-hi);
       color: var(--text-main);
       font-size: 14px;
+      font-family: inherit;
       outline: none;
     }
-    .input:focus { border-color: var(--accent-green); }
-    .code-input {
+    .input:focus, .textarea:focus, .select:focus { border-color: var(--accent); }
+    .textarea { resize: vertical; min-height: 84px; }
+    .code-box {
       text-align: center;
-      font-size: 26px;
+      font-size: 28px;
       font-weight: 900;
       letter-spacing: 10px;
       font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
     }
 
-    .checkbox-row {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      font-size: 12.5px;
-      line-height: 1.45;
-      color: var(--text-muted);
-      margin: 14px 0 16px;
-      cursor: pointer;
-    }
-    .checkbox-row input { width: 18px; height: 18px; margin-top: 1px; accent-color: var(--accent-green); }
+    /* GRIDS & TILES */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+    .stack { display: flex; flex-direction: column; gap: 6px; }
 
-    /* SWITCH ROW */
-    .switch-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 11px 12px;
-      background: var(--bg-elevated);
-      border: 1px solid var(--border-color);
-      margin-bottom: 14px;
-      font-size: 13px;
-      font-weight: 600;
-    }
-    .switch-row input { width: 18px; height: 18px; accent-color: var(--accent-green); cursor: pointer; }
-
-    /* LOBBY */
-    .section-title {
-      font-size: 12.5px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 6px;
-    }
-    .lock-tag {
-      font-size: 9.5px;
-      font-weight: 900;
-      padding: 2px 5px;
-      color: #fff;
-      letter-spacing: 0.4px;
-    }
-    .lock-tag.go { background: var(--badge-go); }
-    .lock-tag.plus { background: var(--badge-plus); }
-
-    .topics-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 7px;
-      margin-bottom: 16px;
-    }
-    .two-col {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 16px;
-    }
-    .col-stack { display: flex; flex-direction: column; gap: 6px; }
-
-    .sq-btn {
+    .tile {
       width: 100%;
       padding: 10px 8px;
-      border: 1px solid var(--border-strong);
-      background: var(--pill-bg);
-      color: var(--pill-text);
-      font-size: 13px;
-      font-weight: 700;
+      background: var(--bg-panel);
+      border: 1px solid var(--border-hi);
+      color: var(--text-main);
+      font-size: 12.5px;
+      font-weight: 800;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 5px;
       text-align: center;
-      transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+      transition: background 0.14s, border-color 0.14s;
     }
-    .sq-btn:active { transform: translateY(1px); }
-    .sq-btn.active {
-      background: var(--pill-active-bg);
-      border-color: var(--pill-active-bg);
-      color: var(--pill-active-text);
+    .tile.active {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: #fff;
     }
-    .sq-btn.locked { opacity: 0.62; }
-    .sq-btn:disabled { cursor: default; }
+    .tile.active-green {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #06120c;
+    }
+    .tile.locked { opacity: 0.6; }
 
-    .hint-italic {
-      font-size: 11px;
-      font-style: italic;
-      color: var(--text-muted);
-      text-align: center;
+    .badge {
+      font-size: 9px;
+      font-weight: 900;
+      padding: 2px 5px;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      color: #fff;
     }
+    .badge.free { background: var(--accent); color: #05120b; }
+    .badge.go { background: var(--go); }
+    .badge.plus { background: var(--plus); }
 
-    .theme-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin-bottom: 18px;
-    }
-
-    .btn-start {
+    /* PRIMARY CTA BUTTONS */
+    .cta-search {
       width: 100%;
-      padding: 14px;
-      border: 2px solid var(--accent-green);
-      background: var(--accent-green-dim);
-      color: var(--accent-green);
+      padding: 15px;
+      border: 2px solid var(--accent);
+      background: var(--accent-soft);
+      color: var(--accent);
       font-size: 15px;
       font-weight: 900;
-      letter-spacing: 1px;
+      letter-spacing: 1.2px;
       text-transform: uppercase;
       cursor: pointer;
       transition: background 0.15s, color 0.15s;
     }
-    .btn-start:hover { background: var(--accent-green); color: #07120a; }
+    .cta-search:hover:not(:disabled) { background: var(--accent); color: #05130b; }
+    .cta-search.banned, .cta-search:disabled {
+      background: var(--banned-bg) !important;
+      border-color: var(--banned-text) !important;
+      color: var(--banned-text) !important;
+      cursor: not-allowed !important;
+      opacity: 0.85;
+    }
 
-    .btn-primary {
+    .btn {
       width: 100%;
       padding: 12px;
-      border: 1px solid var(--pill-active-bg);
-      background: var(--pill-active-bg);
-      color: #fff;
-      font-size: 13.5px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-      cursor: pointer;
-    }
-    .btn-gold {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid var(--star-gold);
-      background: var(--star-gold);
-      color: #111;
-      font-size: 13.5px;
-      font-weight: 900;
-      text-transform: uppercase;
-      cursor: pointer;
-      text-decoration: none;
-      display: block;
-      text-align: center;
-    }
-    .btn-plus {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid var(--badge-plus);
-      background: var(--badge-plus);
-      color: #fff;
-      font-size: 13.5px;
-      font-weight: 900;
-      text-transform: uppercase;
-      cursor: pointer;
-      text-decoration: none;
-      display: block;
-      text-align: center;
-    }
-    .btn-outline {
-      width: 100%;
-      padding: 11px;
-      border: 1px solid var(--border-strong);
-      background: transparent;
+      border: 1px solid var(--border-hi);
+      background: var(--bg-panel);
       color: var(--text-main);
-      font-size: 13px;
-      font-weight: 700;
+      font-size: 12.5px;
+      font-weight: 800;
       text-transform: uppercase;
+      letter-spacing: 0.5px;
       cursor: pointer;
       text-decoration: none;
       display: block;
       text-align: center;
-      margin-top: 8px;
     }
-    .btn-danger {
-      width: 100%;
-      padding: 11px;
-      border: 1px solid var(--danger);
-      background: transparent;
-      color: var(--danger);
-      font-size: 13px;
-      font-weight: 800;
-      text-transform: uppercase;
+    .btn.blue { background: var(--blue); border-color: var(--blue); color: #fff; }
+    .btn.go { background: var(--go); border-color: var(--go); color: #fff; }
+    .btn.plus { background: var(--plus); border-color: var(--plus); color: #fff; }
+    .btn.gold { background: var(--gold); border-color: var(--gold); color: #111; }
+    .btn.danger { background: transparent; border-color: var(--danger); color: var(--danger); }
+
+    .check-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 12.5px;
+      color: var(--text-muted);
+      line-height: 1.45;
+      margin: 12px 0 16px;
       cursor: pointer;
     }
+    .check-row input { width: 18px; height: 18px; accent-color: var(--accent); margin-top: 2px; }
+
+    .switch-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 11px 12px;
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      font-size: 12.5px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      cursor: pointer;
+    }
+    .switch-box input { width: 18px; height: 18px; accent-color: var(--accent); }
 
     /* SHOP */
-    .shop-grid { display: flex; flex-direction: column; gap: 12px; }
-    .plan-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
+    .plan-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
       padding: 16px;
     }
-    .plan-card.featured-go { border-color: var(--badge-go); }
-    .plan-card.featured-plus { border-color: var(--badge-plus); border-width: 2px; }
-    .plan-head {
+    .plan-box.go { border-color: var(--go); }
+    .plan-box.plus { border: 2px solid var(--plus); }
+    .plan-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 10px;
       padding-bottom: 10px;
-      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 10px;
+      border-bottom: 1px solid var(--border);
     }
-    .plan-title { font-size: 16px; font-weight: 900; text-transform: uppercase; }
-    .plan-price { font-size: 15px; font-weight: 900; color: var(--star-gold); }
-    .plan-list {
+    .plan-name { font-size: 16px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.6px; }
+    .plan-price { font-size: 15px; font-weight: 900; color: var(--gold); }
+    .perks {
       list-style: none;
       display: flex;
       flex-direction: column;
       gap: 6px;
       margin-bottom: 14px;
-      font-size: 13px;
+      font-size: 12.5px;
       color: var(--text-muted);
     }
-    .plan-list li::before { content: "▪ "; color: var(--accent-green); font-weight: 900; }
-    .plan-list li b { color: var(--text-main); }
+    .perks li::before { content: "▪ "; color: var(--accent); font-weight: 900; }
+    .perks b { color: var(--text-main); }
+
+    /* SUPPORT TICKETS */
+    .ticket-card {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--blue);
+      padding: 11px 12px;
+      font-size: 12.5px;
+    }
+    .ticket-card.answered { border-left-color: var(--accent); }
+    .ticket-card.closed { border-left-color: var(--text-muted); }
+    .ticket-head {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 800;
+      margin-bottom: 5px;
+      font-size: 11.5px;
+    }
+    .ticket-reply {
+      margin-top: 8px;
+      padding: 8px;
+      background: var(--bg-surface);
+      border: 1px solid var(--accent);
+      font-size: 12px;
+    }
 
     /* RULES */
-    .rules-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .rule-item {
-      background: var(--bg-elevated);
-      border-left: 3px solid var(--accent-green);
-      border-top: 1px solid var(--border-color);
-      border-right: 1px solid var(--border-color);
-      border-bottom: 1px solid var(--border-color);
+    .rule-row {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
       padding: 10px 12px;
-      font-size: 13px;
+      font-size: 12.5px;
       line-height: 1.45;
     }
-    .rule-item strong { display: block; margin-bottom: 3px; text-transform: uppercase; font-size: 12px; }
+    .rule-row b { display: block; text-transform: uppercase; font-size: 11.5px; margin-bottom: 3px; }
 
     /* SEARCHING */
-    .search-box {
+    .radar-wrap {
       margin: auto 0;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-hi);
+      padding: 28px 18px;
       text-align: center;
-      padding: 26px 18px;
-      background: var(--bg-card);
-      border: 1px solid var(--border-strong);
     }
-    .sq-loader {
-      width: 52px;
-      height: 52px;
-      border: 3px solid var(--border-strong);
-      border-top-color: var(--accent-green);
-      border-right-color: var(--pill-active-bg);
+    .radar-sq {
+      width: 58px;
+      height: 58px;
       margin: 0 auto 16px;
-      animation: sqSpin 1s linear infinite;
+      border: 3px solid var(--border-hi);
+      border-top-color: var(--accent);
+      border-right-color: var(--blue);
+      animation: spin 0.9s linear infinite;
     }
-    @keyframes sqSpin { to { transform: rotate(360deg); } }
-    .search-timer {
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .timer-big {
       font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-      font-size: 30px;
+      font-size: 34px;
       font-weight: 900;
-      letter-spacing: 2px;
+      color: var(--accent);
+      letter-spacing: 3px;
       margin: 10px 0;
-      color: var(--accent-green);
     }
-    .boost-banner {
+    .boost-pill {
       display: inline-block;
-      background: var(--badge-plus);
+      background: var(--plus);
       color: #fff;
       font-size: 11px;
-      font-weight: 800;
+      font-weight: 900;
       text-transform: uppercase;
       padding: 5px 10px;
-      margin-bottom: 14px;
-      letter-spacing: 0.5px;
+      margin-bottom: 12px;
     }
 
-    /* CHAT */
-    #view-chat { padding: 0; height: calc(100dvh - 59px); }
-    .chat-header {
+    /* CHAT ROOM */
+    #view-chat {
+      padding: 0;
+      gap: 0;
+      height: calc(100dvh - 59px);
+    }
+    .chat-top {
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border);
       padding: 10px 12px;
-      background: var(--bg-card);
-      border-bottom: 1px solid var(--border-color);
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 8px;
     }
-    .peer-meta strong {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 14px;
-    }
-    .peer-meta span { color: var(--text-muted); font-size: 12px; }
-    .chat-actions { display: flex; gap: 6px; }
-    .mini-btn {
-      padding: 7px 10px;
-      border: 1px solid var(--border-strong);
-      background: var(--input-bg);
+    .peer-box strong { display: flex; align-items: center; gap: 6px; font-size: 14px; }
+    .peer-box span { font-size: 11.5px; color: var(--text-muted); }
+    .chat-btns { display: flex; gap: 5px; }
+    .cbtn {
+      padding: 7px 9px;
+      background: var(--bg-panel);
+      border: 1px solid var(--border-hi);
       color: var(--text-main);
-      font-size: 11.5px;
+      font-size: 11px;
       font-weight: 800;
       text-transform: uppercase;
       cursor: pointer;
     }
-    .mini-btn.stop { border-color: var(--danger); color: var(--danger); }
-    .mini-btn.next { border-color: var(--accent-green); color: var(--accent-green); }
+    .cbtn.rep { border-color: var(--gold); color: var(--gold); }
+    .cbtn.next { border-color: var(--accent); color: var(--accent); }
+    .cbtn.stop { border-color: var(--danger); color: var(--danger); }
 
-    .messages {
+    .msg-list {
       flex: 1;
       overflow-y: auto;
       padding: 12px;
@@ -546,58 +534,184 @@
       font-size: 14px;
       line-height: 1.4;
       word-break: break-word;
-      border: 1px solid var(--border-color);
+      border: 1px solid var(--border);
+      position: relative;
     }
-    .msg.me { align-self: flex-end; background: var(--msg-me-bg); border-color: var(--msg-me-bg); color: #fff; }
-    .msg.peer { align-self: flex-start; background: var(--msg-peer-bg); color: var(--text-main); }
+    .msg.me { align-self: flex-end; background: var(--msg-me); border-color: var(--msg-me); color: #fff; }
+    .msg.peer { align-self: flex-start; background: var(--msg-peer); color: var(--text-main); }
     .msg.sys {
       align-self: center;
-      background: transparent;
-      border: none;
+      max-width: 95%;
+      background: var(--bg-panel);
+      border-color: var(--border);
       color: var(--text-muted);
-      font-size: 12px;
+      font-size: 11.5px;
       text-align: center;
+      padding: 6px 10px;
     }
-    .typing-bar { padding: 4px 12px; font-size: 12px; color: var(--text-muted); min-height: 20px; }
-    .chat-input-bar {
+    .msg-sticker {
       display: flex;
-      gap: 8px;
-      padding: 10px 12px;
-      background: var(--bg-card);
-      border-top: 1px solid var(--border-color);
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 10px;
+      min-width: 110px;
     }
-    .chat-input-bar input { flex: 1; }
+    .msg-sticker .st-ico { font-size: 46px; line-height: 1; }
+    .msg-sticker .st-cap {
+      font-size: 11px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+    .msg-gif img {
+      display: block;
+      max-width: 220px;
+      max-height: 180px;
+      object-fit: cover;
+      border: 1px solid var(--border-hi);
+      pointer-events: none;
+    }
+
+    .typing-row {
+      padding: 3px 12px;
+      min-height: 20px;
+      font-size: 11.5px;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* MEDIA DRAWER (EMOJI / STICKERS / GIFS) */
+    .media-drawer {
+      display: none;
+      background: var(--bg-surface);
+      border-top: 1px solid var(--border-hi);
+      max-height: 230px;
+      overflow-y: auto;
+      padding: 10px;
+    }
+    .media-drawer.open { display: block; }
+    .emoji-grid {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 4px;
+    }
+    .em-btn {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      font-size: 20px;
+      padding: 6px 0;
+      cursor: pointer;
+    }
+    .sticker-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+    .st-btn {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-hi);
+      padding: 8px 4px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      color: var(--text-main);
+    }
+    .st-btn span:first-child { font-size: 30px; }
+    .st-btn span:last-child { font-size: 10px; font-weight: 800; text-transform: uppercase; }
+
+    .gif-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .gif-btn {
+      position: relative;
+      height: 86px;
+      background: var(--bg-panel);
+      border: 1px solid var(--border-hi);
+      overflow: hidden;
+      cursor: pointer;
+      padding: 0;
+    }
+    .gif-btn img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .gif-btn span {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: rgba(0,0,0,0.72);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 3px;
+      text-transform: uppercase;
+    }
+
+    .chat-bar {
+      background: var(--bg-surface);
+      border-top: 1px solid var(--border);
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .media-tabs {
+      display: flex;
+      gap: 6px;
+    }
+    .m-tab {
+      flex: 1;
+      padding: 6px 8px;
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+    .m-tab.active { border-color: var(--accent); color: var(--accent); }
+
+    .chat-form { display: flex; gap: 6px; }
+    .chat-form input { flex: 1; }
     .send-btn {
       padding: 0 18px;
+      background: var(--accent);
       border: none;
-      background: var(--accent-green);
-      color: #07120a;
+      color: #05130b;
       font-weight: 900;
+      font-size: 15px;
       cursor: pointer;
     }
 
-    /* BOTTOM NAV (4 ВКЛАДКИ) */
-    .bottom-nav {
+    /* BOTTOM NAV (5 ВКЛАДОК) */
+    .nav {
       position: fixed;
       bottom: 0;
       left: 50%;
       transform: translateX(-50%);
       width: 100%;
-      max-width: 480px;
+      max-width: 500px;
       height: 58px;
-      background: var(--bg-card);
-      border-top: 1px solid var(--border-color);
+      background: var(--bg-surface);
+      border-top: 1px solid var(--border);
       display: none;
-      grid-template-columns: repeat(4, 1fr);
-      z-index: 25;
+      grid-template-columns: repeat(5, 1fr);
+      z-index: 30;
     }
-    .bottom-nav.visible { display: grid; }
-    .nav-btn {
+    .nav.visible { display: grid; }
+    .nav-item {
       background: transparent;
       border: none;
-      border-right: 1px solid var(--border-color);
+      border-right: 1px solid var(--border);
       color: var(--text-muted);
-      font-size: 11px;
+      font-size: 9.5px;
       font-weight: 800;
       text-transform: uppercase;
       display: flex;
@@ -607,398 +721,455 @@
       gap: 3px;
       cursor: pointer;
     }
-    .nav-btn:last-child { border-right: none; }
-    .nav-btn.active {
-      color: var(--accent-green);
-      background: var(--accent-green-dim);
-      border-top: 2px solid var(--accent-green);
+    .nav-item:last-child { border-right: none; }
+    .nav-item span:first-child { font-size: 15px; }
+    .nav-item.active {
+      color: var(--accent);
+      background: var(--accent-soft);
+      border-top: 2px solid var(--accent);
     }
 
-    /* TOAST & MODAL */
+    /* MODALS & TOAST */
     .toast {
       position: fixed;
       top: 66px;
       left: 50%;
       transform: translateX(-50%);
-      background: #111827;
-      border: 1px solid var(--accent-green);
+      background: #0f172a;
+      border: 1px solid var(--accent);
       color: #fff;
       padding: 10px 16px;
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 700;
-      z-index: 99;
+      z-index: 120;
       display: none;
       max-width: 92%;
       text-align: center;
     }
     .toast.show { display: block; }
 
-    .modal-backdrop {
+    .modal-bg {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.72);
+      background: rgba(0, 0, 0, 0.78);
       display: none;
       align-items: center;
       justify-content: center;
       padding: 16px;
-      z-index: 50;
+      z-index: 80;
     }
-    .modal-backdrop.open { display: flex; }
-    .modal-box {
+    .modal-bg.open { display: flex; }
+    .modal {
       width: 100%;
-      max-width: 360px;
-      background: var(--bg-card);
-      border: 2px solid var(--border-strong);
+      max-width: 390px;
+      background: var(--bg-surface);
+      border: 2px solid var(--border-hi);
       padding: 20px;
     }
-    .modal-box h3 { font-size: 16px; text-transform: uppercase; margin-bottom: 8px; }
-    .modal-box p { font-size: 13.5px; color: var(--text-muted); line-height: 1.5; margin-bottom: 16px; }
+    .modal h3 { font-size: 15px; font-weight: 900; text-transform: uppercase; margin-bottom: 8px; }
+    .modal p { font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 14px; }
+
+    /* PAYMENT LOADER & RECEIPT */
+    .pay-progress {
+      height: 8px;
+      background: var(--bg-panel);
+      border: 1px solid var(--border-hi);
+      margin: 14px 0;
+      overflow: hidden;
+    }
+    .pay-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--go), var(--plus), var(--accent));
+      transition: width 0.5s ease;
+    }
+    .receipt-box {
+      background: var(--bg-app);
+      border: 1px dashed var(--accent);
+      padding: 12px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 12px;
+      line-height: 1.65;
+      margin-bottom: 14px;
+    }
   </style>
 </head>
 <body>
-  <div class="app-shell">
-    <!-- TOP BAR -->
-    <header class="topbar">
-      <div class="brand-wrap">
-        <div class="brand">
-          <span class="brand-sq"></span>
-          <span>vortex roullette.me</span>
+  <div class="shell">
+    <!-- TOP HUD -->
+    <header class="hud">
+      <div class="hud-brand">
+        <div class="logo-row">
+          <span class="pulse-sq"></span>
+          <span>VORTEX // ROULLETTE.ME</span>
         </div>
-        <div class="online-strip">
-          <span>Онлайн: <b id="online-total">0</b></span>
-          <span>В поиске: <b id="queue-total">0</b></span>
+        <div class="live-stats">
+          <span>ОНЛАЙН: <b id="online-total">0</b></span>
+          <span>В ПОИСКЕ: <b id="queue-total">0</b></span>
         </div>
       </div>
-      <div class="topbar-right">
-        <span id="plan-badge" class="plan-badge" style="display:none;">FREE</span>
-        <button id="quick-theme-btn" class="icon-btn" title="Сменить тему">🌓</button>
+      <div class="hud-controls">
+        <span id="plan-badge" class="tag-plan" style="display:none;">FREE</span>
+        <button id="theme-toggle" class="hud-btn" title="Сменить тему">🌓</button>
       </div>
     </header>
 
-    <!-- 1. ВХОД ПО 6-ЗНАЧНОМУ КОДУ -->
+    <!-- 1. ВХОД ПО КОДУ -->
     <section id="view-auth" class="view active">
-      <div class="card center-card">
-        <h1>Вход по коду</h1>
-        <p class="sub">
-          Введите <b>6-значный код</b>, полученный в Telegram-боте Vortex Roullette.me. Сервис строго 18+.
+      <div class="panel" style="margin:auto 0;">
+        <div class="h1">Авторизация 18+</div>
+        <p class="desc">
+          Получите одноразовый <b>6-значный код</b> в боте <b>@AnonimRoulette_agent</b> и введите его ниже.
         </p>
         <div class="field">
-          <label for="auth-code-input">6-значный код из бота</label>
-          <input
-            id="auth-code-input"
-            class="input code-input"
-            type="text"
-            inputmode="numeric"
-            maxlength="6"
-            placeholder="000000"
-          />
+          <label for="auth-code">6-значный код из бота</label>
+          <input id="auth-code" class="input code-box" type="text" inputmode="numeric" maxlength="6" placeholder="000000" />
         </div>
-        <button id="btn-verify-code" class="btn-start">Войти</button>
-        <a id="bot-auth-link" class="btn-outline" href="https://t.me/" target="_blank" rel="noopener">
-          🤖 Получить код в Telegram-боте
+        <button id="btn-login" class="cta-search" style="margin-bottom:8px;">Войти в рулетку</button>
+        <a class="btn" href="https://t.me/AnonimRoulette_agent" target="_blank" rel="noopener">
+          🤖 Открыть @AnonimRoulette_agent
         </a>
       </div>
     </section>
 
-    <!-- 2. РЕГИСТРАЦИЯ ГОСТЯ -->
+    <!-- 2. ГОСТЕВАЯ РЕГИСТРАЦИЯ -->
     <section id="view-register" class="view">
-      <div class="card center-card">
-        <h1>Гостевая анкета 18+</h1>
-        <p class="sub">Укажите данные для входа. Позже сменить пол можно только с подпиской <b>Plus</b>.</p>
-
+      <div class="panel" style="margin:auto 0;">
+        <div class="h1">Гостевой профиль</div>
+        <p class="desc">Заполните анкету. Сервис строго для пользователей от 18 до 99 лет.</p>
         <div class="field">
-          <label for="reg-nick">Ваш никнейм (2–20 символов)</label>
-          <input id="reg-nick" class="input" type="text" maxlength="20" placeholder="Например: VortexUser" />
+          <label for="reg-nick">Никнейм (2–20 символов)</label>
+          <input id="reg-nick" class="input" type="text" maxlength="20" placeholder="Например: ShadowCat" />
         </div>
-
         <div class="field">
           <label>Ваш пол</label>
-          <div class="topics-grid" id="reg-gender-group">
-            <button type="button" class="sq-btn" data-gender="female">Девушка</button>
-            <button type="button" class="sq-btn" data-gender="male">Парень</button>
-            <button type="button" class="sq-btn" data-gender="trans">Транс</button>
-            <button type="button" class="sq-btn active" data-gender="any">Любой</button>
+          <div class="grid-2" id="reg-gender-group">
+            <button type="button" class="tile" data-rg="female">Девушка</button>
+            <button type="button" class="tile" data-rg="male">Парень</button>
+            <button type="button" class="tile" data-rg="trans">Транс</button>
+            <button type="button" class="tile active" data-rg="any">Любой</button>
           </div>
         </div>
-
         <div class="field">
-          <label for="reg-age">Ваш возраст (от 18 до 99 лет)</label>
-          <input id="reg-age" class="input" type="number" min="18" max="99" value="20" />
+          <label for="reg-age">Ваш возраст (18–99 лет)</label>
+          <input id="reg-age" class="input" type="number" min="18" max="99" value="21" />
         </div>
-
-        <label class="checkbox-row">
+        <label class="check-row">
           <input id="reg-terms" type="checkbox" />
-          <span>
-            Мне исполнилось <b>18 лет</b>, и я полностью соглашаюсь с
-            <a href="#" id="reg-rules-link" style="color:var(--accent-green);font-weight:700;">правилами Vortex Roullette.me</a>.
-          </span>
+          <span>Подтверждаю, что мне исполнилось <b>18 лет</b>, и принимаю правила Vortex Roullette.me.</span>
         </label>
-
-        <button id="btn-complete-reg" class="btn-start">Завершить регистрацию</button>
+        <button id="btn-register" class="cta-search">Начать общение</button>
       </div>
     </section>
 
-    <!-- 3. ЛОББИ -->
+    <!-- 3. ЛОББИ РУЛЕТКИ -->
     <section id="view-lobby" class="view">
-      <div class="limit-bar">
-        <div class="limit-top">
-          <span>Лимит чатов на сегодня</span>
+      <div id="ban-banner" class="ban-banner">
+        <strong>🚫 ПОИСК ЗАБЛОКИРОВАН</strong>
+        <div id="ban-details"></div>
+      </div>
+
+      <div class="limit-strip">
+        <div class="limit-row">
+          <span>Дневной лимит чатов</span>
           <span id="limit-text">0 / 50</span>
         </div>
-        <div class="limit-track"><div id="limit-fill" class="limit-fill"></div></div>
+        <div class="meter"><div id="limit-fill" class="meter-fill"></div></div>
       </div>
 
-      <div class="section-title">
-        <span>Тема общения:</span>
-      </div>
-      <div class="topics-grid" id="topic-group">
-        <button class="sq-btn active" data-topic="chat">Общение</button>
-        <button class="sq-btn" data-topic="flirt" id="btn-topic-flirt">
-          Флирт 18+ <span class="lock-tag plus">PLUS</span>
-        </button>
-        <button class="sq-btn" data-topic="roleplay" id="btn-topic-roleplay">
-          Ролка <span class="lock-tag plus">PLUS</span>
-        </button>
-        <button class="sq-btn" data-topic="dating" id="btn-topic-dating">
-          Знакомства <span class="lock-tag plus">PLUS</span>
-        </button>
+      <div class="panel">
+        <div class="panel-title"><span>Тема общения</span></div>
+        <div class="grid-2" id="topic-group">
+          <button class="tile active" data-topic="chat">Общение</button>
+          <button class="tile" data-topic="flirt" id="t-flirt">Флирт 18+ <span class="badge plus">PLUS</span></button>
+          <button class="tile" data-topic="roleplay" id="t-roleplay">Ролка <span class="badge plus">PLUS</span></button>
+          <button class="tile" data-topic="dating" id="t-dating">Знакомства <span class="badge plus">PLUS</span></button>
+        </div>
       </div>
 
-      <div class="two-col">
-        <div>
-          <div class="section-title">
-            <span>Ваш пол:</span>
-            <span class="lock-tag plus">PLUS</span>
-          </div>
-          <div class="col-stack" id="my-gender-group">
-            <button class="sq-btn" data-my-gender="female">Девушка</button>
-            <button class="sq-btn" data-my-gender="male">Парень</button>
-            <button class="sq-btn" data-my-gender="trans">Транс</button>
-            <button class="sq-btn" data-my-gender="any">Любой</button>
+      <div class="panel">
+        <div class="panel-title"><span>Ваши параметры</span><span>Выбираете только себя</span></div>
+        <div class="field">
+          <label>Ваш пол</label>
+          <div class="grid-2" id="my-gender-group">
+            <button class="tile" data-mg="female">Девушка</button>
+            <button class="tile" data-mg="male">Парень</button>
+            <button class="tile" data-mg="trans">Транс</button>
+            <button class="tile" data-mg="any">Любой</button>
           </div>
         </div>
-
-        <div>
-          <div class="section-title">
-            <span>Пол собесед.:</span>
-            <span class="lock-tag plus">PLUS</span>
-          </div>
-          <div class="col-stack" id="target-gender-group">
-            <button class="sq-btn" data-target-gender="female">Девушка</button>
-            <button class="sq-btn" data-target-gender="male">Парень</button>
-            <button class="sq-btn" data-target-gender="trans">Транс</button>
-            <button class="sq-btn active" data-target-gender="any">Любой</button>
+        <div class="field" style="margin-bottom:0;">
+          <label>Ваш возраст</label>
+          <div class="grid-2" id="my-age-group">
+            <button class="tile" data-ma="18-21">18–21 год</button>
+            <button class="tile" data-ma="22-25">22–25 лет</button>
+            <button class="tile" data-ma="26-35">26–35 лет</button>
+            <button class="tile" data-ma="36-99">36–99 лет</button>
           </div>
         </div>
       </div>
 
-      <div class="two-col">
-        <div>
-          <div class="section-title"><span>Ваш возраст:</span></div>
-          <div class="col-stack" id="my-age-buckets">
-            <button class="sq-btn" data-my-bucket="18-21" disabled>от 18 до 21 года</button>
-            <button class="sq-btn" data-my-bucket="22-25" disabled>от 22 до 25 лет</button>
-            <button class="sq-btn" data-my-bucket="26-35" disabled>от 26 до 35 лет</button>
-            <button class="sq-btn" data-my-bucket="36-99" disabled>старше 36 лет</button>
-          </div>
+      <div class="panel">
+        <div class="panel-title">
+          <span>Возраст собеседника</span>
+          <span><span class="badge free">FREE: ЛЮБОЙ</span> <span class="badge go">GO: ВЫБОР</span></span>
         </div>
-
-        <div>
-          <div class="section-title">
-            <span>Возраст собес.:</span>
-            <span class="lock-tag go">GO</span>
-          </div>
-          <div class="col-stack" id="target-age-group">
-            <button class="sq-btn active" data-age-bucket="18-21">от 18 до 21 года</button>
-            <button class="sq-btn active" data-age-bucket="22-25">от 22 до 25 лет</button>
-            <button class="sq-btn active" data-age-bucket="26-35">от 26 до 35 лет</button>
-            <button class="sq-btn active" data-age-bucket="36-99">старше 36 лет</button>
-            <span class="hint-italic">можно несколько</span>
+        <div class="stack" id="target-age-group">
+          <button class="tile active-green" data-ta="any">Любой (18–99 лет)</button>
+          <div class="grid-2">
+            <button class="tile" data-ta="18-21">18–21 год</button>
+            <button class="tile" data-ta="22-25">22–25 лет</button>
+            <button class="tile" data-ta="26-35">26–35 лет</button>
+            <button class="tile" data-ta="36-99">36–99 лет</button>
           </div>
         </div>
       </div>
 
-      <div class="section-title"><span>Цветовая схема:</span></div>
-      <div class="theme-row">
-        <button class="sq-btn" data-set-theme="light">Светлая</button>
-        <button class="sq-btn active" data-set-theme="dark">Темная</button>
+      <div class="panel">
+        <div class="panel-title"><span>Цветовая схема</span></div>
+        <div class="grid-2">
+          <button class="tile" data-theme-set="light">☀ Светлая</button>
+          <button class="tile active" data-theme-set="dark">🌙 Тёмная</button>
+        </div>
       </div>
 
-      <button id="btn-start-chat" class="btn-start">НАЧАТЬ ЧАТ</button>
+      <button id="btn-start-chat" class="cta-search">НАЧАТЬ ПОИСК</button>
     </section>
 
-    <!-- 4. МАГАЗИН ПОДПИСОК (TELEGRAM STARS) -->
+    <!-- 4. МАГАЗИН ПОДПИСОК -->
     <section id="view-shop" class="view">
-      <div class="shop-grid">
-        <div class="plan-card">
-          <div class="plan-head">
-            <span class="plan-title">FREE</span>
-            <span class="plan-price">0 ⭐</span>
-          </div>
-          <ul class="plan-list">
-            <li>Лимит: <b>50 чатов в день</b></li>
-            <li>Тема: <b>Общение</b></li>
-            <li>Стандартная скорость поиска</li>
-            <li>Собеседник: любой пол и возраст 18+</li>
-          </ul>
-          <button class="btn-outline" disabled>Базовый тариф</button>
+      <div class="plan-box">
+        <div class="plan-top">
+          <span class="plan-name">FREE</span>
+          <span class="plan-price">0 ⭐</span>
         </div>
+        <ul class="perks">
+          <li><b>50 чатов</b> в день</li>
+          <li>Тема «Общение» и эмодзи в чате</li>
+          <li>Возраст собеседника: <b>Любой</b></li>
+        </ul>
+        <button class="btn" disabled>Базовый тариф</button>
+      </div>
 
-        <div class="plan-card featured-go">
-          <div class="plan-head">
-            <span class="plan-title" style="color:var(--badge-go);">GO</span>
-            <span class="plan-price">150 ⭐ / мес</span>
-          </div>
-          <ul class="plan-list">
-            <li>Лимит: <b>100 чатов в день</b></li>
-            <li>Фильтр по <b>возрасту собеседника</b> (можно несколько)</li>
-            <li>Возможность <b>скрыть подписку</b> от других</li>
-            <li>Оплата через Telegram Stars на 30 дней</li>
-          </ul>
-          <a id="buy-go-link" class="btn-gold" href="https://t.me/" target="_blank" rel="noopener">
-            ⭐ Купить GO за 150 звёзд
-          </a>
+      <div class="plan-box go">
+        <div class="plan-top">
+          <span class="plan-name" style="color:var(--go);">GO</span>
+          <span class="plan-price">150 ⭐ / мес</span>
         </div>
+        <ul class="perks">
+          <li><b>100 чатов</b> в день</li>
+          <li>Отправка <b>стикеров и GIF</b> в чате</li>
+          <li>Фильтр по <b>возрасту собеседника</b> (мультивыбор)</li>
+          <li>Возможность <b>скрыть подписку</b> от других</li>
+          <li>Автовыдача на 30 дней + мгновенный чек</li>
+        </ul>
+        <button class="btn go" data-buy-plan="go">⭐ Оформить GO — 150 звёзд</button>
+      </div>
 
-        <div class="plan-card featured-plus">
-          <div class="plan-head">
-            <span class="plan-title" style="color:var(--badge-plus);">PLUS</span>
-            <span class="plan-price">500 ⭐ / мес</span>
-          </div>
-          <ul class="plan-list">
-            <li>Лимит: <b>250 чатов в день</b></li>
-            <li>⚡ <b>Ускоренный приоритетный поиск</b> собеседника</li>
-            <li>Доступ к темам: <b>Флирт 18+</b>, <b>Ролка</b>, <b>Знакомства</b></li>
-            <li>Смена <b>своего пола</b> + выбор <b>пола собеседника</b></li>
-            <li>Фильтр возраста собеседника + скрытие подписки</li>
-          </ul>
-          <a id="buy-plus-link" class="btn-plus" href="https://t.me/" target="_blank" rel="noopener">
-            ⭐ Купить PLUS за 500 звёзд
-          </a>
+      <div class="plan-box plus">
+        <div class="plan-top">
+          <span class="plan-name" style="color:var(--plus);">PLUS</span>
+          <span class="plan-price">500 ⭐ / мес</span>
+        </div>
+        <ul class="perks">
+          <li><b>250 чатов</b> в день</li>
+          <li>⚡ <b>Ускоренный приоритетный поиск</b></li>
+          <li>Темы: <b>Флирт 18+</b>, <b>Ролка</b> и <b>Знакомства</b></li>
+          <li>Всё из GO: стикеры, GIF, фильтр возраста, скрытие</li>
+          <li>Автовыдача на 30 дней + мгновенный чек</li>
+        </ul>
+        <button class="btn plus" data-buy-plan="plus">⭐ Оформить PLUS — 500 звёзд</button>
+      </div>
+    </section>
+
+    <!-- 5. ПОДДЕРЖКА -->
+    <section id="view-support" class="view">
+      <div class="panel">
+        <div class="h1">Поддержка</div>
+        <p class="desc">Напишите обращение — администратор рассмотрит его и ответит прямо сюда и в Telegram.</p>
+        <div class="field">
+          <label for="sup-subject">Тема обращения</label>
+          <select id="sup-subject" class="select">
+            <option value="Обжалование бана">Обжалование бана</option>
+            <option value="Оплата и подписки">Оплата и подписки</option>
+            <option value="Жалоба на пользователя">Жалоба на пользователя</option>
+            <option value="Техническая проблема">Техническая проблема</option>
+            <option value="Другой вопрос">Другой вопрос</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="sup-text">Сообщение</label>
+          <textarea id="sup-text" class="textarea" maxlength="600" placeholder="Опишите ситуацию..."></textarea>
+        </div>
+        <button id="btn-send-support" class="btn blue">Отправить в поддержку</button>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title"><span>Мои обращения</span></div>
+        <div id="tickets-list" class="stack">
+          <div style="font-size:12.5px;color:var(--text-muted);">Обращений пока нет.</div>
         </div>
       </div>
     </section>
 
-    <!-- 5. ПРАВИЛА -->
+    <!-- 6. ПРАВИЛА -->
     <section id="view-rules" class="view">
-      <div class="card">
-        <h2>Правила Vortex Roullette.me</h2>
-        <p class="sub">Соблюдение правил обязательно для всех участников.</p>
-        <div class="rules-list">
-          <div class="rule-item">
-            <strong>1. Возрастной ценз 18+</strong>
-            Использовать чат-рулетку разрешено строго лицам от 18 до 99 лет. При регистрации вы подтверждаете свой возраст.
+      <div class="panel">
+        <div class="h1">Правила 18+</div>
+        <div class="stack">
+          <div class="rule-row">
+            <b>1. Строго от 18 до 99 лет</b>
+            Использование сервиса несовершеннолетними запрещено.
           </div>
-          <div class="rule-item">
-            <strong>2. Уважение и согласие</strong>
-            Темы «Флирт 18+», «Ролка» и «Знакомства» предназначены для общения по взаимному согласию. Оскорбления, угрозы и травля запрещены.
+          <div class="rule-row">
+            <b>2. Модерация и баны</b>
+            В каждом чате работает кнопка «Жалоба». За спам, оскорбления, рекламу или угрозы администратор выдаёт бан от 1 часа до навсегда.
           </div>
-          <div class="rule-item">
-            <strong>3. Запрет спама и рекламы</strong>
-            Любые ссылки, реклама сторонних сервисов, мошенничество и рассылка спама ведут к блокировке аккаунта.
+          <div class="rule-row">
+            <b>3. Суточные лимиты чатов</b>
+            Free — 50 чатов/день, Go — 100 чатов/день, Plus — 250 чатов/день. Обновление в 00:00 UTC.
           </div>
-          <div class="rule-item">
-            <strong>4. Дневные лимиты чатов</strong>
-            Для защиты от флуда действуют суточные лимиты: Free — 50 чатов/день, Go — 100 чатов/день, Plus — 250 чатов/день. Лимит обновляется ежедневно в 00:00 UTC.
-          </div>
-          <div class="rule-item">
-            <strong>5. Приватность и подписки</strong>
-            Переписка анонимна. Вы можете скрыть значок своей подписки от собеседников в разделе «Профиль» или в Telegram-боте.
+          <div class="rule-row">
+            <b>4. Чат-медиа и приватность</b>
+            Эмодзи доступны всем, стикеры и GIF — с подписки Go. Подписку можно скрыть в профиле. Копирование переписки защищено.
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 6. ПРОФИЛЬ -->
+    <!-- 7. ПРОФИЛЬ -->
     <section id="view-profile" class="view">
-      <div class="card">
-        <h2>Профиль</h2>
-        <p class="sub">Синхронизация с Telegram-ботом в реальном времени.</p>
-
+      <div class="panel">
+        <div class="h1">Профиль</div>
         <div class="field">
           <label>Никнейм</label>
           <input id="prof-nick" class="input" type="text" maxlength="20" />
         </div>
         <div class="field">
-          <label>Возраст (18–99)</label>
+          <label>Точный возраст (18–99)</label>
           <input id="prof-age" class="input" type="number" min="18" max="99" />
         </div>
-
-        <label class="switch-row">
+        <label class="switch-box">
           <span>Скрывать мою подписку от собеседников</span>
           <input id="prof-hide-plan" type="checkbox" />
         </label>
-
         <div class="field">
-          <label>Тариф и срок действия</label>
+          <label>Подписка</label>
           <input id="prof-plan" class="input" type="text" readonly />
-        </div>
-        <div class="field">
-          <label>Использовано чатов сегодня</label>
-          <input id="prof-chats" class="input" type="text" readonly />
         </div>
         <div class="field">
           <label>Telegram ID</label>
           <input id="prof-id" class="input" type="text" readonly />
         </div>
-
-        <button id="btn-save-profile" class="btn-primary">Сохранить изменения</button>
-        <button id="btn-logout" class="btn-danger" style="margin-top:10px;">Выйти из аккаунта</button>
+        <button id="btn-save-profile" class="btn blue" style="margin-bottom:8px;">Сохранить профиль</button>
+        <button id="btn-logout" class="btn danger">Выйти</button>
       </div>
     </section>
 
-    <!-- 7. ПОИСК СОБЕСЕДНИКА С ТАЙМЕРОМ -->
+    <!-- 8. ПОИСК СОБЕСЕДНИКА -->
     <section id="view-searching" class="view">
-      <div class="search-box">
-        <div class="sq-loader"></div>
-        <div id="plus-boost-badge" class="boost-banner" style="display:none;">
-          ⚡ Ускоренный поиск PLUS активен
-        </div>
-        <h2 style="text-transform:uppercase;font-size:16px;">Ищем собеседника...</h2>
-        <div id="search-timer" class="search-timer">00:00</div>
-        <p id="search-meta" style="font-size:12.5px;color:var(--text-muted);margin-bottom:20px;"></p>
-        <button id="btn-cancel-search" class="btn-danger">Отменить поиск</button>
+      <div class="radar-wrap">
+        <div class="radar-sq"></div>
+        <div id="plus-boost-badge" class="boost-pill" style="display:none;">⚡ ПРИОРИТЕТНЫЙ ПОИСК PLUS</div>
+        <div class="h1" style="font-size:16px;">Ищем собеседника...</div>
+        <div id="search-timer" class="timer-big">00:00</div>
+        <p id="search-meta" class="desc"></p>
+        <button id="btn-cancel-search" class="btn danger">Отменить поиск</button>
       </div>
     </section>
 
-    <!-- 8. АКТИВНЫЙ ЧАТ -->
+    <!-- 9. АКТИВНЫЙ ЧАТ -->
     <section id="view-chat" class="view">
-      <div class="chat-header">
-        <div class="peer-meta">
+      <div class="chat-top">
+        <div class="peer-box">
           <strong id="chat-peer-name">Собеседник</strong>
           <span id="chat-peer-info">Тема: Общение</span>
         </div>
-        <div class="chat-actions">
-          <button id="btn-next-peer" class="mini-btn next">Далее</button>
-          <button id="btn-stop-chat" class="mini-btn stop">Стоп</button>
+        <div class="chat-btns">
+          <button id="btn-report-open" class="cbtn rep" title="Пожаловаться">⚠ Жалоба</button>
+          <button id="btn-next-peer" class="cbtn next">Далее</button>
+          <button id="btn-stop-chat" class="cbtn stop">Стоп</button>
         </div>
       </div>
-      <div id="chat-messages" class="messages"></div>
-      <div id="typing-bar" class="typing-bar"></div>
-      <form id="chat-form" class="chat-input-bar">
-        <input id="chat-input" class="input" type="text" placeholder="Введите сообщение..." autocomplete="off" />
-        <button type="submit" class="send-btn">➤</button>
-      </form>
+
+      <div id="chat-messages" class="msg-list"></div>
+      <div id="typing-bar" class="typing-row"></div>
+
+      <!-- ПАНЕЛЬ ЭМОДЗИ / СТИКЕРОВ / GIF -->
+      <div id="media-drawer" class="media-drawer"></div>
+
+      <div class="chat-bar">
+        <div class="media-tabs">
+          <button type="button" class="m-tab" data-media="emoji">😀 Эмодзи</button>
+          <button type="button" class="m-tab" data-media="stickers">🎭 Стикеры <span class="badge go">GO</span></button>
+          <button type="button" class="m-tab" data-media="gifs">🎞 GIF <span class="badge go">GO</span></button>
+        </div>
+        <form id="chat-form" class="chat-form">
+          <input id="chat-input" class="input" type="text" placeholder="Сообщение..." autocomplete="off" />
+          <button type="submit" class="send-btn">➤</button>
+        </form>
+      </div>
     </section>
 
-    <!-- НИЖНЯЯ НАВИГАЦИЯ -->
-    <nav id="bottom-nav" class="bottom-nav">
-      <button class="nav-btn active" data-nav="lobby"><span>💬</span><span>Чат</span></button>
-      <button class="nav-btn" data-nav="shop"><span>⭐</span><span>Магазин</span></button>
-      <button class="nav-btn" data-nav="rules"><span>📜</span><span>Правила</span></button>
-      <button class="nav-btn" data-nav="profile"><span>👤</span><span>Профиль</span></button>
+    <!-- НИЖНЕЕ МЕНЮ -->
+    <nav id="bottom-nav" class="nav">
+      <button class="nav-item active" data-nav="lobby"><span>💬</span><span>Чат</span></button>
+      <button class="nav-item" data-nav="shop"><span>⭐</span><span>Магазин</span></button>
+      <button class="nav-item" data-nav="support"><span>🎧</span><span>Суппорт</span></button>
+      <button class="nav-item" data-nav="rules"><span>📜</span><span>Правила</span></button>
+      <button class="nav-item" data-nav="profile"><span>👤</span><span>Профиль</span></button>
     </nav>
   </div>
 
   <div id="toast" class="toast"></div>
 
-  <!-- МОДАЛЬНОЕ ОКНО -->
-  <div id="sub-modal" class="modal-backdrop">
-    <div class="modal-box">
-      <h3 id="modal-title">Ограничение тарифа</h3>
+  <!-- МОДАЛКА ОГРАНИЧЕНИЙ -->
+  <div id="sub-modal" class="modal-bg">
+    <div class="modal">
+      <h3 id="modal-title">Требуется подписка</h3>
       <p id="modal-text"></p>
-      <button id="modal-go-shop" class="btn-plus" style="margin-bottom:8px;">Перейти в магазин ⭐</button>
-      <button id="modal-close" class="btn-outline" style="margin-top:0;">Закрыть</button>
+      <button id="modal-to-shop" class="btn plus" style="margin-bottom:8px;">Открыть магазин ⭐</button>
+      <button id="modal-close" class="btn">Закрыть</button>
+    </div>
+  </div>
+
+  <!-- МОДАЛКА ЖАЛОБЫ -->
+  <div id="report-modal" class="modal-bg">
+    <div class="modal">
+      <h3>⚠ Пожаловаться на собеседника</h3>
+      <p>Последние сообщения диалога автоматически прикрепятся для проверки администратором.</p>
+      <div class="field">
+        <label>Причина</label>
+        <select id="rep-reason" class="select">
+          <option value="Оскорбления / угрозы">Оскорбления / угрозы</option>
+          <option value="Спам / реклама">Спам / реклама</option>
+          <option value="Подозрение на возраст до 18 лет">Подозрение на возраст до 18 лет</option>
+          <option value="Запрещённый контент">Запрещённый контент</option>
+          <option value="Другое нарушение">Другое нарушение</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Комментарий (необязательно)</label>
+        <input id="rep-comment" class="input" type="text" maxlength="200" placeholder="Кратко поясните..." />
+      </div>
+      <button id="btn-report-submit" class="btn danger" style="margin-bottom:8px;">Отправить жалобу</button>
+      <button id="btn-report-cancel" class="btn">Отмена</button>
+    </div>
+  </div>
+
+  <!-- МОДАЛКА ОПЛАТЫ (ЗАГРУЗКА + TELEGRAM STARS + ЧЕК) -->
+  <div id="pay-modal" class="modal-bg">
+    <div class="modal">
+      <h3 id="pay-title">Подготовка оплаты</h3>
+      <p id="pay-step-text">Подключаемся к системе тарифов...</p>
+      <div id="pay-progress-wrap" class="pay-progress">
+        <div id="pay-bar" class="pay-bar"></div>
+      </div>
+      <div id="pay-receipt-box" class="receipt-box" style="display:none;"></div>
+      <a id="pay-tg-link" class="btn gold" href="#" target="_blank" rel="noopener" style="display:none;margin-bottom:8px;">
+        ⭐ Перейти к оплате в @AnonimRoulette_agent
+      </a>
+      <button id="pay-close" class="btn">Закрыть</button>
     </div>
   </div>
 
@@ -1009,10 +1180,30 @@
       onValue, onChildAdded, onDisconnect, runTransaction, off
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-    // === УКАЖИТЕ ЮЗЕРНЕЙМ ВАШЕГО БОТА (БЕЗ @) ===
-    const BOT_USERNAME = "YOUR_BOT_USERNAME";
+    // ================= ЗАЩИТА ОТ КОПИРОВАНИЯ =================
+    document.addEventListener("contextmenu", (e) => e.preventDefault());
+    document.addEventListener("dragstart", (e) => e.preventDefault());
+    document.addEventListener("copy", (e) => {
+      if (!["INPUT", "TEXTAREA"].includes(document.activeElement?.tagName)) e.preventDefault();
+    });
+    document.addEventListener("cut", (e) => {
+      if (!["INPUT", "TEXTAREA"].includes(document.activeElement?.tagName)) e.preventDefault();
+    });
+    document.addEventListener("keydown", (e) => {
+      const k = e.key.toLowerCase();
+      const inField = ["INPUT", "TEXTAREA"].includes(document.activeElement?.tagName);
+      if (
+        e.key === "F12" ||
+        (e.ctrlKey && e.shiftKey && ["i", "j", "c"].includes(k)) ||
+        (e.ctrlKey && ["u", "s"].includes(k)) ||
+        (e.ctrlKey && k === "c" && !inField)
+      ) {
+        e.preventDefault();
+      }
+    });
 
-    // === КОНФИГУРАЦИЯ FIREBASE ===
+    // ================= КОНФИГУРАЦИЯ =================
+    const BOT_USERNAME = "AnonimRoulette_agent";
     const firebaseConfig = {
       apiKey: "AIzaSyD7KNKaJY1xEHxzGzSkcbdITEVPvmYKjQA",
       authDomain: "secretchat-a1358.firebaseapp.com",
@@ -1027,19 +1218,46 @@
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    // Ссылки на Telegram-бота и оплату Stars
-    const botBase = `https://t.me/${BOT_USERNAME}`;
-    document.getElementById("bot-auth-link").href = botBase;
-    document.getElementById("buy-go-link").href = `${botBase}?start=buy_go`;
-    document.getElementById("buy-plus-link").href = `${botBase}?start=buy_plus`;
-
-    // === КОНСТАНТЫ ===
-    const ALL_AGE_BUCKETS = ["18-21", "22-25", "26-35", "36-99"];
     const PLAN_LIMITS = { free: 50, go: 100, plus: 250 };
+    const PLAN_STARS = { go: 150, plus: 500 };
     const GENDER_LABELS = { female: "Девушка", male: "Парень", trans: "Транс", any: "Любой" };
     const TOPIC_LABELS = { chat: "Общение", flirt: "Флирт 18+", roleplay: "Ролка", dating: "Знакомства" };
+    const BUCKET_REP_AGE = { "18-21": 20, "22-25": 23, "26-35": 29, "36-99": 40 };
 
-    // === СОСТОЯНИЕ ===
+    const EMOJIS = [
+      "😀","😂","😍","🥰","😎","😏","😜","🤔",
+      "😳","😱","😭","😡","🔥","❤️","💖","💔",
+      "💋","😈","👻","🎉","👍","👎","👋","🙏",
+      "👀","💀","🌹","🥂","🎧","⚡","⭐","👑"
+    ];
+
+    const STICKERS = [
+      { id: "hi", ico: "👋", cap: "ПРИВЕТ!" },
+      { id: "fire", ico: "🔥", cap: "ОГОНЬ!" },
+      { id: "love", ico: "💖", cap: "ЛАВКИ" },
+      { id: "lol", ico: "😂", cap: "АХАХАХ" },
+      { id: "flirt", ico: "😏", cap: "ФЛИРТ" },
+      { id: "devil", ico: "😈", cap: "ШАЛИМ" },
+      { id: "shock", ico: "😱", cap: "ШОК!" },
+      { id: "cool", ico: "😎", cap: "ТОПЧИК" },
+      { id: "cry", ico: "😭", cap: "ГРУСТНО" },
+      { id: "kiss", ico: "💋", cap: "ЧМОК" },
+      { id: "crown", ico: "👑", cap: "КОРОЛЬ" },
+      { id: "bye", ico: "🚪", cap: "ПОКА!" }
+    ];
+
+    const GIFS = [
+      { label: "Привет", url: "https://media.giphy.com/media/ASd0Ukj0y3qMM/giphy.gif" },
+      { label: "Смех", url: "https://media.giphy.com/media/10JhviFuU2gWD6/giphy.gif" },
+      { label: "Огонь", url: "https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif" },
+      { label: "Подмигнул", url: "https://media.giphy.com/media/6ra84Uso2hoir3YCgb/giphy.gif" },
+      { label: "Сердце", url: "https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif" },
+      { label: "Шок", url: "https://media.giphy.com/media/5VKbvrjxpVJCM/giphy.gif" },
+      { label: "Кот", url: "https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif" },
+      { label: "Пока", url: "https://media.giphy.com/media/42D3CxaINsAFemFuId/giphy.gif" }
+    ];
+
+    // ================= СОСТОЯНИЕ =================
     let currentTgId = localStorage.getItem("vortex_tg_id") || null;
     let userData = null;
     let userUnsub = null;
@@ -1048,48 +1266,55 @@
     let selectedRegGender = "any";
     let searchPrefs = {
       topic: "chat",
-      targetGender: "any",
-      targetAges: [...ALL_AGE_BUCKETS]
+      targetAges: ["any"] // по умолчанию Любой (FREE)
     };
 
     let activeRoomId = null;
+    let activePeerId = null;
+    let activePeerNick = "Собеседник";
+    let roomLog = [];
     let roomRefs = [];
     let queueWatchRef = null;
     let searchTimerInt = null;
     let searchRetryInt = null;
     let searchStartedAt = 0;
     let typingTimer = null;
+    let banCountdownInt = null;
+    let orderWatchRef = null;
+    let activeMediaTab = null;
 
     const $ = (id) => document.getElementById(id);
 
-    function todayUTC() {
-      return new Date().toISOString().slice(0, 10);
+    function todayUTC() { return new Date().toISOString().slice(0, 10); }
+    function getAgeBucket(age) {
+      const n = Number(age);
+      if (n <= 21) return "18-21";
+      if (n <= 25) return "22-25";
+      if (n <= 35) return "26-35";
+      return "36-99";
     }
 
     function getEffectivePlan() {
       if (!userData) return "free";
-      const plan = userData.plan || "free";
+      const p = userData.plan || "free";
       const exp = Number(userData.plan_expires_at || 0);
-      if (plan !== "free" && exp > 0 && Date.now() > exp) {
+      if (p !== "free" && exp > 0 && Date.now() > exp) {
         update(ref(db, `users/${currentTgId}`), { plan: "free", plan_expires_at: 0 }).catch(() => {});
         return "free";
       }
-      return plan;
+      return p;
     }
-
-    function hasGo() {
-      const p = getEffectivePlan();
-      return p === "go" || p === "plus";
-    }
-    function hasPlus() {
-      return getEffectivePlan() === "plus";
-    }
-    function getDailyLimit() {
-      return PLAN_LIMITS[getEffectivePlan()] || 50;
-    }
+    function hasGo() { const p = getEffectivePlan(); return p === "go" || p === "plus"; }
+    function hasPlus() { return getEffectivePlan() === "plus"; }
+    function getDailyLimit() { return PLAN_LIMITS[getEffectivePlan()] || 50; }
     function getDailyUsed() {
       if (!userData) return 0;
       return userData.daily_chats_date === todayUTC() ? Number(userData.daily_chats_count || 0) : 0;
+    }
+    function isBanned() {
+      if (!userData) return false;
+      const until = Number(userData.banned_until || 0);
+      return until === -1 || until > Date.now();
     }
 
     function showToast(msg) {
@@ -1100,23 +1325,23 @@
       el._t = setTimeout(() => el.classList.remove("show"), 3200);
     }
 
-    function openSubModal(title, text) {
+    function openSubModal(title, htmlText) {
       $("modal-title").textContent = title;
-      $("modal-text").innerHTML = text;
+      $("modal-text").innerHTML = htmlText;
       $("sub-modal").classList.add("open");
     }
     $("modal-close").onclick = () => $("sub-modal").classList.remove("open");
-    $("modal-go-shop").onclick = () => {
+    $("modal-to-shop").onclick = () => {
       $("sub-modal").classList.remove("open");
-      if (userData && userData.registered) showView("view-shop");
+      if (userData?.registered) showView("view-shop");
     };
 
     function showView(viewId) {
       document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
       $(viewId).classList.add("active");
-      const navViews = ["view-lobby", "view-shop", "view-rules", "view-profile"];
+      const navViews = ["view-lobby", "view-shop", "view-support", "view-rules", "view-profile"];
       $("bottom-nav").classList.toggle("visible", navViews.includes(viewId));
-      document.querySelectorAll(".nav-btn").forEach(b => {
+      document.querySelectorAll(".nav-item").forEach(b => {
         b.classList.toggle("active", `view-${b.dataset.nav}` === viewId);
       });
     }
@@ -1124,45 +1349,32 @@
     function applyTheme(theme) {
       document.documentElement.setAttribute("data-theme", theme);
       localStorage.setItem("vortex_theme", theme);
-      document.querySelectorAll("[data-set-theme]").forEach(b => {
-        b.classList.toggle("active", b.dataset.setTheme === theme);
+      document.querySelectorAll("[data-theme-set]").forEach(b => {
+        b.classList.toggle("active", b.dataset.themeSet === theme);
       });
       if (currentTgId && userData) {
         update(ref(db, `users/${currentTgId}`), { theme }).catch(() => {});
       }
     }
 
-    function getAgeBucket(age) {
-      const n = Number(age);
-      if (n <= 21) return "18-21";
-      if (n <= 25) return "22-25";
-      if (n <= 35) return "26-35";
-      return "36-99";
-    }
-
-    // Инициализация темы
     applyTheme(localStorage.getItem("vortex_theme") || "dark");
-    $("quick-theme-btn").onclick = () => {
+    $("theme-toggle").onclick = () => {
       const next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
       applyTheme(next);
     };
-    document.querySelectorAll("[data-set-theme]").forEach(btn => {
-      btn.onclick = () => applyTheme(btn.dataset.setTheme);
+    document.querySelectorAll("[data-theme-set]").forEach(b => {
+      b.onclick = () => applyTheme(b.dataset.themeSet);
     });
 
-    // === ЖИВОЙ ОНЛАЙН (PRESENCE) ===
+    // ================= PRESENCE (ЖИВОЙ ОНЛАЙН) =================
     function registerPresence(id) {
-      if (presenceId && presenceId !== id) {
-        remove(ref(db, `online/${presenceId}`)).catch(() => {});
-      }
+      if (presenceId && presenceId !== id) remove(ref(db, `online/${presenceId}`)).catch(() => {});
       presenceId = id;
       const pRef = ref(db, `online/${id}`);
       set(pRef, { ts: Date.now() });
       onDisconnect(pRef).remove();
     }
-
-    // Гостевой онлайн до авторизации
-    const guestPresenceKey = `guest_${Math.random().toString(36).slice(2, 10)}`;
+    const guestPresenceKey = `g_${Math.random().toString(36).slice(2, 10)}`;
     registerPresence(currentTgId || guestPresenceKey);
 
     onValue(ref(db, "online"), (snap) => {
@@ -1174,46 +1386,122 @@
       $("queue-total").textContent = val ? Object.keys(val).length : 0;
     });
 
-    // === 1. ВХОД ПО 6-ЗНАЧНОМУ КОДУ ===
-    $("btn-verify-code").onclick = async () => {
-      const code = $("auth-code-input").value.trim();
-      if (!/^\d{6}$/.test(code)) return showToast("Введите ровно 6 цифр кода из бота");
+    // ================= 1. ВХОД ПО 6-ЗНАЧНОМУ КОДУ =================
+    $("btn-login").onclick = async () => {
+      const code = $("auth-code").value.trim();
+      if (!/^\d{6}$/.test(code)) return showToast("Введите ровно 6 цифр из @AnonimRoulette_agent");
       try {
         const snap = await get(ref(db, `auth_codes/${code}`));
-        if (!snap.exists()) return showToast("Код не найден. Получите новый в боте.");
+        if (!snap.exists()) return showToast("Код не найден");
         const data = snap.val();
-        if (data.used) return showToast("Код уже использован.");
-        if (Date.now() > data.expires_at) return showToast("Срок действия кода истёк.");
+        if (data.used) return showToast("Код уже использован");
+        if (Date.now() > data.expires_at) return showToast("Срок кода истёк");
 
         await update(ref(db, `auth_codes/${code}`), { used: true });
         currentTgId = String(data.tg_id);
         localStorage.setItem("vortex_tg_id", currentTgId);
-        $("auth-code-input").value = "";
+        $("auth-code").value = "";
         registerPresence(currentTgId);
         attachUserListener();
       } catch (e) {
-        console.error(e);
-        showToast("Ошибка подключения к Firebase");
+        showToast("Ошибка подключения к базе данных");
       }
     };
 
-    // === СИНХРОНИЗАЦИЯ ПРОФИЛЯ ===
+    // ================= СИНХРОНИЗАЦИЯ ПРОФИЛЯ И БАНОВ =================
+    function updateBanUI() {
+      const btn = $("btn-start-chat");
+      const banner = $("ban-banner");
+      const details = $("ban-details");
+      clearInterval(banCountdownInt);
+
+      if (!isBanned()) {
+        banner.classList.remove("show");
+        btn.classList.remove("banned");
+        btn.disabled = false;
+        btn.textContent = "НАЧАТЬ ПОИСК";
+        return;
+      }
+
+      // Если забанили во время поиска или чата — выкидываем в лобби
+      if (queueWatchRef) stopSearch();
+      if (activeRoomId) leaveRoom(true);
+
+      banner.classList.add("show");
+      btn.classList.add("banned");
+      btn.disabled = true;
+
+      const until = Number(userData.banned_until);
+      const reason = userData.ban_reason || "Нарушение правил";
+
+      const tick = () => {
+        if (until === -1) {
+          btn.textContent = "ПОИСК ЗАБЛОКИРОВАН НАВСЕГДА";
+          details.textContent = `Причина: ${reason}. Вы можете обжаловать решение во вкладке «Суппорт».`;
+          clearInterval(banCountdownInt);
+          return;
+        }
+        const left = until - Date.now();
+        if (left <= 0) {
+          clearInterval(banCountdownInt);
+          update(ref(db, `users/${currentTgId}`), { banned_until: 0, ban_reason: "" }).catch(() => {});
+          updateBanUI();
+          return;
+        }
+        const h = Math.floor(left / 3600000);
+        const m = Math.floor((left % 3600000) / 60000);
+        const s = Math.floor((left % 60000) / 1000);
+        const leftStr = `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+        btn.textContent = `БАН: ОСТАЛОСЬ ${leftStr}`;
+        details.textContent = `Причина: ${reason}. До разблокировки: ${leftStr}`;
+      };
+      tick();
+      banCountdownInt = setInterval(tick, 1000);
+    }
+
+    function renderTickets(ticketsObj) {
+      const wrap = $("tickets-list");
+      const list = Object.values(ticketsObj || {}).sort((a, b) => (b.created_at || 0) - (a.created_at || 0));
+      if (!list.length) {
+        wrap.innerHTML = `<div style="font-size:12.5px;color:var(--text-muted);">Обращений пока нет.</div>`;
+        return;
+      }
+      wrap.innerHTML = "";
+      list.forEach(t => {
+        const div = document.createElement("div");
+        const st = t.status || "open";
+        const stLabel = st === "answered" ? "ОТВЕЧЕНО" : st === "closed" ? "ЗАКРЫТ" : "НА РАССМОТРЕНИИ";
+        div.className = `ticket-card ${st}`;
+        div.innerHTML = `
+          <div class="ticket-head"><span>${escapeHtml(t.subject || "Обращение")}</span><span>${stLabel}</span></div>
+          <div>${escapeHtml(t.message || "")}</div>
+          ${t.admin_reply ? `<div class="ticket-reply"><b>Ответ админа:</b> ${escapeHtml(t.admin_reply)}</div>` : ""}
+        `;
+        wrap.appendChild(div);
+      });
+    }
+
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, m => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[m]));
+    }
+
     function attachUserListener() {
       if (userUnsub) userUnsub();
-      const uRef = ref(db, `users/${currentTgId}`);
-      userUnsub = onValue(uRef, (snap) => {
+      userUnsub = onValue(ref(db, `users/${currentTgId}`), (snap) => {
         if (!snap.exists()) {
           logoutLocal("Аккаунт удалён в Telegram-боте.");
           return;
         }
         userData = snap.val();
         syncUIWithUser();
+        updateBanUI();
+        renderTickets(userData.tickets);
 
         if (!userData.registered || !userData.accepted_terms) {
           showView("view-register");
         } else if (!activeRoomId && !queueWatchRef) {
-          const activeId = document.querySelector(".view.active")?.id;
-          if (!["view-lobby", "view-shop", "view-rules", "view-profile"].includes(activeId)) {
+          const cur = document.querySelector(".view.active")?.id;
+          if (!["view-lobby","view-shop","view-support","view-rules","view-profile"].includes(cur)) {
             showView("view-lobby");
           }
         }
@@ -1226,213 +1514,264 @@
       const limit = getDailyLimit();
       const used = getDailyUsed();
 
-      // Бейдж в шапке
       const badge = $("plan-badge");
       badge.style.display = "inline-block";
-      badge.className = `plan-badge ${plan}`;
+      badge.className = `tag-plan ${plan}`;
       badge.textContent = plan.toUpperCase();
 
-      // Прогресс-бар дневного лимита
       $("limit-text").textContent = `${used} / ${limit}`;
       const pct = Math.min(100, Math.round((used / limit) * 100));
       const fill = $("limit-fill");
       fill.style.width = `${pct}%`;
-      fill.className = "limit-fill" + (pct >= 100 ? " full" : pct >= 80 ? " warn" : "");
+      fill.className = "meter-fill" + (pct >= 100 ? " full" : pct >= 80 ? " warn" : "");
 
-      // Профиль
       const expMs = Number(userData.plan_expires_at || 0);
-      const expLabel = plan !== "free" && expMs > 0
+      const expStr = plan !== "free" && expMs > 0
         ? `до ${new Date(expMs).toLocaleDateString("ru-RU")}`
         : "Бессрочно";
 
       $("prof-nick").value = userData.nick || "";
-      $("prof-age").value = userData.age || 18;
+      $("prof-age").value = userData.age || 20;
       $("prof-hide-plan").checked = Boolean(userData.hide_plan);
-      $("prof-plan").value = `${plan.toUpperCase()} (${expLabel})`;
-      $("prof-chats").value = `${used} из ${limit} за сегодня`;
+      $("prof-plan").value = `${plan.toUpperCase()} (${expStr})`;
       $("prof-id").value = userData.tg_id || currentTgId;
 
-      // Темы (Флирт 18+, Ролка, Знакомства — строго PLUS)
-      ["btn-topic-flirt", "btn-topic-roleplay", "btn-topic-dating"].forEach(id => {
-        $(id).classList.toggle("locked", !hasPlus());
-      });
-      if (!hasPlus() && searchPrefs.topic !== "chat") {
-        searchPrefs.topic = "chat";
-      }
+      // Темы (Флирт, Ролка, Знакомства — PLUS)
+      ["t-flirt", "t-roleplay", "t-dating"].forEach(id => $(id).classList.toggle("locked", !hasPlus()));
+      if (!hasPlus() && searchPrefs.topic !== "chat") searchPrefs.topic = "chat";
 
-      // Ваш пол — смена строго PLUS
-      document.querySelectorAll("[data-my-gender]").forEach(btn => {
-        btn.classList.toggle("active", btn.dataset.myGender === userData.gender);
-        btn.classList.toggle("locked", !hasPlus() && btn.dataset.myGender !== userData.gender);
-      });
+      // Свой пол и свой возраст (выбирает сам пользователь!)
+      const myBucket = userData.age_bucket || getAgeBucket(userData.age || 20);
+      document.querySelectorAll("[data-mg]").forEach(b => b.classList.toggle("active", b.dataset.mg === (userData.gender || "any")));
+      document.querySelectorAll("[data-ma]").forEach(b => b.classList.toggle("active", b.dataset.ma === myBucket));
 
-      // Пол собеседника — выбор строго PLUS (иначе только "Любой")
-      if (!hasPlus()) {
-        searchPrefs.targetGender = "any";
-      }
-      document.querySelectorAll("[data-target-gender]").forEach(btn => {
-        btn.classList.toggle("locked", !hasPlus() && btn.dataset.targetGender !== "any");
-      });
-
-      // Мой возраст
-      const myBucket = getAgeBucket(userData.age || 18);
-      document.querySelectorAll("[data-my-bucket]").forEach(btn => {
-        btn.classList.toggle("active", btn.dataset.myBucket === myBucket);
+      // Возраст собеседника: "any" (Любой) всегда FREE; конкретные диапазоны — от GO
+      if (!hasGo()) searchPrefs.targetAges = ["any"];
+      document.querySelectorAll("[data-ta]").forEach(b => {
+        const val = b.dataset.ta;
+        if (val === "any") {
+          b.classList.toggle("active-green", searchPrefs.targetAges.includes("any"));
+        } else {
+          b.classList.toggle("locked", !hasGo());
+          b.classList.toggle("active", !searchPrefs.targetAges.includes("any") && searchPrefs.targetAges.includes(val));
+        }
       });
 
-      // Возраст собеседника — от GO
-      if (!hasGo()) {
-        searchPrefs.targetAges = [...ALL_AGE_BUCKETS];
-      }
-      document.querySelectorAll("[data-age-bucket]").forEach(btn => {
-        btn.classList.toggle("locked", !hasGo());
-      });
-
-      renderLobbySelections();
+      document.querySelectorAll("[data-topic]").forEach(b => b.classList.toggle("active", b.dataset.topic === searchPrefs.topic));
     }
 
-    function renderLobbySelections() {
-      document.querySelectorAll("[data-topic]").forEach(b => {
-        b.classList.toggle("active", b.dataset.topic === searchPrefs.topic);
-      });
-      document.querySelectorAll("[data-target-gender]").forEach(b => {
-        b.classList.toggle("active", b.dataset.targetGender === searchPrefs.targetGender);
-      });
-      document.querySelectorAll("[data-age-bucket]").forEach(b => {
-        b.classList.toggle("active", searchPrefs.targetAges.includes(b.dataset.ageBucket));
-      });
-    }
-
-    // === 2. РЕГИСТРАЦИЯ ГОСТЯ ===
-    document.querySelectorAll("#reg-gender-group .sq-btn").forEach(btn => {
-      btn.onclick = () => {
-        selectedRegGender = btn.dataset.gender;
-        document.querySelectorAll("#reg-gender-group .sq-btn").forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
+    // ================= 2. РЕГИСТРАЦИЯ =================
+    document.querySelectorAll("[data-rg]").forEach(b => {
+      b.onclick = () => {
+        selectedRegGender = b.dataset.rg;
+        document.querySelectorAll("[data-rg]").forEach(x => x.classList.remove("active"));
+        b.classList.add("active");
       };
     });
 
-    $("reg-rules-link").onclick = (e) => {
-      e.preventDefault();
-      openSubModal(
-        "Правила 18+",
-        "1. Строго 18–99 лет.<br>2. Без спама, рекламы и оскорблений.<br>3. Лимиты: Free 50/день, Go 100/день, Plus 250/день."
-      );
-    };
-
-    $("btn-complete-reg").onclick = async () => {
+    $("btn-register").onclick = async () => {
       const nick = $("reg-nick").value.trim();
       const age = parseInt($("reg-age").value, 10);
-      const accepted = $("reg-terms").checked;
-
-      if (nick.length < 2 || nick.length > 20) return showToast("Ник должен быть от 2 до 20 символов");
-      if (isNaN(age) || age < 18 || age > 99) return showToast("Возраст должен быть от 18 до 99 лет");
-      if (!accepted) return showToast("Подтвердите возраст 18+ и согласие с правилами");
+      if (nick.length < 2 || nick.length > 20) return showToast("Ник от 2 до 20 символов");
+      if (isNaN(age) || age < 18 || age > 99) return showToast("Возраст от 18 до 99 лет");
+      if (!$("reg-terms").checked) return showToast("Подтвердите возраст 18+ и правила");
 
       await update(ref(db, `users/${currentTgId}`), {
         nick,
         gender: selectedRegGender,
         age,
+        age_bucket: getAgeBucket(age),
         accepted_terms: true,
         registered: true
       });
-      showToast("Профиль создан!");
+      showToast("Добро пожаловать в Vortex Roullette!");
     };
 
-    // === 3. ЛОББИ И ПОДПИСКИ ===
-    document.querySelectorAll("[data-topic]").forEach(btn => {
-      btn.onclick = () => {
-        const topic = btn.dataset.topic;
-        if (topic !== "chat" && !hasPlus()) {
+    // ================= 3. ЛОББИ =================
+    document.querySelectorAll("[data-topic]").forEach(b => {
+      b.onclick = () => {
+        const t = b.dataset.topic;
+        if (t !== "chat" && !hasPlus()) {
           return openSubModal(
-            `Тема «${TOPIC_LABELS[topic]}» — только PLUS`,
-            `Темы <b>Флирт 18+</b>, <b>Ролка</b> и <b>Знакомства</b> открываются с подпиской <b>PLUS (500 ⭐/мес)</b>.`
+            `Тема «${TOPIC_LABELS[t]}» — PLUS`,
+            "Категории <b>Флирт 18+</b>, <b>Ролка</b> и <b>Знакомства</b> открываются с подпиской <b>PLUS (500 ⭐/мес)</b>."
           );
         }
-        searchPrefs.topic = topic;
-        renderLobbySelections();
+        searchPrefs.topic = t;
+        syncUIWithUser();
       };
     });
 
-    document.querySelectorAll("[data-my-gender]").forEach(btn => {
-      btn.onclick = async () => {
-        const newGender = btn.dataset.myGender;
-        if (newGender === userData.gender) return;
-        if (!hasPlus()) {
-          return openSubModal(
-            "Смена своего пола — только PLUS",
-            "Изменять свой пол после регистрации могут только владельцы подписки <b>PLUS (500 ⭐/мес)</b>."
-          );
-        }
-        await update(ref(db, `users/${currentTgId}`), { gender: newGender });
-        showToast(`Ваш пол изменён: ${GENDER_LABELS[newGender]}`);
+    document.querySelectorAll("[data-mg]").forEach(b => {
+      b.onclick = async () => {
+        await update(ref(db, `users/${currentTgId}`), { gender: b.dataset.mg });
+        showToast(`Ваш пол: ${GENDER_LABELS[b.dataset.mg]}`);
       };
     });
 
-    document.querySelectorAll("[data-target-gender]").forEach(btn => {
-      btn.onclick = () => {
-        const g = btn.dataset.targetGender;
-        if (g !== "any" && !hasPlus()) {
-          return openSubModal(
-            "Выбор пола собеседника — только PLUS",
-            "Поиск по конкретному полу собеседника доступен только с подпиской <b>PLUS (500 ⭐/мес)</b>."
-          );
-        }
-        searchPrefs.targetGender = g;
-        renderLobbySelections();
+    document.querySelectorAll("[data-ma]").forEach(b => {
+      b.onclick = async () => {
+        const bucket = b.dataset.ma;
+        await update(ref(db, `users/${currentTgId}`), {
+          age_bucket: bucket,
+          age: BUCKET_REP_AGE[bucket] || 21
+        });
+        showToast(`Ваш возраст: ${bucket} лет`);
       };
     });
 
-    document.querySelectorAll("[data-age-bucket]").forEach(btn => {
-      btn.onclick = () => {
+    document.querySelectorAll("[data-ta]").forEach(b => {
+      b.onclick = () => {
+        const val = b.dataset.ta;
+        if (val === "any") {
+          searchPrefs.targetAges = ["any"];
+          syncUIWithUser();
+          return;
+        }
         if (!hasGo()) {
           return openSubModal(
-            "Возраст собеседника — от подписки GO",
-            "Фильтр по возрасту собеседника открывается начиная с тарифа <b>GO (150 ⭐/мес)</b>."
+            "Выбор возраста собеседника — GO",
+            "На тарифе Free доступен поиск <b>Любого</b> возраста (18–99). Точный фильтр по возрастам открывается с тарифа <b>GO (150 ⭐/мес)</b>."
           );
         }
-        const bucket = btn.dataset.ageBucket;
-        const idx = searchPrefs.targetAges.indexOf(bucket);
-        if (idx >= 0) {
-          if (searchPrefs.targetAges.length === 1) return showToast("Оставьте хотя бы один диапазон возраста");
-          searchPrefs.targetAges.splice(idx, 1);
+        if (searchPrefs.targetAges.includes("any")) {
+          searchPrefs.targetAges = [val];
         } else {
-          searchPrefs.targetAges.push(bucket);
+          const i = searchPrefs.targetAges.indexOf(val);
+          if (i >= 0) {
+            searchPrefs.targetAges.splice(i, 1);
+            if (!searchPrefs.targetAges.length) searchPrefs.targetAges = ["any"];
+          } else {
+            searchPrefs.targetAges.push(val);
+          }
         }
-        renderLobbySelections();
+        syncUIWithUser();
       };
     });
 
-    // Навигация и профиль
-    document.querySelectorAll(".nav-btn").forEach(btn => {
-      btn.onclick = () => showView(`view-${btn.dataset.nav}`);
+    // ================= 4. МАГАЗИН: ЗАГРУЗКА -> ОПЛАТА В ТГ -> ЧЕК =================
+    function closePayModal() {
+      $("pay-modal").classList.remove("open");
+      if (orderWatchRef) { off(orderWatchRef); orderWatchRef = null; }
+    }
+    $("pay-close").onclick = closePayModal;
+
+    document.querySelectorAll("[data-buy-plan]").forEach(btn => {
+      btn.onclick = async () => {
+        const plan = btn.dataset.buyPlan;
+        const stars = PLAN_STARS[plan];
+        const orderId = `ord_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+
+        $("pay-modal").classList.add("open");
+        $("pay-title").textContent = `Оформление ${plan.toUpperCase()} (${stars} ⭐/мес)`;
+        $("pay-receipt-box").style.display = "none";
+        $("pay-tg-link").style.display = "none";
+        $("pay-progress-wrap").style.display = "block";
+        $("pay-bar").style.width = "12%";
+        $("pay-step-text").textContent = "⏳ Проверяем аккаунт и доступность тарифа...";
+
+        await set(ref(db, `orders/${orderId}`), {
+          order_id: orderId,
+          tg_id: currentTgId,
+          plan,
+          stars,
+          status: "pending",
+          created_at: Date.now()
+        });
+
+        setTimeout(() => {
+          $("pay-bar").style.width = "52%";
+          $("pay-step-text").textContent = "🔓 Снимаем с вас лимиты и резервируем привилегии...";
+        }, 800);
+
+        setTimeout(() => {
+          $("pay-bar").style.width = "88%";
+          $("pay-step-text").textContent = "⭐ Создаём счёт на оплату в Telegram Stars...";
+        }, 1600);
+
+        setTimeout(() => {
+          $("pay-bar").style.width = "100%";
+          $("pay-step-text").innerHTML =
+            `Счёт готов! Нажмите кнопку ниже, чтобы оплатить <b>${stars} ⭐</b> в боте <b>@${BOT_USERNAME}</b>. Подписка и чек придут автоматически.`;
+          const link = $("pay-tg-link");
+          link.href = `https://t.me/${BOT_USERNAME}?start=pay_${orderId}`;
+          link.style.display = "block";
+        }, 2300);
+
+        // Слушаем автоматическую оплату и выводим чек
+        orderWatchRef = ref(db, `orders/${orderId}`);
+        onValue(orderWatchRef, (snap) => {
+          const ord = snap.val();
+          if (ord && ord.status === "paid") {
+            $("pay-title").textContent = "✔ ОПЛАТА ПОДТВЕРЖДЕНА";
+            $("pay-step-text").textContent = "Подписка успешно активирована! Вот ваш электронный чек:";
+            $("pay-progress-wrap").style.display = "none";
+            $("pay-tg-link").style.display = "none";
+            const expStr = new Date(ord.expires_at).toLocaleDateString("ru-RU");
+            $("pay-receipt-box").style.display = "block";
+            $("pay-receipt-box").innerHTML =
+              `ЧЕК № ${escapeHtml(ord.receipt_id || orderId)}<br>` +
+              `Сервис: Vortex Roullette.me<br>` +
+              `Тариф: ${ord.plan.toUpperCase()} (30 дней)<br>` +
+              `Сумма: ${ord.stars} ⭐ (Telegram Stars)<br>` +
+              `Статус: ОПЛАЧЕНО / АВТОВЫДАЧА<br>` +
+              `Активна до: ${expStr}`;
+            showToast(`Подписка ${ord.plan.toUpperCase()} активирована!`);
+          }
+        });
+      };
+    });
+
+    // ================= 5. ПОДДЕРЖКА =================
+    $("btn-send-support").onclick = async () => {
+      const subject = $("sup-subject").value;
+      const message = $("sup-text").value.trim();
+      if (message.length < 5) return showToast("Напишите сообщение (минимум 5 символов)");
+
+      const ticketId = `tk_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
+      const ticket = {
+        ticket_id: ticketId,
+        tg_id: currentTgId,
+        nick: userData.nick || "Гость",
+        subject,
+        message,
+        status: "new",
+        created_at: Date.now(),
+        admin_reply: ""
+      };
+      await set(ref(db, `support_tickets/${ticketId}`), ticket);
+      await set(ref(db, `users/${currentTgId}/tickets/${ticketId}`), ticket);
+      $("sup-text").value = "";
+      showToast("Обращение отправлено администратору!");
+    };
+
+    // ================= 6. НАВИГАЦИЯ И ПРОФИЛЬ =================
+    document.querySelectorAll(".nav-item").forEach(b => {
+      b.onclick = () => showView(`view-${b.dataset.nav}`);
     });
 
     $("prof-hide-plan").onchange = async (e) => {
-      const checked = e.target.checked;
-      if (checked && !hasGo()) {
+      if (e.target.checked && !hasGo()) {
         e.target.checked = false;
-        return openSubModal(
-          "Скрытие подписки — от GO",
-          "Скрывать значок своей подписки от собеседников можно с тарифами <b>GO</b> и <b>PLUS</b>."
-        );
+        return openSubModal("Скрытие подписки — GO", "Скрывать значок подписки от собеседников можно с тарифов <b>GO</b> и <b>PLUS</b>.");
       }
-      await update(ref(db, `users/${currentTgId}`), { hide_plan: checked });
-      showToast(checked ? "Подписка скрыта от других" : "Подписка видна собеседникам");
+      await update(ref(db, `users/${currentTgId}`), { hide_plan: e.target.checked });
+      showToast(e.target.checked ? "Подписка скрыта" : "Подписка видна всем");
     };
 
     $("btn-save-profile").onclick = async () => {
       const nick = $("prof-nick").value.trim();
       const age = parseInt($("prof-age").value, 10);
-      if (nick.length < 2 || nick.length > 20) return showToast("Ник должен быть от 2 до 20 символов");
-      if (isNaN(age) || age < 18 || age > 99) return showToast("Возраст от 18 до 99 лет");
-      await update(ref(db, `users/${currentTgId}`), { nick, age });
-      showToast("Изменения сохранены");
+      if (nick.length < 2 || nick.length > 20) return showToast("Ник от 2 до 20 символов");
+      if (isNaN(age) || age < 18 || age > 99) return showToast("Возраст от 18 до 99");
+      await update(ref(db, `users/${currentTgId}`), { nick, age, age_bucket: getAgeBucket(age) });
+      showToast("Профиль сохранён");
     };
 
-    function logoutLocal(message) {
+    function logoutLocal(msg) {
       stopSearch();
       leaveRoom(false);
+      clearInterval(banCountdownInt);
       if (userUnsub) userUnsub();
       userUnsub = null;
       currentTgId = null;
@@ -1441,98 +1780,58 @@
       $("plan-badge").style.display = "none";
       registerPresence(guestPresenceKey);
       showView("view-auth");
-      if (message) showToast(message);
+      if (msg) showToast(msg);
     }
     $("btn-logout").onclick = () => logoutLocal("Вы вышли из аккаунта");
 
-    // === 4. МАТЧМЕЙКИНГ (С ТАЙМЕРОМ, ПРИОРИТЕТОМ PLUS И ЛИМИТАМИ) ===
+    // ================= 7. ПОИСК И МАТЧМЕЙКИНГ =================
     function formatTimer(sec) {
-      const m = String(Math.floor(sec / 60)).padStart(2, "0");
-      const s = String(sec % 60).padStart(2, "0");
-      return `${m}:${s}`;
+      return `${String(Math.floor(sec / 60)).padStart(2, "0")}:${String(sec % 60).padStart(2, "0")}`;
     }
 
-    function startSearchTimer() {
-      clearInterval(searchTimerInt);
-      searchStartedAt = Date.now();
-      $("search-timer").textContent = "00:00";
-      searchTimerInt = setInterval(() => {
-        const sec = Math.floor((Date.now() - searchStartedAt) / 1000);
-        $("search-timer").textContent = formatTimer(sec);
-      }, 1000);
-    }
-
-    function isCompatible(myEntry, peer) {
+    function isCompatible(me, peer) {
       if (!peer || peer.room_id) return false;
-      if (peer.topic !== myEntry.topic) return false;
-
-      const iWantPeerGender = myEntry.target_gender === "any" || myEntry.target_gender === peer.gender;
-      const peerWantsMyGender = peer.target_gender === "any" || peer.target_gender === myEntry.gender;
-      if (!iWantPeerGender || !peerWantsMyGender) return false;
-
-      const peerBucket = getAgeBucket(peer.age);
-      const myBucket = getAgeBucket(myEntry.age);
-      const peerAges = Array.isArray(peer.target_ages) ? peer.target_ages : ALL_AGE_BUCKETS;
-      const myAges = Array.isArray(myEntry.target_ages) ? myEntry.target_ages : ALL_AGE_BUCKETS;
-
-      return myAges.includes(peerBucket) && peerAges.includes(myBucket);
-    }
-
-    async function incrementDailyChats() {
-      const today = todayUTC();
-      const nextCount = getDailyUsed() + 1;
-      await update(ref(db, `users/${currentTgId}`), {
-        daily_chats_date: today,
-        daily_chats_count: nextCount
-      });
+      if (peer.topic !== me.topic) return false;
+      const myTargets = Array.isArray(me.target_ages) ? me.target_ages : ["any"];
+      const peerTargets = Array.isArray(peer.target_ages) ? peer.target_ages : ["any"];
+      const iAcceptPeerAge = myTargets.includes("any") || myTargets.includes(peer.age_bucket);
+      const peerAcceptsMyAge = peerTargets.includes("any") || peerTargets.includes(me.age_bucket);
+      return iAcceptPeerAge && peerAcceptsMyAge;
     }
 
     async function tryFindMatch(myEntry) {
       if (activeRoomId || !queueWatchRef) return;
       const qSnap = await get(ref(db, "queue"));
       const allQueue = qSnap.val() || {};
-
-      // Сортируем кандидатов: PLUS-пользователи имеют приоритет, затем кто дольше ждёт
       const candidates = Object.entries(allQueue)
-        .filter(([peerId, peer]) => peerId !== currentTgId && isCompatible(myEntry, peer))
-        .sort((a, b) => {
-          const prioDiff = (b[1].priority || 0) - (a[1].priority || 0);
-          if (prioDiff !== 0) return prioDiff;
-          return (a[1].ts || 0) - (b[1].ts || 0);
-        });
+        .filter(([pid, peer]) => pid !== currentTgId && isCompatible(myEntry, peer))
+        .sort((a, b) => ((b[1].priority || 0) - (a[1].priority || 0)) || ((a[1].ts || 0) - (b[1].ts || 0)));
 
       for (const [peerId, peer] of candidates) {
-        const newRoomId = `room_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+        const roomId = `room_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
         const tx = await runTransaction(ref(db, `queue/${peerId}`), (curr) => {
           if (!curr || curr.room_id) return;
-          curr.room_id = newRoomId;
+          curr.room_id = roomId;
           return curr;
         });
-
         if (tx.committed) {
-          await set(ref(db, `rooms/${newRoomId}`), {
+          await set(ref(db, `rooms/${roomId}`), {
             active: true,
             topic: myEntry.topic,
             created_at: Date.now(),
             users: {
               [currentTgId]: {
-                nick: myEntry.nick,
-                gender: myEntry.gender,
-                age: myEntry.age,
-                plan: myEntry.visible_plan,
-                typing: false
+                nick: myEntry.nick, gender: myEntry.gender, age_bucket: myEntry.age_bucket,
+                plan: myEntry.visible_plan, typing: false
               },
               [peerId]: {
-                nick: peer.nick,
-                gender: peer.gender,
-                age: peer.age,
-                plan: peer.visible_plan || "free",
-                typing: false
+                nick: peer.nick, gender: peer.gender, age_bucket: peer.age_bucket,
+                plan: peer.visible_plan || "free", typing: false
               }
             }
           });
           await stopSearch();
-          await enterRoom(newRoomId);
+          await enterRoom(roomId);
           return;
         }
       }
@@ -1540,37 +1839,39 @@
 
     async function startSearch() {
       if (!userData) return;
+      if (isBanned()) return showToast("Ваш аккаунт заблокирован");
 
-      // Проверка дневного лимита
       const used = getDailyUsed();
       const limit = getDailyLimit();
       if (used >= limit) {
         return openSubModal(
           "Дневной лимит исчерпан",
-          `Вы уже открыли <b>${used} из ${limit}</b> чатов за сегодня. Обновите тариф в магазине (Go — 100/день, Plus — 250/день) или возвращайтесь завтра.`
+          `Вы открыли <b>${used} из ${limit}</b> чатов сегодня. Расширьте лимит в магазине (Go — 100/день, Plus — 250/день).`
         );
       }
 
       const plan = getEffectivePlan();
-      const priority = plan === "plus" ? 2 : plan === "go" ? 1 : 0;
-      const visiblePlan = userData.hide_plan ? "hidden" : plan;
-
       showView("view-searching");
       $("plus-boost-badge").style.display = plan === "plus" ? "inline-block" : "none";
-      $("search-meta").textContent =
-        `Тема: ${TOPIC_LABELS[searchPrefs.topic]} • Пол собеседника: ${GENDER_LABELS[searchPrefs.targetGender]}`;
-      startSearchTimer();
+      const ageTxt = searchPrefs.targetAges.includes("any") ? "Любой" : searchPrefs.targetAges.join(", ");
+      $("search-meta").textContent = `Тема: ${TOPIC_LABELS[searchPrefs.topic]} • Возраст собеседника: ${ageTxt}`;
+
+      clearInterval(searchTimerInt);
+      searchStartedAt = Date.now();
+      $("search-timer").textContent = "00:00";
+      searchTimerInt = setInterval(() => {
+        $("search-timer").textContent = formatTimer(Math.floor((Date.now() - searchStartedAt) / 1000));
+      }, 1000);
 
       const myEntry = {
         tg_id: currentTgId,
         nick: userData.nick,
-        gender: userData.gender,
-        age: userData.age,
-        visible_plan: visiblePlan,
-        priority,
+        gender: userData.gender || "any",
+        age_bucket: userData.age_bucket || getAgeBucket(userData.age || 20),
+        visible_plan: userData.hide_plan ? "hidden" : plan,
+        priority: plan === "plus" ? 2 : plan === "go" ? 1 : 0,
         topic: searchPrefs.topic,
-        target_gender: hasPlus() ? searchPrefs.targetGender : "any",
-        target_ages: hasGo() ? searchPrefs.targetAges : ALL_AGE_BUCKETS,
+        target_ages: hasGo() ? searchPrefs.targetAges : ["any"],
         room_id: null,
         ts: Date.now()
       };
@@ -1581,49 +1882,150 @@
 
       queueWatchRef = ref(db, `queue/${currentTgId}/room_id`);
       onValue(queueWatchRef, async (snap) => {
-        const roomId = snap.val();
-        if (roomId && !activeRoomId) {
+        const rid = snap.val();
+        if (rid && !activeRoomId) {
           await stopSearch();
-          await enterRoom(roomId);
+          await enterRoom(rid);
         }
       });
 
-      // Ускоренный поиск для PLUS: моментальный старт + сканирование каждые 0.8с
-      // Для GO: задержка 1.2с, сканирование раз в 2с; для FREE: задержка 2.5с, сканирование раз в 3.5с
-      const initialDelay = plan === "plus" ? 0 : plan === "go" ? 1200 : 2500;
-      const scanPeriod = plan === "plus" ? 800 : plan === "go" ? 2000 : 3500;
-
+      const delay = plan === "plus" ? 0 : plan === "go" ? 1200 : 2500;
+      const period = plan === "plus" ? 800 : plan === "go" ? 2000 : 3500;
       setTimeout(() => {
         tryFindMatch(myEntry);
         clearInterval(searchRetryInt);
-        searchRetryInt = setInterval(() => tryFindMatch(myEntry), scanPeriod);
-      }, initialDelay);
+        searchRetryInt = setInterval(() => tryFindMatch(myEntry), period);
+      }, delay);
     }
 
     async function stopSearch() {
       clearInterval(searchTimerInt);
       clearInterval(searchRetryInt);
-      if (queueWatchRef) {
-        off(queueWatchRef);
-        queueWatchRef = null;
+      if (queueWatchRef) { off(queueWatchRef); queueWatchRef = null; }
+      if (currentTgId) await remove(ref(db, `queue/${currentTgId}`)).catch(() => {});
+    }
+
+    // ================= 8. ЧАТ, ЭМОДЗИ, СТИКЕРЫ, GIF И ЖАЛОБЫ =================
+    function closeDrawer() {
+      activeMediaTab = null;
+      $("media-drawer").classList.remove("open");
+      document.querySelectorAll(".m-tab").forEach(b => b.classList.remove("active"));
+    }
+
+    function openMediaDrawer(tab) {
+      if ((tab === "stickers" || tab === "gifs") && !hasGo()) {
+        return openSubModal(
+          "Стикеры и GIF — от подписки GO",
+          "В бесплатном тарифе доступны <b>эмодзи</b>. Отправка <b>стикеров и GIF</b> открывается с подписки <b>GO (150 ⭐/мес)</b>."
+        );
       }
-      if (currentTgId) {
-        await remove(ref(db, `queue/${currentTgId}`)).catch(() => {});
+      if (activeMediaTab === tab) return closeDrawer();
+      activeMediaTab = tab;
+      document.querySelectorAll(".m-tab").forEach(b => b.classList.toggle("active", b.dataset.media === tab));
+
+      const drawer = $("media-drawer");
+      drawer.classList.add("open");
+
+      if (tab === "emoji") {
+        drawer.innerHTML = `<div class="emoji-grid">${EMOJIS.map(e => `<button type="button" class="em-btn">${e}</button>`).join("")}</div>`;
+        drawer.querySelectorAll(".em-btn").forEach(btn => {
+          btn.onclick = () => {
+            $("chat-input").value += btn.textContent;
+            $("chat-input").focus();
+          };
+        });
+      } else if (tab === "stickers") {
+        drawer.innerHTML = `<div class="sticker-grid">${STICKERS.map(s =>
+          `<button type="button" class="st-btn" data-sid="${s.id}"><span>${s.ico}</span><span>${s.cap}</span></button>`
+        ).join("")}</div>`;
+        drawer.querySelectorAll(".st-btn").forEach(btn => {
+          btn.onclick = () => {
+            sendChatPayload({ type: "sticker", stickerId: btn.dataset.sid });
+            closeDrawer();
+          };
+        });
+      } else if (tab === "gifs") {
+        drawer.innerHTML = `
+          <div style="display:flex;gap:6px;">
+            <input id="custom-gif-url" class="input" style="padding:7px 9px;font-size:12px;" placeholder="Или вставьте ссылку на .gif..." />
+            <button type="button" id="send-custom-gif" class="cbtn next">Отпр.</button>
+          </div>
+          <div class="gif-grid">${GIFS.map((g, idx) =>
+            `<button type="button" class="gif-btn" data-gidx="${idx}"><img src="${g.url}" alt="${g.label}" loading="lazy" /><span>${g.label}</span></button>`
+          ).join("")}</div>
+        `;
+        drawer.querySelectorAll(".gif-btn").forEach(btn => {
+          btn.onclick = () => {
+            const g = GIFS[Number(btn.dataset.gidx)];
+            sendChatPayload({ type: "gif", url: g.url, label: g.label });
+            closeDrawer();
+          };
+        });
+        $("send-custom-gif").onclick = () => {
+          const url = $("custom-gif-url").value.trim();
+          if (!/^https?:\/\/.+/i.test(url)) return showToast("Введите корректную ссылку https://...");
+          sendChatPayload({ type: "gif", url, label: "GIF" });
+          closeDrawer();
+        };
       }
     }
 
-    function appendMsg(text, cls) {
+    document.querySelectorAll(".m-tab").forEach(b => {
+      b.onclick = () => openMediaDrawer(b.dataset.media);
+    });
+
+    function renderMessage(m) {
       const box = $("chat-messages");
       const div = document.createElement("div");
-      div.className = `msg ${cls}`;
+      const isMe = m.sender === currentTgId;
+      div.className = `msg ${isMe ? "me" : "peer"}`;
+
+      if (m.type === "sticker") {
+        const st = STICKERS.find(s => s.id === m.stickerId) || { ico: "✨", cap: "СТИКЕР" };
+        div.innerHTML = `<div class="msg-sticker"><span class="st-ico">${st.ico}</span><span class="st-cap">${st.cap}</span></div>`;
+        roomLog.push(`${isMe ? "Вы" : activePeerNick}: [Стикер ${st.cap}]`);
+      } else if (m.type === "gif") {
+        div.innerHTML = `<div class="msg-gif"><img src="${escapeHtml(m.url)}" alt="GIF" onerror="this.replaceWith(document.createTextNode('[GIF: ${escapeHtml(m.label || "Анимация")}]'))" /></div>`;
+        roomLog.push(`${isMe ? "Вы" : activePeerNick}: [GIF]`);
+      } else {
+        div.textContent = m.text || "";
+        roomLog.push(`${isMe ? "Вы" : activePeerNick}: ${m.text || ""}`);
+      }
+      if (roomLog.length > 12) roomLog.shift();
+
+      box.appendChild(div);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function appendSys(text) {
+      const box = $("chat-messages");
+      const div = document.createElement("div");
+      div.className = "msg sys";
       div.textContent = text;
       box.appendChild(div);
       box.scrollTop = box.scrollHeight;
     }
 
+    async function sendChatPayload(payload) {
+      if (!activeRoomId) return;
+      await push(ref(db, `rooms/${activeRoomId}/messages`), {
+        sender: currentTgId,
+        ts: Date.now(),
+        ...payload
+      });
+    }
+
     async function enterRoom(roomId) {
       activeRoomId = roomId;
-      await incrementDailyChats();
+      activePeerId = null;
+      roomLog = [];
+      closeDrawer();
+
+      await update(ref(db, `users/${currentTgId}`), {
+        daily_chats_date: todayUTC(),
+        daily_chats_count: getDailyUsed() + 1,
+        active_room: roomId
+      });
 
       $("chat-messages").innerHTML = "";
       $("typing-bar").textContent = "";
@@ -1636,34 +2038,35 @@
       roomRefs = [activeRef, usersRef, msgsRef];
 
       onDisconnect(activeRef).set(false);
-      appendMsg("Собеседник найден! Соблюдайте правила 18+.", "sys");
+      appendSys("Собеседник найден! Приятного общения. Кнопка «Жалоба» — вверху.");
 
       onValue(usersRef, (snap) => {
         const users = snap.val() || {};
-        const peerId = Object.keys(users).find(id => id !== currentTgId);
-        if (peerId && users[peerId]) {
-          const p = users[peerId];
-          const badgeHtml =
-            p.plan === "plus" ? `<span class="lock-tag plus">PLUS</span>` :
-            p.plan === "go" ? `<span class="lock-tag go">GO</span>` : "";
-          $("chat-peer-name").innerHTML = `${p.nick} (${p.age}) ${badgeHtml}`;
-          $("chat-peer-info").textContent =
-            `${GENDER_LABELS[p.gender] || "Любой"} • ${TOPIC_LABELS[searchPrefs.topic]}`;
-          $("typing-bar").textContent = p.typing ? `${p.nick} печатает...` : "";
+        const pid = Object.keys(users).find(id => id !== currentTgId);
+        if (pid && users[pid]) {
+          activePeerId = pid;
+          const p = users[pid];
+          activePeerNick = p.nick || "Собеседник";
+          const bHtml =
+            p.plan === "plus" ? `<span class="badge plus">PLUS</span>` :
+            p.plan === "go" ? `<span class="badge go">GO</span>` : "";
+          $("chat-peer-name").innerHTML = `${escapeHtml(activePeerNick)} (${escapeHtml(p.age_bucket || "18+")}) ${bHtml}`;
+          $("chat-peer-info").textContent = `${GENDER_LABELS[p.gender] || "Любой"} • ${TOPIC_LABELS[searchPrefs.topic]}`;
+          $("typing-bar").textContent = p.typing ? `${activePeerNick} печатает...` : "";
         }
       });
 
       onChildAdded(msgsRef, (snap) => {
         const m = snap.val();
-        if (!m) return;
-        appendMsg(m.text, m.sender === currentTgId ? "me" : "peer");
+        if (m) renderMessage(m);
       });
 
       onValue(activeRef, (snap) => {
         if (snap.val() === false && activeRoomId === roomId) {
-          appendMsg("Собеседник завершил диалог.", "sys");
+          appendSys("Диалог завершён.");
           $("chat-input").disabled = true;
           $("typing-bar").textContent = "";
+          closeDrawer();
         }
       });
     }
@@ -1671,24 +2074,46 @@
     async function leaveRoom(goLobby = true) {
       const rid = activeRoomId;
       activeRoomId = null;
+      closeDrawer();
       roomRefs.forEach(r => off(r));
       roomRefs = [];
-      if (rid) {
-        await set(ref(db, `rooms/${rid}/active`), false).catch(() => {});
-      }
+      if (rid) await set(ref(db, `rooms/${rid}/active`), false).catch(() => {});
+      if (currentTgId) await update(ref(db, `users/${currentTgId}`), { active_room: "" }).catch(() => {});
       if (goLobby) showView("view-lobby");
     }
 
+    // Жалоба из чата
+    $("btn-report-open").onclick = () => {
+      if (!activePeerId) return showToast("Собеседник ещё не загрузился");
+      $("rep-comment").value = "";
+      $("report-modal").classList.add("open");
+    };
+    $("btn-report-cancel").onclick = () => $("report-modal").classList.remove("open");
+    $("btn-report-submit").onclick = async () => {
+      if (!activePeerId) return;
+      const reportId = `rep_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
+      await set(ref(db, `reports/${reportId}`), {
+        report_id: reportId,
+        room_id: activeRoomId || "",
+        reporter_id: currentTgId,
+        reporter_nick: userData.nick || "Гость",
+        reported_id: activePeerId,
+        reported_nick: activePeerNick,
+        reason: $("rep-reason").value,
+        comment: $("rep-comment").value.trim(),
+        last_messages: roomLog.slice(-8),
+        status: "new",
+        created_at: Date.now()
+      });
+      $("report-modal").classList.remove("open");
+      showToast("Жалоба отправлена администратору!");
+      await leaveRoom(true);
+    };
+
     $("btn-start-chat").onclick = startSearch;
-    $("btn-cancel-search").onclick = async () => {
-      await stopSearch();
-      showView("view-lobby");
-    };
+    $("btn-cancel-search").onclick = async () => { await stopSearch(); showView("view-lobby"); };
     $("btn-stop-chat").onclick = () => leaveRoom(true);
-    $("btn-next-peer").onclick = async () => {
-      await leaveRoom(false);
-      startSearch();
-    };
+    $("btn-next-peer").onclick = async () => { await leaveRoom(false); startSearch(); };
 
     $("chat-form").onsubmit = async (e) => {
       e.preventDefault();
@@ -1696,27 +2121,19 @@
       const text = $("chat-input").value.trim();
       if (!text) return;
       $("chat-input").value = "";
-      await push(ref(db, `rooms/${activeRoomId}/messages`), {
-        sender: currentTgId,
-        text,
-        ts: Date.now()
-      });
+      await sendChatPayload({ type: "text", text });
       update(ref(db, `rooms/${activeRoomId}/users/${currentTgId}`), { typing: false }).catch(() => {});
     };
 
     $("chat-input").oninput = () => {
       if (!activeRoomId) return;
-      const myTypingRef = ref(db, `rooms/${activeRoomId}/users/${currentTgId}`);
-      update(myTypingRef, { typing: true }).catch(() => {});
+      const tRef = ref(db, `rooms/${activeRoomId}/users/${currentTgId}`);
+      update(tRef, { typing: true }).catch(() => {});
       clearTimeout(typingTimer);
-      typingTimer = setTimeout(() => {
-        update(myTypingRef, { typing: false }).catch(() => {});
-      }, 1500);
+      typingTimer = setTimeout(() => update(tRef, { typing: false }).catch(() => {}), 1500);
     };
 
-    if (currentTgId) {
-      attachUserListener();
-    }
+    if (currentTgId) attachUserListener();
   </script>
 </body>
 </html>
